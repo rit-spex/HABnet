@@ -12,15 +12,31 @@
 <body>
 
 
-    <div id="vue-app">
-        <button v-on:click="reverseMessage">Reverse Message</button>
-        <p>{{message}}</p>
-
-    </div>
+    <form id="temp_select" multiple="true" onchange="tempChange()">
+        <input type="checkbox" value="0" checked="true">Temp0</input>
+        <input type="checkbox" value="1" checked="true">Temp1</input>
+    </form>
+    <script type="text/javascript">
+        function tempChange() {
+            var chart = $('#container').highcharts();
+            var series = chart.series
+            var checks = document.getElementById("temp_select");
+            var max = (new Date()).getTime();
+            var min = max - (60*1000);
+            for(var i=0 ; i<checks.length ; i++) {
+                if(checks[i].checked) {
+                    series[i].show();
+                } else {
+                    series[i].hide();
+                }
+            }
+            chart.xAxis[0].setExtremes(min, max, true, false);
+        }
+    </script>
     <div id="container" style="height: 400px; min-width: 310px"></div>
     <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
     <script type="text/javascript">
-        var chart;
+        var chart1;
         $(function() {
 
             Highcharts.setOptions({
@@ -28,6 +44,7 @@
                     useUTC: false
                 }
             });
+            
 
             chart1 = Highcharts.stockChart('container', {
                 chart: {
@@ -51,16 +68,45 @@
                     inputEnabled: false,
                     selected: 0
                 },
-
+                legend: {
+                    enabled: true
+                },
                 title: {
-                    text: 'Live random data'
+                    text: 'Temperature Sensors'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Rando'
+                    },
+                    min: 0,
+                    max: 100,
+                    plotLines: [{
+                        id: "min",
+                        value: minimum,
+                        color: 'cyan',
+                        dashStyle: 'longdash',
+                        width: 2,
+                        label: {
+                            text: 'Minimum'
+                        }
+                    }, {
+                        id: "max",
+                        value: maximum,
+                        color: 'blue',
+                        dashStyle: 'longdash',
+                        width: 2,
+                        label: {
+                            text: 'Maximum'
+                        }
+                    }]
                 },
 
                 exporting: {
                     enabled: false
                 },
                 series: [{
-                    name: 'Random data',
+                    type: "line",
+                    name: 'Temp0',
                     data: (function() {
                         // generate an array of random data
                         var data = [],
@@ -69,40 +115,84 @@
                         for (i = -999; i <= 0; i += 1) {
                             data.push([
                                 time + i * 1000,
-                                Math.round(Math.random() * 100)
+                                Math.round(Math.random() * 98 +1)
+                            ]);
+                        }
+                        return data;
+                    }())
+                },{
+                    type: "line",
+                    name: 'Temp1',
+                    data: (function() {
+                        // generate an array of random data
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+                        for (i = -999; i <= 0; i += 1) {
+                            data.push([
+                                time + i * 1000,
+                                Math.round(Math.random() * 98+1)
                             ]);
                         }
                         return data;
                     }())
                 }]
             });
-
             // set up the updating of the chart each second
-            var series = chart1.series[0];
+            var series0 = chart1.series[0];
+            var series1 = chart1.series[1];
             setInterval(function() {
-
                 var x = (new Date()).getTime(), // current time
-                    y = Math.round(Math.random() * 100);
-                console.log([x, y]);
-                series.addPoint([x, y], true, true);
+                    y0 = Math.round(Math.random() * 98 +1);
+                    y1 = Math.round(Math.random() * 98 +1);
+                series0.addPoint([x, y0], true, true,false);
+                series1.addPoint([x, y1], true, true,false);
+                // console.log(x, y0, y1);
+                chart1.xAxis[0].removePlotBand("min");
+                chart1.xAxis[0].removePlotBand("max");
+                chart.xAxis[0].addPlotLine({
+                                            id: "min",
+                                            value: minimum,
+                                            color: 'cyan',
+                                            dashStyle: 'longdash',
+                                            width: 2,
+                                            label: {
+                                                text: 'Minimum'
+                                            }
+                                        });
+                chart.xAxis[0].addPlotLine({
+                                            id: "max",
+                                            value: maximum,
+                                            color: 'cyan',
+                                            dashStyle: 'longdash',
+                                            width: 2,
+                                            label: {
+                                                text: 'Maximum'
+                                            }
+                                        });
+            }, 100);
 
-            }, 10);
         });
+        var minimum = 0;
+        var maximum = 0;
+        var p;
+        for(var i=0 ; i<chart1.series.length ; i++) {
+            p[i] = chart1.series[i].points.x
+        }
+        for (var i=0 ; i<p.length ; i++) {
+            for (var j=0 ; j<p[i].length ; j++) {
+                if(minimum == 0) {
+                    minimum = p[i][j].y
+                } else {
+                    minimum = p[i][j].y < minimum ? p[i][j].y : minimum;
+                }
+                maximum = p[i][j].y > minimum ? p[i][j].y : maximum;
+            }
+        }
     </script>
 
 
-    <script type="text/javascript">
-        var vm = new Vue({
-            el: '#vue-app',
-            data: {
-                message: 'Hello Vue.js!'
-            },
-            methods: {
-                reverseMessage: function() {
-                    this.message = this.message.split('').reverse().join('')
-                }
-            }
-        });
+
     </script>
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
