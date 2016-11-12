@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
+
+</head>
+
+<body>
+
+
+    <div id="vue-app">
+        <button v-on:click="reverseMessage">Reverse Message</button>
+        <p>{{message}}</p>
+
+    </div>
+    <div id="container" style="height: 400px; min-width: 310px"></div>
+    <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
+    <script type="text/javascript">
+        var chart;
+        $(function() {
+
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+
+            chart1 = Highcharts.stockChart('container', {
+                chart: {
+                    events: {
+                        load: function() {}
+                    }
+                },
+                rangeSelector: {
+                    buttons: [{
+                        count: 1,
+                        type: 'minute',
+                        text: '1M'
+                    }, {
+                        count: 5,
+                        type: 'minute',
+                        text: '5M'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }],
+                    inputEnabled: false,
+                    selected: 0
+                },
+
+                title: {
+                    text: 'Live random data'
+                },
+
+                exporting: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Random data',
+                    data: (function() {
+                        // generate an array of random data
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+                        for (i = -999; i <= 0; i += 1) {
+                            data.push([
+                                time + i * 1000,
+                                Math.round(Math.random() * 100)
+                            ]);
+                        }
+                        return data;
+                    }())
+                }]
+            });
+
+            // set up the updating of the chart each second
+            var series = chart1.series[0];
+            setInterval(function() {
+
+                var x = (new Date()).getTime(), // current time
+                    y = Math.round(Math.random() * 100);
+                console.log([x, y]);
+                series.addPoint([x, y], true, true);
+
+            }, 10);
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#vue-app',
+            data: {
+                message: 'Hello Vue.js!'
+            },
+            methods: {
+                reverseMessage: function() {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        });
+    </script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+
+</body>
+
+</html>

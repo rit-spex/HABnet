@@ -1,0 +1,33 @@
+{
+  "name": "hab-telemetry-server",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.5.0"
+  },
+  "description": "Server for handling remote telemetry from HAB balloon and sending data to web clients",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/server.js ",
+    "test": "eslint ./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIT-Space-Exploration/HABWebClient.git"
+  },
+  "author": "RIT Space Exploration",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RIT-Space-Exploration/HABWebClient/issues"
+  },
+  "homepage": "https://github.com/RIT-Space-Exploration/HABWebClient#readme",
+  "dependencies": {
+    "socket.io": "^1.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.4.0",
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.2.1",
+    "eslint-plugin-react": "^6.2.0"
+  }
+}
