@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+
+
+    <div id="vue-app">
+        <button v-on:click="reverseMessage">Reverse Message</button>
+        <p>{{message}}</p>
+    </div>
+
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.0/js/swiper.min.js"></script> -->
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#vue-app',
+            data: {
+                message: 'Hello Vue.js!'
+            },
+            methods: {
+                reverseMessage: function() {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        });
+
+    </script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.x.x/js/swiper.jquery.min.js"></script> -->
+    <!-- <script type="text/javascript">
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 3,
+            paginationClickable: true,
+            spaceBetween: 30,
+            freeMode: true
+        }); -->
+    </script>
+    <!-- <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" charset="utf-8"></script>
+    <script src="../static/js/remodal.js"></script>
+    <script src="../static/js/main.js"></script>
+    <script src="../static/js/modal-info.js" charset="utf-8"></script>
+    <script src="../static/js/plugin-implementation.js"></script> -->
+</body>
+
+</html>
