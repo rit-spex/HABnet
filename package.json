@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/RIT-Space-Exploration/HABWebClient#readme",
   "dependencies": {
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "socket.io-client": "^1.5.1"
   },
   "devDependencies": {
     "eslint": "^3.4.0",

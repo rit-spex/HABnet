@@ -25,6 +25,7 @@ const onJoined = (sock) => {
   const socket = sock;
 
   socket.on('join', (data) => {
+    console.log('New Connection')
     if (data.type == 'dataSource') {
       dataSources[data.name] = '';
     } else if (data.type == 'dataListener') {
@@ -34,6 +35,7 @@ const onJoined = (sock) => {
 
   socket.on('sensorData', (data) => {
     socket.broadcast.to('room1').emit('broadcastData', data);
+    console.log('broadcasted data');
   });
 
   socket.name = data.name;

@@ -6,7 +6,7 @@
     <title></title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
-
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -83,7 +83,7 @@
 
                 var x = (new Date()).getTime(), // current time
                     y = Math.round(Math.random() * 100);
-                console.log([x, y]);
+                //console.log([x, y]);
                 series.addPoint([x, y], true, true);
 
             }, 10);
@@ -104,9 +104,37 @@
             }
         });
     </script>
+    <script type="text/javascript">
+    var socket;
+    let user;
+
+    const connectSocket = (e) => {
+      socket = io.connect();
+
+      socket.on('broadcastData', (data) => {
+        console.log(data);
+      });
+
+      socket.on('connect', () => {
+        console.log('connected to server');
+        if(!user) {
+          user = "unknown";
+        }
+
+        socket.emit('join', {name: user, type: "dataListener" });
+      });
+    }
+
+    const init = () => {
+      console.log('init');
+      connectSocket();
+    };
+
+    window.onload = init;
+
+    </script>
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-
 
 </body>
 
