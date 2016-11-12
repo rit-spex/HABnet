@@ -6,7 +6,7 @@
     <title></title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
-    
+
 </head>
 
 <body>
@@ -20,6 +20,7 @@
     <div id="container" style="height: 400px; min-width: 310px"></div>
     <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
     <script type="text/javascript">
+        var chart;
         $(function() {
 
             Highcharts.setOptions({
@@ -28,23 +29,15 @@
                 }
             });
 
-            // Create the chart
-            $('#container').highcharts('StockChart', {
+            chart1 = Highcharts.stockChart('container', {
                 chart: {
                     events: {
                         load: function() {
 
-                            // set up the updating of the chart each second
-                            var series = this.series[0];
-                            setInterval(function() {
-                                var x = (new Date()).getTime(), // current time
-                                    y = Math.round(Math.random() * 100);
-                                series.addPoint([x, y], true, true);
-                            }, 1000);
+
                         }
                     }
                 },
-
                 rangeSelector: {
                     buttons: [{
                         count: 1,
@@ -89,6 +82,14 @@
                 }]
             });
 
+            // set up the updating of the chart each second
+            var series = chart1.series[0];
+            setInterval(function() {
+                var x = (new Date()).getTime(), // current time
+                    y = Math.round(Math.random() * 100);
+                series.addPoint([x, y], true, true);
+                console.log([x, y], "Point Added")
+            }, 100);
         });
     </script>
 
