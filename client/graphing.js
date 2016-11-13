@@ -124,6 +124,7 @@ $(function() {
         },
         navigator: {
           enabled: false
+
         },
         scrollbar: {
                barBackgroundColor: 'gray',
