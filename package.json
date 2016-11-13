@@ -7,8 +7,9 @@
   "description": "Server for handling remote telemetry from HAB balloon and sending data to web clients",
   "main": "server.js",
   "scripts": {
-    "start": "node ./src/server.js ",
-    "test": "eslint ./src"
+    "start": "node ./src/app.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests Complete\""
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,19 @@
   },
   "homepage": "https://github.com/RIT-Space-Exploration/HABWebClient#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "connect-redis": "^3.1.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.14.2",
+    "helmet": "^3.1.0",
+    "mongoose": "^4.6.7",
+    "serve-favicon": "^2.3.0",
     "socket.io": "^1.5.1",
-    "socket.io-client": "^1.5.1"
+    "socket.io-client": "^1.5.1",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "eslint": "^3.4.0",
