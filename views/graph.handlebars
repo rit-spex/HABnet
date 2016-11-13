@@ -9,6 +9,14 @@
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="/assets/graphing.js" ></script>
     <script src="/assets/clientSocket.js" ></script>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="/assets/css/normalize.css/normalize.css">
+
+    <!-- Milligram CSS minified -->
+    <link rel="stylesheet" href="/assets/css/milligram.min.css">
 </head>
 
 <body>
@@ -36,8 +44,29 @@
             chart.xAxis[0].setExtremes(min, max, true, false);
         }
     </script>
-    <div id="container" style="height: 400px; min-width: 310px"></div>
-    <div id="chart2" style="height: 400px; min-width: 310px"></div>
+
+    <div class="container" >
+      <div class="row" >
+        <div class="column column-50" >
+          <div id="chart1" style="height: 400px;"></div>
+        </div>
+        <div class="column column-50" >
+          <div id="chart2" style="height: 400px;"></div>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="column column-33" >
+          <div id="chart3" style="height: 400px;"></div>
+        </div>
+        <div class="column column-33" >
+          <div id="chart4" style="height: 400px;"></div>
+        </div>
+        <div class="column column-33" >
+          <div id="chart5" style="height: 400px;"></div>
+        </div>
+      </div>
+    </div>
+    <button>TEST</button>
 
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>

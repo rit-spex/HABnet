@@ -6,7 +6,7 @@ $(function() {
             useUTC: false
         }
     });
-    
+
 
     chart1 = Highcharts.stockChart('container', {
         chart: {
