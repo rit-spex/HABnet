@@ -3,6 +3,7 @@ let user;
 
 var a, b, c;
 var dataArray;
+let roll, pitch, heading;
 
 const connectSocket = (e) => {
   socket = io.connect();
@@ -14,6 +15,27 @@ const connectSocket = (e) => {
     a = data.buffer[1];
     b = data.buffer[4];
     dataArray = data.buffer;
+
+    roll = Math.atan2(dataArray[9], dataArray[10]);
+    pitch = Math.atan2(-dataArray[8], Math.sqrt(dataArray[9] * dataArray[9] + dataArray[10] * dataArray[10]));
+
+    if(dataArray[12] == 0) {
+      heading = (dataArray[12] < 0) ? 180 : 0;
+    } else {
+      heading = Math.atan2(dataArray[11], dataArray[12]);
+    }
+
+    if( heading > Math.PI) {
+      heading -= (2 * Math.PI);
+    } else if (heading < -Math.PI) {
+      heading += (2 * Math.PI);
+    } else if (heading < 0) {
+      heading += (2 * Math.PI);
+    }
+
+    heading *= 180.0 / Math.PI;
+    pitch   *= 180.0 / Math.PI;
+    roll     *= 180.0 / Math.PI;
   });
 
   socket.on('connect', () => {
