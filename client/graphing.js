@@ -83,7 +83,7 @@ $(function() {
                 text: '°C'
             },
 
-            min: 24,
+            softMin: 24,
             max: 30,
         },
         legend: {

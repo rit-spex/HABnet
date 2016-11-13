@@ -6,5 +6,9 @@
 .button {
   font-family: sans-serif;
   margin: auto;
-  background-color: #f36e29;
+  color: "#919499";
+  float: right;
+}
+p {
+  color: 'white';
 }
