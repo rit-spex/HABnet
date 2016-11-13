@@ -489,6 +489,7 @@ $(function() {
         },
         series: [{
             name: 'Gyroscope (X)',
+            type: 'areaspline',
             data: (function () {
                 // generate an array of random data
                 var data = [],
@@ -506,6 +507,7 @@ $(function() {
         },
         {
             name: 'Gyroscope (Y)',
+            type: 'areaspline',
             data: (function () {
                 // generate an array of random data
                 var data = [],
@@ -523,6 +525,136 @@ $(function() {
         },
         {
             name: 'Gyroscope (Z)',
+            type: 'areaspline',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+
+                for (i = -100; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                      0
+                    ]);
+                }
+                return data;
+            }())
+        },
+      ]
+    });
+
+    magnetometerChart = Highcharts.stockChart('magnetometerChart', {
+        chart: {
+            events: {
+              load: function () {
+
+                  // set up the updating of the chart each second
+                  var series = this.series;
+                  setInterval(function () {
+                    if(dataArray) {
+                      var x = (new Date()).getTime(), // current time
+                          y = Math.round(Math.random() * 100);
+                      series[0].addPoint([x, dataArray[11]], true, true, false);
+                      series[1].addPoint([x, dataArray[12]], true, true, false);
+                      series[2].addPoint([x, dataArray[13]], true, true, false);
+                    }
+                  }, 100);
+                }
+            }
+        },
+        navigator: {
+          enabled: false
+        },
+        scrollbar: {
+               barBackgroundColor: 'gray',
+               barBorderRadius: 7,
+               barBorderWidth: 0,
+               buttonBackgroundColor: 'gray',
+               buttonBorderWidth: 0,
+               buttonBorderRadius: 7,
+               trackBackgroundColor: 'none',
+               trackBorderWidth: 1,
+               trackBorderRadius: 8,
+               trackBorderColor: '#CCC'
+           },
+        rangeSelector: {
+            buttons: [{
+                count: 1,
+                type: 'minute',
+                text: '1M'
+            }, {
+                count: 5,
+                type: 'minute',
+                text: '5M'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            inputEnabled: false,
+            selected: 0
+        },
+        legend: {
+            enabled: true
+        },
+        title: {
+            text: 'Magnetometer'
+        },
+        xAxis: {
+          labels: {autoRotation: 0}
+        },
+        yAxis: {
+            title: {
+                text: '%'
+            },
+            min: -0.5,
+            max: 0.5,
+        },
+        legend: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Magnetometer (X)',
+            type: 'areaspline',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+
+                for (i = -100; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                      0
+                    ]);
+                }
+                return data;
+            }())
+        },
+        {
+            name: 'Magnetometer (Y)',
+            type: 'areaspline',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+
+                for (i = -100; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                      0
+                    ]);
+                }
+                return data;
+            }())
+        },
+        {
+            name: 'Magnetometer (Z)',
+            type: 'areaspline',
             data: (function () {
                 // generate an array of random data
                 var data = [],
