@@ -20,31 +20,6 @@
 </head>
 
 <body>
-
-
-    <form id="temp_select" multiple="true" onchange="seriesChange()">
-        <input type="checkbox" value="0" checked="true">Temp0</input>
-        <input type="checkbox" value="1" checked="true">Temp1</input>
-    </form>
-
-    <script type="text/javascript">
-        function seriesChange() {
-            var chart = $('#container').highcharts();
-            var series = chart.series
-            var checks = document.getElementById("temp_select");
-            var max = (new Date()).getTime();
-            var min = max - (60*1000);
-            for(var i=0 ; i<checks.length ; i++) {
-                if(checks[i].checked) {
-                    series[i].show();
-                } else {
-                    series[i].hide();
-                }
-            }
-            chart.xAxis[0].setExtremes(min, max, true, false);
-        }
-    </script>
-
     <div class="container" >
       <div class="row" >
         <div class="column column-50" >

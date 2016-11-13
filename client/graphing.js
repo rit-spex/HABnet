@@ -9,6 +9,9 @@ $(function() {
     Highcharts.setOptions({
         global: {
             useUTC: false
+        },
+        credits: {
+          enabled: false,
         }
     });
 
@@ -31,11 +34,12 @@ $(function() {
             }
         },
         navigator: {
-          enabled: true,
+          enabled: false,
           adaptToUpdatedData: true
         },
+
         scrollbar: {
-                //enabled: false,
+                enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -47,7 +51,9 @@ $(function() {
                trackBorderRadius: 8,
                trackBorderColor: '#CCC'
            },
+
         rangeSelector: {
+        enabled: false,
             buttons: [{
                 count: 1,
                 type: 'minute',
@@ -124,11 +130,11 @@ $(function() {
             }
         },
         navigator: {
-          enabled: false
-
+          enabled: false,
+          adaptToUpdatedData: true
         },
         scrollbar: {
-                //enabled: false,
+                enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -141,6 +147,7 @@ $(function() {
                trackBorderColor: '#CCC'
            },
         rangeSelector: {
+          enabled: false,
             buttons: [{
                 count: 1,
                 type: 'minute',
@@ -217,10 +224,11 @@ $(function() {
             }
         },
         navigator: {
-          enabled: false
+          enabled: false,
+          adaptToUpdatedData: true
         },
         scrollbar: {
-                //  enabled: false,
+                enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -233,6 +241,7 @@ $(function() {
                trackBorderColor: '#CCC'
            },
         rangeSelector: {
+          enabled: false,
             buttons: [{
                 count: 1,
                 type: 'minute',
@@ -338,10 +347,11 @@ $(function() {
             }
         },
         navigator: {
-          enabled: false
+          enabled: false,
+          adaptToUpdatedData: true
         },
         scrollbar: {
-                //enabled: false,
+                enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -354,6 +364,7 @@ $(function() {
                trackBorderColor: '#CCC'
            },
         rangeSelector: {
+          enabled: false,
             buttons: [{
                 count: 1,
                 type: 'minute',
@@ -484,10 +495,11 @@ $(function() {
             }
         },
         navigator: {
-          enabled: false
+          enabled: false,
+          adaptToUpdatedData: true
         },
         scrollbar: {
-                //enabled: false,
+                enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -500,6 +512,7 @@ $(function() {
                trackBorderColor: '#CCC'
            },
         rangeSelector: {
+          enabled: false,
             buttons: [{
                 count: 1,
                 type: 'minute',
@@ -526,7 +539,7 @@ $(function() {
         },
         yAxis: {
             title: {
-                text: '%'
+                text: 'Degrees per Second'
             },
             plotLines: [{
               value: 6,
@@ -650,10 +663,11 @@ $(function() {
             }
         },
         navigator: {
-          enabled: false
+          enabled: false,
+          adaptToUpdatedData: true
         },
         scrollbar: {
-                //enabled: false,
+                enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -666,6 +680,7 @@ $(function() {
                trackBorderColor: '#CCC'
            },
         rangeSelector: {
+          enabled: false,
             buttons: [{
                 count: 1,
                 type: 'minute',
@@ -692,7 +707,7 @@ $(function() {
         },
         yAxis: {
             title: {
-                text: '%'
+                text: 'Gauss'
             },
             min: -0.5,
             max: 0.5,

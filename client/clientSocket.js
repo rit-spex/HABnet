@@ -32,10 +32,10 @@ const connectSocket = (e) => {
     } else if (heading < 0) {
       heading += (2 * Math.PI);
     }
-
+    /*
     heading *= 180.0 / Math.PI;
     pitch   *= 180.0 / Math.PI;
-    roll     *= 180.0 / Math.PI;
+    roll     *= 180.0 / Math.PI;*/
   });
 
   socket.on('connect', () => {
