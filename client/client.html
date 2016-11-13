@@ -6,7 +6,7 @@
     <title></title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 </head>
 
 <body>
@@ -16,6 +16,7 @@
         <input type="checkbox" value="0" checked="true">Temp0</input>
         <input type="checkbox" value="1" checked="true">Temp1</input>
     </form>
+
     <script type="text/javascript">
         function tempChange() {
             var chart = $('#container').highcharts();
@@ -34,7 +35,11 @@
         }
     </script>
     <div id="container" style="height: 400px; min-width: 310px"></div>
-    <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
+
+
+
+
+
     <script type="text/javascript">
         var chart1;
         $(function() {
@@ -106,22 +111,6 @@
                 },
                 series: [{
                     type: "line",
-                    name: 'Temp0',
-                    data: (function() {
-                        // generate an array of random data
-                        var data = [],
-                            time = (new Date()).getTime(),
-                            i;
-                        for (i = -999; i <= 0; i += 1) {
-                            data.push([
-                                time + i * 1000,
-                                Math.round(Math.random() * 98 +1)
-                            ]);
-                        }
-                        return data;
-                    }())
-                },{
-                    type: "line",
                     name: 'Temp1',
                     data: (function() {
                         // generate an array of random data
@@ -142,58 +131,58 @@
             var series0 = chart1.series[0];
             var series1 = chart1.series[1];
             setInterval(function() {
-                var x = (new Date()).getTime(), // current time
-                    y0 = Math.round(Math.random() * 98 +1);
-                    y1 = Math.round(Math.random() * 98 +1);
-                series0.addPoint([x, y0], true, true,false);
-                series1.addPoint([x, y1], true, true,false);
-                // console.log(x, y0, y1);
-                chart1.xAxis[0].removePlotBand("min");
-                chart1.xAxis[0].removePlotBand("max");
-                chart.xAxis[0].addPlotLine({
-                                            id: "min",
-                                            value: minimum,
-                                            color: 'cyan',
-                                            dashStyle: 'longdash',
-                                            width: 2,
-                                            label: {
-                                                text: 'Minimum'
-                                            }
-                                        });
-                chart.xAxis[0].addPlotLine({
-                                            id: "max",
-                                            value: maximum,
-                                            color: 'cyan',
-                                            dashStyle: 'longdash',
-                                            width: 2,
-                                            label: {
-                                                text: 'Maximum'
-                                            }
-                                        });
+            //     var x = (new Date()).getTime(), // current time
+            //         y0 = Math.round(Math.random() * 98 +1);
+            //         y1 = Math.round(Math.random() * 98 +1);
+            //     series0.addPoint([x, y0], true, true,false);
+            //     series1.addPoint([x, y1], true, true,false);
+            //     console.log(data[0], data[1], data[2]);
+            //     chart1.xAxis[0].removePlotBand("min");
+            //     chart1.xAxis[0].removePlotBand("max");
+            //     chart1.xAxis[0].addPlotLine({
+            //                                 id: "min",
+            //                                 value: minimum,
+            //                                 color: 'cyan',
+            //                                 dashStyle: 'longdash',
+            //                                 width: 2,
+            //                                 label: {
+            //                                     text: 'Minimum'
+            //                                 }
+            //                             });
+            //     chart1.xAxis[0].addPlotLine({
+            //                                 id: "max",
+            //                                 value: maximum,
+            //                                 color: 'cyan',
+            //                                 dashStyle: 'longdash',
+            //                                 width: 2,
+            //                                 label: {
+            //                                     text: 'Maximum'
+            //                                 }
+            //                             });
             }, 100);
 
         });
         var minimum = 0;
         var maximum = 0;
-        var p;
-        for(var i=0 ; i<chart1.series.length ; i++) {
-            p[i] = chart1.series[i].points.x
-        }
-        for (var i=0 ; i<p.length ; i++) {
-            for (var j=0 ; j<p[i].length ; j++) {
-                if(minimum == 0) {
-                    minimum = p[i][j].y
-                } else {
-                    minimum = p[i][j].y < minimum ? p[i][j].y : minimum;
-                }
-                maximum = p[i][j].y > minimum ? p[i][j].y : maximum;
-            }
-        }
+        // var p;
+        // for(var i=0 ; i<chart1.series.length ; i++) {
+        //     p[i] = chart1.series[i].points.x
+        // }
+        // for (var i=0 ; i<p.length ; i++) {
+        //     for (var j=0 ; j<p[i].length ; j++) {
+        //         if(minimum == 0) {
+        //             minimum = p[i][j].y
+        //         } else {
+        //             minimum = p[i][j].y < minimum ? p[i][j].y : minimum;
+        //         }
+        //         maximum = p[i][j].y > minimum ? p[i][j].y : maximum;
+        //     }
+        // }
     </script>
 
 
 
-    </script>
+
     <script type="text/javascript">
     var socket;
     let user;
@@ -203,6 +192,7 @@
 
       socket.on('broadcastData', (data) => {
         console.log(data);
+        chart1.series[1].addPoint([data[0],data[1]],true,true,false);
       });
 
       socket.on('connect', () => {
@@ -223,6 +213,7 @@
     window.onload = init;
 
     </script>
+
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
