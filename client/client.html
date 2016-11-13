@@ -191,8 +191,8 @@
       socket = io.connect();
 
       socket.on('broadcastData', (data) => {
-        console.log(data);
-        chart1.series[1].addPoint([data[0],data[1]],true,true,false);
+        console.log(data.buffer[0] + " " + data.buffer[1]);
+        chart1.series[1].addPoint([data.buffer[0],data.buffer[1]],true,true,false);
       });
 
       socket.on('connect', () => {
