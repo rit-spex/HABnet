@@ -2,7 +2,7 @@ var tempChart;
 var humidtyChart;
 var altitudeChart;
 var accelerometerGraph;
-var chart5;
+var gyroscopeChart;
 
 $(function() {
 
@@ -300,6 +300,8 @@ $(function() {
                       var x = (new Date()).getTime(), // current time
                           y = Math.round(Math.random() * 100);
                       series[0].addPoint([x, dataArray[8]], true, true, false);
+                      series[1].addPoint([x, dataArray[9]], true, true, false);
+                      series[2].addPoint([x, dataArray[10]], true, true, false);
                     }
                   }, 100);
                 }
@@ -347,7 +349,7 @@ $(function() {
         },
         yAxis: {
             title: {
-                text: '%'
+                text: 'g(m/s^2)'
             },
             min: -10,
             max: 10,
@@ -375,11 +377,45 @@ $(function() {
                 return data;
             }())
         },
+        {
+          name: 'Accelerometer(Y)',
+          data: (function () {
+              // generate an array of random data
+              var data = [],
+                  time = (new Date()).getTime(),
+                  i;
+
+              for (i = -100; i <= 0; i += 1) {
+                  data.push([
+                      time + i * 1000,
+                    0
+                  ]);
+              }
+              return data;
+          }())
+        },
+        {
+          name: 'Accelerometer(Z)',
+          data: (function () {
+              // generate an array of random data
+              var data = [],
+                  time = (new Date()).getTime(),
+                  i;
+
+              for (i = -100; i <= 0; i += 1) {
+                  data.push([
+                      time + i * 1000,
+                    0
+                  ]);
+              }
+              return data;
+          }())
+        },
       ]
     });
 
     // CINCO
-    chart5 = Highcharts.stockChart('chart5', {
+    gyroscopeChart = Highcharts.stockChart('gyroscopeChart', {
         chart: {
             events: {
               load: function () {
@@ -387,9 +423,13 @@ $(function() {
                   // set up the updating of the chart each second
                   var series = this.series;
                   setInterval(function () {
+                    if(dataArray) {
                       var x = (new Date()).getTime(), // current time
                           y = Math.round(Math.random() * 100);
-                      series[0].addPoint([x, b], true, true, false);
+                      series[0].addPoint([x, dataArray[5]], true, true, false);
+                      series[1].addPoint([x, dataArray[6]], true, true, false);
+                      series[2].addPoint([x, dataArray[7]], true, true, false);
+                    }
                   }, 100);
                 }
             }
@@ -429,7 +469,7 @@ $(function() {
             enabled: true
         },
         title: {
-            text: 'Humidity'
+            text: 'Gyroscope'
         },
         xAxis: {
           labels: {autoRotation: 0}
@@ -438,8 +478,8 @@ $(function() {
             title: {
                 text: '%'
             },
-            min: 0,
-            max: 100,
+            min: -360,
+            max: 360,
         },
         legend: {
             enabled: false
@@ -448,7 +488,41 @@ $(function() {
             enabled: false
         },
         series: [{
-            name: 'Random data',
+            name: 'Gyroscope (X)',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+
+                for (i = -100; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                      0
+                    ]);
+                }
+                return data;
+            }())
+        },
+        {
+            name: 'Gyroscope (Y)',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+
+                for (i = -100; i <= 0; i += 1) {
+                    data.push([
+                        time + i * 1000,
+                      0
+                    ]);
+                }
+                return data;
+            }())
+        },
+        {
+            name: 'Gyroscope (Z)',
             data: (function () {
                 // generate an array of random data
                 var data = [],
