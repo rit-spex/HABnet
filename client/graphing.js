@@ -18,7 +18,6 @@ $(function() {
         chart: {
             events: {
               load: function () {
-
                   // set up the updating of the chart each second
                   var series = this.series;
                   setInterval(function () {
@@ -36,6 +35,7 @@ $(function() {
           adaptToUpdatedData: true
         },
         scrollbar: {
+                //enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -76,6 +76,7 @@ $(function() {
             title: {
                 text: '°C'
             },
+
             min: 24,
             max: 30,
         },
@@ -127,6 +128,7 @@ $(function() {
 
         },
         scrollbar: {
+                //enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -218,6 +220,7 @@ $(function() {
           enabled: false
         },
         scrollbar: {
+                //  enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -258,6 +261,33 @@ $(function() {
             title: {
                 text: 'meters'
             },
+            plotLines: [{
+              value: 541,
+              color: 'green',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: 'Freedom Tower',
+              }
+            },
+            {
+              value: 29809,
+              color: 'yellow',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: 'HAB2 Max Altitude',
+              }
+            },
+            {
+              value: 11887,
+              color: 'red',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: 'Cruising altitude of a 747',
+              }
+            }],
             min: 0,
             max: 1000,
         },
@@ -311,6 +341,7 @@ $(function() {
           enabled: false
         },
         scrollbar: {
+                //enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -351,6 +382,24 @@ $(function() {
             title: {
                 text: 'g(m/s^2)'
             },
+            plotLines: [{
+              value: 1,
+              color: 'red',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: '1g',
+              }
+            },
+            {
+              value: -1,
+              color: 'blue',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: '-1g',
+              }
+            }],
             min: -10,
             max: 10,
         },
@@ -438,6 +487,7 @@ $(function() {
           enabled: false
         },
         scrollbar: {
+                //enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
@@ -478,6 +528,42 @@ $(function() {
             title: {
                 text: '%'
             },
+            plotLines: [{
+              value: 6,
+              color: 'red',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: '1 RPM',
+              }
+            },
+            {
+              value: 6,
+              color: 'red',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: '1 RPM',
+              }
+            },
+            {
+              value: 60,
+              color: 'blue',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: '10 RPM',
+              }
+            },
+            {
+              value: 300,
+              color: 'green',
+              dashStyle: 'Dot',
+              width: 1,
+              label: {
+                text: '50 RPM',
+              }
+            }],
             min: -360,
             max: 360,
         },
@@ -567,6 +653,7 @@ $(function() {
           enabled: false
         },
         scrollbar: {
+                //enabled: false,
                barBackgroundColor: 'gray',
                barBorderRadius: 7,
                barBorderWidth: 0,
