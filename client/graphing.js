@@ -1,7 +1,7 @@
-var chart1;
-var chart2;
-var chart3;
-var chart4;
+var tempChart;
+var humidtyChart;
+var altitudeChart;
+var accelerometerGraph;
 var chart5;
 
 $(function() {
@@ -14,7 +14,7 @@ $(function() {
 
 
     // UNO
-    chart1 = Highcharts.stockChart('chart1', {
+    tempChart = Highcharts.stockChart('tempChart', {
         chart: {
             events: {
               load: function () {
@@ -22,15 +22,18 @@ $(function() {
                   // set up the updating of the chart each second
                   var series = this.series;
                   setInterval(function () {
+                    if(dataArray) {
                       var x = (new Date()).getTime(), // current time
                           y = Math.round(Math.random() * 100);
-                      series[0].addPoint([x, a], true, true, false);
+                      series[0].addPoint([x, dataArray[1]], true, true, false);
+                    }
                   }, 100);
                 }
             }
         },
         navigator: {
-          enabled: true
+          enabled: true,
+          adaptToUpdatedData: true
         },
         scrollbar: {
                barBackgroundColor: 'gray',
@@ -74,7 +77,7 @@ $(function() {
                 text: '°C'
             },
             min: 24,
-            max: 26,
+            max: 30,
         },
         legend: {
             enabled: false
@@ -83,6 +86,7 @@ $(function() {
             enabled: false
         },
         series: [{
+            showInNavigator: true,
             data: (function () {
                 // generate an array of random data
                 var data = [],
@@ -101,7 +105,7 @@ $(function() {
       ]
     });
     // DOS
-    chart2 = Highcharts.stockChart('chart2', {
+    humidtyChart = Highcharts.stockChart('humidtyChart', {
         chart: {
             events: {
               load: function () {
@@ -109,9 +113,11 @@ $(function() {
                   // set up the updating of the chart each second
                   var series = this.series;
                   setInterval(function () {
+                    if(dataArray) {
                       var x = (new Date()).getTime(), // current time
                           y = Math.round(Math.random() * 100);
-                      series[0].addPoint([x, b], true, true, false);
+                      series[0].addPoint([x, dataArray[4]], true, true, false);
+                    }
                   }, 100);
                 }
             }
@@ -190,7 +196,7 @@ $(function() {
     });
 
     // TRES
-    chart3 = Highcharts.stockChart('chart3', {
+    altitudeChart = Highcharts.stockChart('altitudeChart', {
         chart: {
             events: {
               load: function () {
@@ -198,9 +204,11 @@ $(function() {
                   // set up the updating of the chart each second
                   var series = this.series;
                   setInterval(function () {
+                    if(dataArray) {
                       var x = (new Date()).getTime(), // current time
                           y = Math.round(Math.random() * 100);
-                      series[0].addPoint([x, b], true, true, false);
+                      series[0].addPoint([x, dataArray[3]], true, true, false);
+                    }
                   }, 100);
                 }
             }
@@ -240,17 +248,17 @@ $(function() {
             enabled: true
         },
         title: {
-            text: 'Humidity'
+            text: 'Altitude'
         },
         xAxis: {
           labels: {autoRotation: 0}
         },
         yAxis: {
             title: {
-                text: '%'
+                text: 'meters'
             },
             min: 0,
-            max: 100,
+            max: 1000,
         },
         legend: {
             enabled: false
@@ -259,7 +267,7 @@ $(function() {
             enabled: false
         },
         series: [{
-            name: 'Random data',
+            name: 'Altitude (m)',
             data: (function () {
                 // generate an array of random data
                 var data = [],
@@ -279,7 +287,7 @@ $(function() {
     });
 
     // QUATRO
-    chart4 = Highcharts.stockChart('chart4', {
+    accelerometerGraph = Highcharts.stockChart('accelerometerGraph', {
         chart: {
             events: {
               load: function () {
@@ -287,9 +295,11 @@ $(function() {
                   // set up the updating of the chart each second
                   var series = this.series;
                   setInterval(function () {
+                    if(dataArray) {
                       var x = (new Date()).getTime(), // current time
                           y = Math.round(Math.random() * 100);
-                      series[0].addPoint([x, b], true, true, false);
+                      series[0].addPoint([x, dataArray[8]], true, true, false);
+                    }
                   }, 100);
                 }
             }
@@ -329,7 +339,7 @@ $(function() {
             enabled: true
         },
         title: {
-            text: 'Humidity'
+            text: 'Accelerometer'
         },
         xAxis: {
           labels: {autoRotation: 0}
@@ -338,8 +348,8 @@ $(function() {
             title: {
                 text: '%'
             },
-            min: 0,
-            max: 100,
+            min: -10,
+            max: 10,
         },
         legend: {
             enabled: false
@@ -348,7 +358,7 @@ $(function() {
             enabled: false
         },
         series: [{
-            name: 'Random data',
+            name: 'Accelerometer(X)',
             data: (function () {
                 // generate an array of random data
                 var data = [],

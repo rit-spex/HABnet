@@ -2,6 +2,7 @@ let socket;
 let user;
 
 var a, b, c;
+var dataArray;
 
 const connectSocket = (e) => {
   socket = io.connect();
@@ -12,6 +13,7 @@ const connectSocket = (e) => {
     //chart1.series[0].redraw();
     a = data.buffer[1];
     b = data.buffer[4];
+    dataArray = data.buffer;
   });
 
   socket.on('connect', () => {
