@@ -7,6 +7,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="/assets/graphing.js" ></script>
+    <script src="/assets/clientSocket.js" ></script>
 </head>
 
 <body>
@@ -35,42 +37,6 @@
         }
     </script>
     <div id="container" style="height: 400px; min-width: 310px"></div>
-
-
-    <script src="graphing.js"></script>
-
-
-    <script type="text/javascript">
-    var socket;
-    let user;
-
-    const connectSocket = (e) => {
-      socket = io.connect();
-
-      socket.on('broadcastData', (data) => {
-        console.log(data.buffer[0] + " " + data.buffer[1]);
-        var chartz = $('#container').highcharts();
-        chartz.series[0].addPoint([data.buffer[0],data.buffer[1]],true,true,false);
-      });
-
-      socket.on('connect', () => {
-        console.log('connected to server');
-        if(!user) {
-          user = "unknown";
-        }
-
-        socket.emit('join', {name: user, type: "dataListener" });
-      });
-    }
-
-    const init = () => {
-      console.log('init');
-      connectSocket();
-    };
-
-    window.onload = init;
-
-    </script>
 
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
