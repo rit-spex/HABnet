@@ -27,10 +27,26 @@
 			renderer.setSize(600,600);
 			document.body.appendChild(renderer.domElement);
 
-
 			//create immage
 			var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshLambertMaterial({color: 0xf49e42, wireframe: false});
+			//x planes
+			geometry.faces[0].color.setHex(0xffb200);
+			geometry.faces[1].color.setHex(0xffb200);
+			geometry.faces[2].color.setHex(0xffb200);
+			geometry.faces[3].color.setHex(0xffb200);
+			//y planes
+			geometry.faces[4].color.setHex(0xff3000);
+			geometry.faces[5].color.setHex(0xff3000);
+			geometry.faces[6].color.setHex(0xff3000);
+			geometry.faces[7].color.setHex(0xff3000);
+			//z planes
+			geometry.faces[8].color.setHex(0xff7000);
+			geometry.faces[9].color.setHex(0xff7000);
+			geometry.faces[10].color.setHex(0xff7000);
+			geometry.faces[11].color.setHex(0xff7000);
+			geometry.colorsNeedUpdate = true;
+
+			var material = new THREE.MeshLambertMaterial({color: 0xffffff, vertexColors: THREE.FaceColors, wireframe: false});
 			// var texture = THREE.ImageUtils.loadTexture('img/map.png');
 			var habBox = new THREE.Mesh(geometry,material);
 			scene.add(habBox);
