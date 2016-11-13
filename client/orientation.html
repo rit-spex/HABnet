@@ -40,9 +40,9 @@
 
 			//render function
 			function render() {
-				habBox.rotation.x = xPos;
-				habBox.rotation.y = yPos;
-				habBox.rotation.z += zPos;
+				habBox.rotation.x = roll;
+				habBox.rotation.y = pitch;
+				habBox.rotation.z = heading;
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );
 			}
