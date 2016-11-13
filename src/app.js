@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({
 app.engine('handlebars', expressHandlebars());
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/../views`);
-app.use(favicon(`${__dirname}/../client/img/spexfavicon.png`));
+app.use(favicon(`${__dirname}/../../client/img/spexfavicon.png`));
 app.use(cookieParser());
 
 router(app);
