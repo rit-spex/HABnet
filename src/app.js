@@ -31,7 +31,7 @@ app.use(compression());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-app.engine('handlebars', expressHandlebars());
+app.engine('handlebars', expressHandlebars(defaultLayout: 'main'));
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/../views`);
 app.use(favicon(`${__dirname}/../client/img/spexFavicon.png`));
