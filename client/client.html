@@ -12,13 +12,13 @@
 <body>
 
 
-    <form id="temp_select" multiple="true" onchange="tempChange()">
+    <form id="temp_select" multiple="true" onchange="seriesChange()">
         <input type="checkbox" value="0" checked="true">Temp0</input>
         <input type="checkbox" value="1" checked="true">Temp1</input>
     </form>
 
     <script type="text/javascript">
-        function tempChange() {
+        function seriesChange() {
             var chart = $('#container').highcharts();
             var series = chart.series
             var checks = document.getElementById("temp_select");
@@ -37,108 +37,10 @@
     <div id="container" style="height: 400px; min-width: 310px"></div>
 
 
+    <script src="graphing.js"></script>
 
 
-
-    <script type="text/javascript">
-        var chart1;
-        $(function() {
-
-            Highcharts.setOptions({
-                global: {
-                    useUTC: false
-                }
-            });
-            
-
-            chart1 = Highcharts.stockChart('container', {
-                chart: {
-                    events: {
-                        load: function() {}
-                    }
-                },
-                rangeSelector: {
-                    buttons: [{
-                        count: 1,
-                        type: 'minute',
-                        text: '1M'
-                    }, {
-                        count: 5,
-                        type: 'minute',
-                        text: '5M'
-                    }, {
-                        type: 'all',
-                        text: 'All'
-                    }],
-                    inputEnabled: false,
-                    selected: 0
-                },
-                legend: {
-                    enabled: true
-                },
-                title: {
-                    text: 'Temperature Sensors'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Rando'
-                    },
-                    min: 0,
-                    max: 100,
-                },
-
-                exporting: {
-                    enabled: false
-                },
-                series: [{
-                    type: "line",
-                    name: 'Temp1',
-                    data: []
-                }]
-            });
-            // set up the updating of the chart each second
-            var series0 = chart1.series[0];
-            setInterval(function() {
-                series0.redraw()
-            }, 100);
-
-        });
-    </script>
-
-
-
-
-    <script type="text/javascript">
-    var socket;
-    let user;
-
-    const connectSocket = (e) => {
-      socket = io.connect();
-
-      socket.on('broadcastData', (data) => {
-        console.log(data.buffer[0] + " " + data.buffer[1]);
-        var chartz = $('#container').highcharts();
-        chartz.series[0].addPoint([data.buffer[0],data.buffer[1]],true,true,false);
-      });
-
-      socket.on('connect', () => {
-        console.log('connected to server');
-        if(!user) {
-          user = "unknown";
-        }
-
-        socket.emit('join', {name: user, type: "dataListener" });
-      });
-    }
-
-    const init = () => {
-      console.log('init');
-      connectSocket();
-    };
-
-    window.onload = init;
-
-    </script>
+    <script type="clientSocket.js"></script>
 
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>

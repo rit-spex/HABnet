@@ -12,13 +12,13 @@
 <body>
 
 
-    <form id="temp_select" multiple="true" onchange="tempChange()">
+    <form id="temp_select" multiple="true" onchange="seriesChange()">
         <input type="checkbox" value="0" checked="true">Temp0</input>
         <input type="checkbox" value="1" checked="true">Temp1</input>
     </form>
 
     <script type="text/javascript">
-        function tempChange() {
+        function seriesChange() {
             var chart = $('#container').highcharts();
             var series = chart.series
             var checks = document.getElementById("temp_select");
@@ -37,94 +37,7 @@
     <div id="container" style="height: 400px; min-width: 310px"></div>
 
 
-
-
-
-    <script type="text/javascript">
-        var chart1;
-        $(function() {
-
-            Highcharts.setOptions({
-                global: {
-                    useUTC: false
-                }
-            });
-            
-
-            chart1 = Highcharts.stockChart('container', {
-                chart: {
-                    events: {
-                        load: function() {}
-                    }
-                },
-                rangeSelector: {
-                    buttons: [{
-                        count: 1,
-                        type: 'minute',
-                        text: '1M'
-                    }, {
-                        count: 5,
-                        type: 'minute',
-                        text: '5M'
-                    }, {
-                        type: 'all',
-                        text: 'All'
-                    }],
-                    inputEnabled: false,
-                    selected: 0
-                },
-                legend: {
-                    enabled: true
-                },
-                title: {
-                    text: 'Temperature Sensors'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Rando'
-                    },
-                    min: 0,
-                    max: 100,
-                    plotLines: [{
-                        id: "min",
-                        value: minimum,
-                        color: 'cyan',
-                        dashStyle: 'longdash',
-                        width: 2,
-                        label: {
-                            text: 'Minimum'
-                        }
-                    }, {
-                        id: "max",
-                        value: maximum,
-                        color: 'blue',
-                        dashStyle: 'longdash',
-                        width: 2,
-                        label: {
-                            text: 'Maximum'
-                        }
-                    }]
-                },
-
-                exporting: {
-                    enabled: false
-                },
-                series: [{
-                    type: "line",
-                    name: 'Temp1',
-                    data: []
-                }]
-            });
-            // set up the updating of the chart each second
-            var series0 = chart1.series[0];
-            setInterval(function() {
-                series0.redraw()
-            }, 100);
-
-        });
-    </script>
-
-
+    <script src="graphing.js"></script>
 
 
     <script type="text/javascript">

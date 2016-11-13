@@ -6,6 +6,9 @@ const connectSocket = (e) => {
 
   socket.on('broadcastData', (data) => {
     console.log(data);
+    console.log(data.buffer[0] + " " + data.buffer[1]);
+    var chartz = $('#container').highcharts();
+    chartz.series[0].addPoint([data.buffer[0],data.buffer[1]],true,true,false);
   });
 
   socket.on('connect', () => {
