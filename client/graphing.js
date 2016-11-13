@@ -448,6 +448,7 @@ $(function() {
             enabled: false
         },
         series: [{
+            type: 'areaspline',
             name: 'Random data',
             data: (function () {
                 // generate an array of random data
