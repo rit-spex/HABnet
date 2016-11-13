@@ -1,13 +1,17 @@
 let socket;
 let user;
 
+var a, b, c;
+
 const connectSocket = (e) => {
   socket = io.connect();
 
   socket.on('broadcastData', (data) => {
-    console.log(data.buffer[0] + " " + data.buffer[1]);
-    var chartz = $('#container').highcharts();
-    chartz.series[0].addPoint([data.buffer[0],data.buffer[1]],true,true,false);
+    //var chartz = $('#container').highcharts();
+    //chart1.series[0].addPoint([new Date().getTime(),data.buffer[1]],true,true,false);
+    //chart1.series[0].redraw();
+    a = data.buffer[1];
+    b = data.buffer[4];
   });
 
   socket.on('connect', () => {
