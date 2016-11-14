@@ -92,7 +92,7 @@ $(() => {
       enabled: false,
     },
     series: [{
-      name: 'Temperature(C)'
+      name: 'Temperature(C)',
       showInNavigator: true,
       data: (function () {
                 // generate an array of random data
