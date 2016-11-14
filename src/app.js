@@ -4,11 +4,11 @@ const compression = require('compression');
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
-
-
-const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/HABTelemetry';
+const router = require('./router.js');
+// const socketio = require('socket.io');
+// const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/HABTelemetry';
 
 /*
 mongoose.connect(dbURL, (err) => {
@@ -18,14 +18,10 @@ mongoose.connect(dbURL, (err) => {
   }
 });*/
 
-const router = require('./router.js');
+
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const app = express();
-var server = require('http').createServer(app);
-//var io = require('socket.io')(server);
-
-const socketio = require('socket.io');
 app.use('/assets', express.static(path.resolve(`${__dirname}/../client/`)));
 app.use(compression());
 app.use(bodyParser.urlencoded({
@@ -39,64 +35,53 @@ app.use(cookieParser());
 
 router(app);
 
-var io = require('socket.io').listen(app.listen(port));
-/*
-app.listen(port, (err) => {
-  if (err) {
-    throw err;
-  }
-  console.log(`Listening on port ${port}`);
-});*/
+const io = require('socket.io').listen(app.listen(port));
 
-
-
-
-const onRequest = (request, response) => {
-  response.writeHead(200, {'Content-Type': 'text/html' });
-  response.write(index);
-  response.end();
-};
-
-
-//const io = socketio(app);
-
+// socket lists
 const dataSources = {};
 const dataListeners = {};
 
+// setup socket listeners on join
 const onJoined = (sock) => {
   const socket = sock;
 
   socket.on('join', (data) => {
-    console.log(`New Connection: ${ data.name }`)
-    if (data.type == 'dataSource') {
+    console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
+    // Add socket to right user list
+    if (data.type === 'dataSource') {
       dataSources[data.name] = '';
-    } else if (data.type == 'dataListener') {
+    } else if (data.type === 'dataListener') {
       dataListeners[data.name] = '';
     }
 
+    // add metadata
     socket.name = data.name;
     socket.join('room1');
   });
-
+  // Broadcast out received data
   socket.on('sensorData', (data) => {
     socket.broadcast.to('room1').emit('broadcastData', data);
-    console.log('broadcasted data');
+    // console.log('broadcasted data');
   });
 };
 
+// Setup Disconnection event listeners
 const onDisconnect = (sock) => {
   const socket = sock;
   socket.on('disconnect', (data) => {
-    //delete users[socket.name];
-    //io.sockets.in('room1').emit('msg', { name: 'server', msg: `${socket.name} has disconnected` });
+    // delete users[socket.name];
+    delete dataSources[socket.name];
+    delete dataListeners[socket.name];
     console.log(data);
   });
 };
 
+// call all setup code
 io.sockets.on('connection', (socket) => {
   console.log('started');
 
   onJoined(socket);
+  onDisconnect(socket);
 });
 
 console.log(`Listening on 127.0.0.1: ${port}`);
