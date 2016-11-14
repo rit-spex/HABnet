@@ -92,6 +92,7 @@ $(() => {
       enabled: false,
     },
     series: [{
+      name: 'Temperature(C)'
       showInNavigator: true,
       data: (function () {
                 // generate an array of random data
@@ -184,7 +185,7 @@ $(() => {
       enabled: false,
     },
     series: [{
-      name: 'Random data',
+      name: 'Humidity(%)',
       data: (function () {
                 // generate an array of random data
         let data = [],
