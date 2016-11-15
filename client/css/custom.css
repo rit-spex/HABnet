@@ -1,0 +1,93 @@
+section.wrapper.style1 {
+    background-color: #3a3749;
+}
+
+.button.special {
+    background-color: #3a3749;
+}
+
+section.wrapper.style1 header p {
+    color: rgba(221, 221, 221, 0.92);
+}
+
+section.wrapper {
+    padding-top: 3em;
+    padding-bottom: 3em;
+}
+a.icon {
+    color: #3a3749;
+}
+
+#banner {
+    border-top: 0em;
+}
+
+#banner p {
+    color: rgba(221, 221, 221, 0.92);
+}
+
+.subpage #header {
+    background: #3a3749;
+}
+.bannertitle {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    font-weight: inherit;
+    color: #6b6b6b;
+}
+
+
+#navPanel {
+    background: #3a3749;
+}
+
+#header a {
+    font-weight: 600;
+    font-family: inherit;
+}
+
+#indexphoto {
+    width:100%;
+    height:auto;
+    max-height: 300px;
+    max-width: 300px;
+}
+
+#philphace {
+    width: 100%;
+    height: auto;
+}
+
+#two {
+    background-image: url(./images/banner.jpg);
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+#midlink {
+    text-decoration: none;
+}
+
+a {
+    color: #6b6b6b;
+}
+
+.wset {
+    max-width: 50em;
+}
+
+#habroch {
+    max-width: 50em;
+}
