@@ -6,6 +6,8 @@ const router = (app) => {
   app.get('/hab/', controllers.Homepage.hab);
   app.get('/', controllers.Homepage.index);
   app.get('/sponsors/', controllers.Homepage.sponsors);
+  app.get('/cubesat/', controllers.Homepage.cubesat);
+  app.get('/spexcast/', controllers.Homepage.spexcast);
 };
 
 module.exports = router;
