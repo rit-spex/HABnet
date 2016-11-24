@@ -2,8 +2,8 @@ let socket;
 let user;
 
 let dataArray;
-let tiltLR;
-let tiltFBl
+let roll;
+let pitch;
 let direction;
 
 const connectSocket = (e) => {
@@ -28,15 +28,15 @@ const init = () => {
     // Create an event listener
     window.addEventListener('deviceorientation', function(event) {
     // Get the left-to-right tilt (in degrees).
-     tiltLR = event.gamma;
+     roll = event.gamma;
 
     // Get the front-to-back tilt (in degrees).
-     tiltFB = event.beta;
+     pitch = event.beta;
 
       // Get the direction of the device (in degrees).
      direction = event.alpha;
 
-    console.log(`Tilt Left/Right: ${tiltLR} Tilt Forward/Back: ${tiltFB} Direction: ${direction}`);
+    console.log(`Tilt Left/Right: ${roll} Tilt Forward/Back: ${pitch} Direction: ${direction}`);
     sendData();
     updateUI();
   });
@@ -46,8 +46,8 @@ const init = () => {
 const sendData = () => {
 
   let data = new Float32Array(3);
-  data[0] = tiltLR;
-  data[1] = tiltFB;
+  data[0] = roll;
+  data[1] = pitch;
   data[2] = direction;
 
   let dataPacket = {
@@ -63,10 +63,10 @@ const sendData = () => {
 };
 
 const updateUI = () => {
-  console.log(`Pitch: ${tiltFB}`);
-  console.log(`Roll: ${tiltLR}`);
-  $('#pitch').text(`Pitch: ${tiltFB}`);
-  $('#roll').text(`Roll: ${tiltLR}`);
+  console.log(`Pitch: ${pitch}`);
+  console.log(`Roll: ${roll}`);
+  $('#pitch').text(`Pitch: ${pitch}`);
+  $('#roll').text(`Roll: ${roll}`);
   $('#direction').text(`Direction: ${direction}`);
 };
 

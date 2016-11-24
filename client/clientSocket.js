@@ -35,6 +35,7 @@ const connectSocket = (e) => {
   });
 
   socket.on('broadcastMobileData', (data) => {
+    console.log('mobile data received');
     dataArray = data.buffer;
     roll = dataArray[0]
     pitch = dataArray[1];

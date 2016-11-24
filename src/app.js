@@ -66,7 +66,7 @@ const onJoined = (sock) => {
 
   socket.on('mobileData', (data) => {
     socket.broadcast.to('room1').emit('broadcastMobileData', data);
-    // console.log('broadcasted data');
+     console.log('broadcasted mobile data');
   });
 };
 
