@@ -46,9 +46,9 @@ const init = () => {
 const sendData = () => {
 
   let data = new Float32Array(3);
-  data[0] = roll;
-  data[1] = pitch;
-  data[2] = direction;
+  data[0] = deg2ra(roll);
+  data[1] = deg2ra(pitch);
+  data[2] = deg2ra(direction);
 
   let dataPacket = {
 	dateCreated: Date.now,
@@ -68,6 +68,10 @@ const updateUI = () => {
   $('#pitch').text(`Pitch: ${pitch}`);
   $('#roll').text(`Roll: ${roll}`);
   $('#direction').text(`Direction: ${direction}`);
+};
+
+const deg2ra = (degree) => {
+   return degree*(Math.PI/180);
 };
 
 
