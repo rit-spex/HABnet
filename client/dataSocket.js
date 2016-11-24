@@ -35,31 +35,39 @@ const init = () => {
 
       // Get the direction of the device (in degrees).
      direction = event.alpha;
-        
+
     console.log(`Tilt Left/Right: ${tiltLR} Tilt Forward/Back: ${tiltFB} Direction: ${direction}`);
+    sendData();
+    updateUI();
   });
 }
 };
 
-const sendData = (data) => {
-    let dataPacket = {
-		dateCreated: Date.now,
-		buffer: data,
-		name: user,
+const sendData = () => {
+
+  let data = new Float32Array(3);
+  data[0] = tiltLR;
+  data[1] = tiltFB;
+  data[2] = direction;
+
+  let dataPacket = {
+	dateCreated: Date.now,
+	buffer: data,
+	name: user,
 	};
-    
-    socket.emit('sensorData', dataPacket, function (response) {
+
+    socket.emit('mobileIMUData', dataPacket, function (response) {
 		console.log(response);
 	});
 	// console.log(`Data sent over socket to ${serverURL}: ${dataPacket}`);
 };
 
-const collectData = () => {
-    /*
-    navigator.battery.level;
-    navigator.battery.chargingTime;
-    navigator.battery.dischargingTime;
-    */
+const updateUI = () => {
+  console.log(`Pitch: ${tiltFB}`);
+  console.log(`Roll: ${tiltLR}`);
+  $('#pitch').text(`Pitch: ${tiltFB}`);
+  $('#roll').text(`Roll: ${tiltLR}`);
+  $('#direction').text(`Direction: ${direction}`);
 };
 
 

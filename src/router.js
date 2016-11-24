@@ -8,6 +8,7 @@ const router = (app) => {
   app.get('/sponsors/', controllers.Homepage.sponsors);
   app.get('/cubesat/', controllers.Homepage.cubesat);
   app.get('/spexcast/', controllers.Homepage.spexcast);
+  app.get('/mobileData', controllers.Graph.mobileData);
 };
 
 module.exports = router;
