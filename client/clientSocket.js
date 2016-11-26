@@ -34,6 +34,14 @@ const connectSocket = (e) => {
     roll     *= 180.0 / Math.PI;*/
   });
 
+  socket.on('broadcastMobileData', (data) => {
+    console.log('mobile data received');
+    dataArray = data.buffer;
+    roll = dataArray[0]
+    pitch = dataArray[1];
+    heading = dataArray[2];
+  });
+
   socket.on('connect', () => {
     console.log('connected to server');
     if (!user) {

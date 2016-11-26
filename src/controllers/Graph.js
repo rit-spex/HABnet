@@ -9,5 +9,10 @@ const orientationPage = (req, res) => {
   res.render('orientation');
 };
 
+const mobileDataPage = (req, res) => {
+  res.render('mobileData');
+};
+
 module.exports.graph = graphPage;
 module.exports.orientation = orientationPage;
+module.exports.mobileData = mobileDataPage;

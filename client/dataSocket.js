@@ -2,8 +2,8 @@ let socket;
 let user;
 
 let dataArray;
-let tiltLR;
-let tiltFBl
+let roll;
+let pitch;
 let direction;
 
 const connectSocket = (e) => {
@@ -28,38 +28,50 @@ const init = () => {
     // Create an event listener
     window.addEventListener('deviceorientation', function(event) {
     // Get the left-to-right tilt (in degrees).
-     tiltLR = event.gamma;
+     roll = event.gamma;
 
     // Get the front-to-back tilt (in degrees).
-     tiltFB = event.beta;
+     pitch = event.beta;
 
       // Get the direction of the device (in degrees).
      direction = event.alpha;
-        
-    console.log(`Tilt Left/Right: ${tiltLR} Tilt Forward/Back: ${tiltFB} Direction: ${direction}`);
+
+    console.log(`Tilt Left/Right: ${roll} Tilt Forward/Back: ${pitch} Direction: ${direction}`);
+    sendData();
+    updateUI();
   });
 }
 };
 
-const sendData = (data) => {
-    let dataPacket = {
-		dateCreated: Date.now,
-		buffer: data,
-		name: user,
+const sendData = () => {
+
+  let data = new Float32Array(3);
+  data[0] = deg2ra(roll);
+  data[1] = deg2ra(pitch);
+  data[2] = deg2ra(direction);
+
+  let dataPacket = {
+	dateCreated: Date.now,
+	buffer: data,
+	name: user,
 	};
-    
-    socket.emit('sensorData', dataPacket, function (response) {
+
+    socket.emit('mobileIMUData', dataPacket, function (response) {
 		console.log(response);
 	});
 	// console.log(`Data sent over socket to ${serverURL}: ${dataPacket}`);
 };
 
-const collectData = () => {
-    /*
-    navigator.battery.level;
-    navigator.battery.chargingTime;
-    navigator.battery.dischargingTime;
-    */
+const updateUI = () => {
+  console.log(`Pitch: ${pitch}`);
+  console.log(`Roll: ${roll}`);
+  $('#pitch').text(`Pitch: ${pitch}`);
+  $('#roll').text(`Roll: ${roll}`);
+  $('#direction').text(`Direction: ${direction}`);
+};
+
+const deg2ra = (degree) => {
+   return degree*(Math.PI/180);
 };
 
 

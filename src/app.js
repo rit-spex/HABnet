@@ -63,6 +63,11 @@ const onJoined = (sock) => {
     socket.broadcast.to('room1').emit('broadcastData', data);
     // console.log('broadcasted data');
   });
+
+  socket.on('mobileIMUData', (data) => {
+    socket.broadcast.to('room1').emit('broadcastMobileData', data);
+     console.log('broadcasted mobile data');
+  });
 };
 
 // Setup Disconnection event listeners
