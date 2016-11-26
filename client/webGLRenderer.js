@@ -10,6 +10,7 @@ let scene;
 
 //render function
 const render = () => {
+  console.log('running render function');
   habBox.rotation.x = roll;
   habBox.rotation.y = pitch;
   habBox.rotation.z = heading;
@@ -54,7 +55,7 @@ const setupScene = () => {
   pointLight.position.y = 150;
   pointLight.position.z = 200;
   scene.add(pointLight);
-
+  console.log('finished scene setup, calling render');
   render();
 };
 window.onload = setupScene;
