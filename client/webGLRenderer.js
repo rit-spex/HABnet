@@ -58,4 +58,9 @@ const setupScene = () => {
   console.log('finished scene setup, calling render');
   render();
 };
-window.onload = setupScene;
+
+const setupPage = () => {
+  init(); // client Socket init function; overwritten by this onload assignment
+  setupScene(); // sets up renderer
+};
+window.onload = setupPage;
