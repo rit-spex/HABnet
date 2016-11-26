@@ -1,39 +1,66 @@
-// Our Javascript will go here.
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  90, 1, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(600, 600);
+let camera;
+let renderer;
+let geometry;
+let material;
+let habBox;
+let pointLight;
+let scene;
+//create scene, camera, renderer
 
-// create scene, camera, renderer
-const drawGraphics = () => {
+
+//render function
+const render = () => {
+  console.log('running render function');
+  habBox.rotation.x = roll;
+  habBox.rotation.y = pitch;
+  habBox.rotation.z = heading;
+  requestAnimationFrame( render );
+  renderer.render( scene, camera );
+};
+
+const setupScene = () => {
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(
+  60, window.innerWidth/window.innerHeight, 0.1, 1000);
+  renderer = new THREE.WebGLRenderer({alpha: true});
+  renderer.setSize(window.innerWidth,window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  // create immage
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshLambertMaterial({ color: 0xf49e42, wireframe: false });
+  //create immage
+  geometry = new THREE.BoxGeometry(1,1,1);
+  //x planes
+  geometry.faces[0].color.setHex(0xffb200);
+  geometry.faces[1].color.setHex(0xffb200);
+  geometry.faces[2].color.setHex(0xffb200);
+  geometry.faces[3].color.setHex(0xffb200);
+  //y planes
+  geometry.faces[4].color.setHex(0xff3000);
+  geometry.faces[5].color.setHex(0xff3000);
+  geometry.faces[6].color.setHex(0xff3000);
+  geometry.faces[7].color.setHex(0xff3000);
+  //z planes
+  geometry.faces[8].color.setHex(0xff7000);
+  geometry.faces[9].color.setHex(0xff7000);
+  geometry.faces[10].color.setHex(0xff7000);
+  geometry.faces[11].color.setHex(0xff7000);
+  geometry.colorsNeedUpdate = true;
+
+  material = new THREE.MeshLambertMaterial({color: 0xffffff, vertexColors: THREE.FaceColors, wireframe: false});
   // var texture = THREE.ImageUtils.loadTexture('img/map.png');
-  const habBox = new THREE.Mesh(geometry, material);
+  habBox = new THREE.Mesh(geometry,material);
   scene.add(habBox);
   camera.position.z = 5;
 
-  const pointLight = new THREE.DirectionalLight(0xFFFFFF);
+  pointLight = new THREE.DirectionalLight(0xFFFFFF);
   pointLight.position.y = 150;
   pointLight.position.z = 200;
   scene.add(pointLight);
-
-
-  // render function
-  function render() {
-    habBox.rotation.x = roll;
-    habBox.rotation.y = pitch;
-    habBox.rotation.z = heading;
-    requestAnimationFrame(render);
-    renderer.render(scene, camera);
-  }
-
+  console.log('finished scene setup, calling render');
   render();
 };
 
-
-window.onload = drawGraphics;
+const setupPage = () => {
+  init(); // client Socket init function; overwritten by this onload assignment
+  setupScene(); // sets up renderer
+};
+window.onload = setupPage;
