@@ -1,55 +1,30 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js" charset="utf-8"></script>
-    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script src="/assets/js/display/graphing.js" ></script>
-    <script src="/assets/js/sockets/clientSocket.js" ></script>
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-
-    <!-- CSS Reset -->
-    <link rel="stylesheet" href="/assets/css/normalize.css">
-
-    <!-- Milligram CSS minified -->
-    <link rel="stylesheet" href="/assets/css/milligram.min.css">
-</head>
-
-<body>
-    <div class="container" >
-      <div class="row" >
-        <div class="column column-50" >
-          <div id="tempChart" style="height: 400px;"></div>
-        </div>
-        <div class="column column-50" >
-          <div id="humidtyChart" style="height: 400px;"></div>
-        </div>
-      </div>
-      <div class="row" >
-        <div class="column column-50" >
-          <div id="altitudeChart" style="height: 400px;"></div>
-        </div>
-        <div class="column column-50" >
-          <div id="accelerometerGraph" style="height: 400px;"></div>
-        </div>
-      </div>
-      <div class="row" >
-        <div class="column column-50" >
-          <div id="gyroscopeChart" style="height: 400px;"></div>
-        </div>
-        <div class="column column-50" >
-          <div id="magnetometerChart" style="height: 400px;"></div>
-        </div>
-      </div>
+<div class="container" >
+  <div class="row" >
+    <div class="column column-50" >
+      <div id="tempChart" style="height: 400px;"></div>
     </div>
-    <!--<button>TEST</button>-->
-
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-
-</body>
-</html>
+    <div class="column column-50" >
+      <div id="humidtyChart" style="height: 400px;"></div>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="column column-50" >
+      <div id="altitudeChart" style="height: 400px;"></div>
+    </div>
+    <div class="column column-50" >
+      <div id="accelerometerGraph" style="height: 400px;"></div>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="column column-50" >
+      <div id="gyroscopeChart" style="height: 400px;"></div>
+    </div>
+    <div class="column column-50" >
+      <div id="magnetometerChart" style="height: 400px;"></div>
+    </div>
+  </div>
+</div>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="/assets/js/display/graphing.js" ></script>
+<script src="/assets/js/sockets/clientSocket.js" ></script>
