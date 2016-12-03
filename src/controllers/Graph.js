@@ -13,6 +13,11 @@ const mobileDataPage = (req, res) => {
   res.render('mobileData');
 };
 
+const dataGeneratorPage = (req, res) => {
+  res.render('dataGenerator');
+};
+
 module.exports.graph = graphPage;
 module.exports.orientation = orientationPage;
 module.exports.mobileData = mobileDataPage;
+module.exports.dataGenerator = dataGeneratorPage;
