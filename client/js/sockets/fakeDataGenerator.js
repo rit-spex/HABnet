@@ -45,6 +45,7 @@ const init = () => {
 const continuousSend = () => {
   pollData();
   sendData();
+  $('#since_init_Input').val(parseInt($('#since_init_Input').val()) + 16)
   // updateUI();
   requestID = window.requestAnimationFrame(continuousSend);
 };
