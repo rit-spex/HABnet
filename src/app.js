@@ -4,20 +4,10 @@ const compression = require('compression');
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-// const mongoose = require('mongoose');
+
+const Influx = require('influxdb-nodejs');
 const expressHandlebars = require('express-handlebars');
 const router = require('./router.js');
-// const socketio = require('socket.io');
-// const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/HABTelemetry';
-
-/*
-mongoose.connect(dbURL, (err) => {
-  if (err) {
-    console.log('Could not connect to database');
-    throw err;
-  }
-});*/
-
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -35,6 +25,19 @@ app.use(cookieParser());
 
 router(app);
 
+const influxClient = new Influx('http://influxdb.app.csh.rit.edu/postmanDB');
+const fieldSchema = {
+  connectionSource: 'string',
+};
+const tagSchema = {
+
+};
+
+influxClient.schema('http', fieldSchema, tagSchema);
+influxClient.createDatabase().catch(err => {
+  console.error('create database fail err:', err);
+});
+
 const io = require('socket.io').listen(app.listen(port));
 
 // socket lists
@@ -47,6 +50,13 @@ const onJoined = (sock) => {
 
   socket.on('join', (data) => {
     console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
+    influxClient.write('http')
+    .field({
+      connectionSource: data.name,
+    })
+    .then(() => console.info('write point success'))
+    .catch(console.error);
+
     // Add socket to right user list
     if (data.type === 'dataSource') {
       dataSources[data.name] = '';
@@ -62,6 +72,17 @@ const onJoined = (sock) => {
   socket.on('sensorData', (data) => {
     socket.broadcast.to('room1').emit('broadcastData', data);
     // console.log('broadcasted data');
+    influxClient.write('http')
+    .field({
+      connectionSource: data.toString(),
+    })
+    .queue();
+
+    if (influxClient.writeQueueLength >= 100) {
+      influxClient.syncWrite()
+        .then(() => console.info('sync write queue success'))
+        .catch(console.error);
+    }
   });
 
   socket.on('mobileIMUData', (data) => {
