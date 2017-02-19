@@ -11,7 +11,6 @@ const expressHandlebars = require('express-handlebars');
 const router = require('./router.js');
 
 dotenv.load();
-console.log(`databse url: ${process.env.InfluxDB_URL}`);
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const app = express();
@@ -28,7 +27,6 @@ app.use(cookieParser());
 
 router(app);
 
-// const influxClient = new Influx('http://influxdb.app.csh.rit.edu/postmanDB');
 const influxClient = new Influx(process.env.INFLUXDB_URL);
 const fieldSchema = {
   connectionSource: 'string',
