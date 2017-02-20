@@ -3,14 +3,15 @@ const dataSources = {};
 const dataListeners = {};
 
 // setup socket listeners on join
-const onJoined = (sock, influxClient) => {
+const onJoined = (sock, statisticsClient, dataClient) => {
   const socket = sock;
 
   socket.on('join', (data) => {
     console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
-    influxClient.write('http')
+    statisticsClient.write('http')
     .field({
-      connectionSource: data.name,
+      connectionSource: data.type,
+      connected: true,
     })
     .then(() => console.info('write point success'))
     .catch(console.error);
@@ -30,14 +31,14 @@ const onJoined = (sock, influxClient) => {
   socket.on('sensorData', (data) => {
     socket.broadcast.to('room1').emit('broadcastData', data);
     // console.log('broadcasted data');
-    influxClient.write('http')
+    dataClient.write('http')
     .field({
-      connectionSource: data.toString(),
+      data: data.toString(),
     })
     .queue();
 
-    if (influxClient.writeQueueLength >= 100) {
-      influxClient.syncWrite()
+    if (dataClient.writeQueueLength >= 100) {
+      dataClient.syncWrite()
         .then(() => console.info('sync write queue success'))
         .catch(console.error);
     }
@@ -50,13 +51,20 @@ const onJoined = (sock, influxClient) => {
 };
 
 // Setup Disconnection event listeners
-const onDisconnect = (sock) => {
+const onDisconnect = (sock, statisticsClient, dataClient) => {
   const socket = sock;
   socket.on('disconnect', (data) => {
     // delete users[socket.name];
     delete dataSources[socket.name];
     delete dataListeners[socket.name];
     console.log(data);
+    statisticsClient.write('http')
+    .field({
+      connectionSource: socket.name,
+      connected: false,
+    })
+    .then(() => console.info('write point success'))
+    .catch(console.error);
   });
 };
 
