@@ -11,6 +11,7 @@ const onJoined = (sock, statisticsClient, dataClient) => {
     statisticsClient.write('http')
     .field({
       connectionSource: data.type,
+      connectionName: data.name,
       connected: true,
     })
     .then(() => console.info('write point success'))
@@ -33,13 +34,14 @@ const onJoined = (sock, statisticsClient, dataClient) => {
     // console.log('broadcasted data');
     dataClient.write('http')
     .field({
-      data: data.toString(),
+      socketName: data.name,
+      data: data.buffer.toString(),
     })
     .queue();
 
     if (dataClient.writeQueueLength >= 100) {
       dataClient.syncWrite()
-        .then(() => console.info('sync write queue success'))
+        .then(() => console.info('Socket data queue write'))
         .catch(console.error);
     }
   });
@@ -61,6 +63,7 @@ const onDisconnect = (sock, statisticsClient, dataClient) => {
     statisticsClient.write('http')
     .field({
       connectionSource: socket.name,
+      connectionName: data.name,
       connected: false,
     })
     .then(() => console.info('write point success'))
