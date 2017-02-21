@@ -31,7 +31,21 @@ const getStatisticsInfluxClient = () => {
   return influxClient;
 };
 
+const getConnections = (database, series, connectionType = '*') => {
+  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat(database)}`);
+  const reader = influxClient.query(series);
+
+  reader.addField(connectionType);
+  reader.measurement = 'http';
+  return reader.then(data => {
+    return data;
+  }).catch(err => {
+    console.log(err.stack);
+  });
+};
+
 module.exports = {
   getInfluxClient,
   getStatisticsInfluxClient,
+  getConnections,
 };
