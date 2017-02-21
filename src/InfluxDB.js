@@ -31,14 +31,15 @@ const getStatisticsInfluxClient = () => {
   return influxClient;
 };
 
-const getConnections = (database, series, connectionType = '*') => {
+const getConnections = (database, series, connectionType) => {
   const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat(database)}`);
   const reader = influxClient.query(series);
 
-  reader.addField(connectionType);
+  if (connectionType) reader.addField(connectionType);
   reader.measurement = 'http';
+  reader.set('format', 'csv');
   return reader.then(data => {
-    return data;
+    return data.http;
   }).catch(err => {
     console.log(err.stack);
   });
