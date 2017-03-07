@@ -8,7 +8,6 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./src/app.js",
-    "startDebug": "node --inspect ./src/app.js",
     "pretest": "eslint ./src --fix",
     "test": "echo \"Tests Complete\""
   },
