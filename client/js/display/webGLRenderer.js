@@ -18,6 +18,56 @@ const render = () => {
   renderer.render( scene, camera );
 };
 
+const setupIssScene = () => {
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(
+  60, window.innerWidth/window.innerHeight, 0.1, 1000);
+  renderer = new THREE.WebGLRenderer({alpha: true});
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  var loader = new THREE.OBJLoader();
+
+  // load a resource
+  loader.load(
+    // resource URL
+    '/assets/models/isscombined.obj',
+    // Function when resource is loaded
+    function ( station ) {
+
+      var xDir = new THREE.Vector3( 1, 0, 0 );
+      var yDir = new THREE.Vector3( 0, 1, 0 );
+      var zDir = new THREE.Vector3( 0, 0, 1 );
+
+      var origin = new THREE.Vector3( 0, 0, 0 );
+      var length = 3;
+      var red = 0xff0000;
+      var green = 0x00ff00;
+      var blue = 0x0000ff;
+
+      var arrowHelperX = new THREE.ArrowHelper( xDir, origin, length, red );
+      var arrowHelperY = new THREE.ArrowHelper( yDir, origin, length, green );
+      var arrowHelperZ = new THREE.ArrowHelper( zDir, origin, length, blue );
+
+      station.add( arrowHelperX );
+      station.add( arrowHelperY );
+      station.add( arrowHelperZ );
+
+      habBox = station;
+      scene.add(habBox);
+      camera.position.z = 50;
+
+      pointLight = new THREE.DirectionalLight(0xFFFFFF);
+      pointLight.position.y = 150;
+      pointLight.position.z = 200;
+      scene.add(pointLight);
+
+      console.log('finished scene setup, calling render');
+      render();
+    }
+  );
+};
+
 const setupScene = () => {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
@@ -26,7 +76,7 @@ const setupScene = () => {
   renderer.setSize(window.innerWidth,window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  //create immage
+  //create obj
   geometry = new THREE.BoxGeometry(1,1,1);
   //x planes
   geometry.faces[0].color.setHex(0xffb200);
@@ -81,6 +131,7 @@ const setupScene = () => {
 
 const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
-  setupScene(); // sets up renderer
+  //setupScene(); // sets up renderer
+  setupIssScene();
 };
 window.onload = setupPage;
