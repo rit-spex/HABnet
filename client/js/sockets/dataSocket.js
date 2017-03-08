@@ -67,9 +67,9 @@ const sendDataJson = () => {
   const data = {
     dateCreated: Date.now(),
     payload: {
-      roll,
-      pitch,
-      direction,
+      roll: deg2ra(roll),
+      pitch: deg2ra(pitch),
+      direction: deg2ra(direction),
     },
     name: user,
   };
