@@ -48,6 +48,25 @@ const setupScene = () => {
   material = new THREE.MeshLambertMaterial({color: 0xffffff, vertexColors: THREE.FaceColors, wireframe: false});
   // var texture = THREE.ImageUtils.loadTexture('img/map.png');
   habBox = new THREE.Mesh(geometry,material);
+
+  var xDir = new THREE.Vector3( 1, 0, 0 );
+  var yDir = new THREE.Vector3( 0, 1, 0 );
+  var zDir = new THREE.Vector3( 0, 0, 1 );
+
+  var origin = new THREE.Vector3( 0, 0, 0 );
+  var length = 3;
+  var red = 0xff0000;
+  var green = 0x00ff00;
+  var blue = 0x0000ff;
+
+  var arrowHelperX = new THREE.ArrowHelper( xDir, origin, length, red );
+  var arrowHelperY = new THREE.ArrowHelper( yDir, origin, length, green );
+  var arrowHelperZ = new THREE.ArrowHelper( zDir, origin, length, blue );
+
+  habBox.add( arrowHelperX );
+  habBox.add( arrowHelperY );
+  habBox.add( arrowHelperZ );
+
   scene.add(habBox);
   camera.position.z = 5;
 
@@ -55,6 +74,7 @@ const setupScene = () => {
   pointLight.position.y = 150;
   pointLight.position.z = 200;
   scene.add(pointLight);
+
   console.log('finished scene setup, calling render');
   render();
 };
