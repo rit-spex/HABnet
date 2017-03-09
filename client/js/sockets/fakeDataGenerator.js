@@ -25,8 +25,11 @@ const init = () => {
     if (window.DeviceOrientationEvent) {
     // Create an event listener
     $('#sendPacket').on('click', function(event) {
+      /*
       pollData();
       sendData();
+      */
+      sendDataJson();
       // updateUI();
     });
     $('#sendContinuousPacket').on('click', function(event) {
@@ -43,8 +46,11 @@ const init = () => {
   }
 };
 const continuousSend = () => {
+  /*
   pollData();
   sendData();
+  */
+  sendDataJson();
   $('#since_init_Input').val(parseInt($('#since_init_Input').val()) + 16)
   // updateUI();
   requestID = window.requestAnimationFrame(continuousSend);
@@ -59,10 +65,22 @@ const sendData = () => {
 	name: user,
 	};
 
-    socket.emit('sensorData', dataPacket, function (response) {
+  socket.emit('sensorData', dataPacket, (response) => {
+    console.log(response);
+  });
+	// console.log(`Data sent over socket to ${serverURL}: ${dataPacket}`);
+};
+
+const sendDataJson = () => {
+  const dataPacket = {
+    dateCreated: Date.now(),
+    payload: pollDataJson(),
+    name: user,
+  };
+
+  socket.emit('sensorData', dataPacket, (response) => {
 		console.log(response);
 	});
-	// console.log(`Data sent over socket to ${serverURL}: ${dataPacket}`);
 };
 
 const pollData = () => {
@@ -84,6 +102,26 @@ const pollData = () => {
   data[14] = $('#mcp9808_Input').val()
   console.log(data);
   return data;
+};
+
+const pollDataJson = () => {
+  return {
+    timestamp: $('#since_init_Input').val(),
+    temp_1: $('#temp_c_Input').val(),
+    pressure: $('#pressure_Input').val(),
+    altitude: $('#alt_m_Input').val(),
+    humidity: $('#humidty_Input').val(),
+    imu_gx: $('#imu_gx_Input').val(),
+    imu_gy: $('#imu_gy_Input').val(),
+    imu_gz: $('#imu_gz_Input').val(),
+    imu_ax: $('#imu_ax_Input').val(),
+    imu_ay: $('#imu_ay_Input').val(),
+    imu_az: $('#imu_az_Input').val(),
+    imu_mx: $('#imu_mx_Input').val(),
+    imu_my: $('#imu_my_Input').val(),
+    imu_mz: $('#imu_mz_Input').val(),
+    temp_2: $('#mcp9808_Input').val(),
+  };
 };
 
 const deg2ra = (degree) => {

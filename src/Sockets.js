@@ -35,7 +35,7 @@ const onJoined = (sock, statisticsClient, dataClient) => {
     dataClient.write('http')
     .field({
       socketName: data.name,
-      data: data.buffer.toString(),
+      data: JSON.stringify(data.buffer),
     })
     .queue();
 
