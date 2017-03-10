@@ -114,11 +114,11 @@ const setupButtons = () => {
 
 const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
-  setupButtons();
   setupScene(); // sets up renderer
   allGroup = new THREE.Group();
   setupAxis();
   setupModels();
+  setupButtons();
 
   //add stuff to groups and to the scene
   allGroup.add(axisGroup);
