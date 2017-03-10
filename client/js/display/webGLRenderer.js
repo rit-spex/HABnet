@@ -31,7 +31,7 @@ const setupModels = () => {
     });
     cubesat.scale.set(1000,1000,1000);
     cubesat.updateMatrix();
-  }
+  });
 
   var mtlLoader = new THREE.MTLLoader();
   var url = "nasa_cubesat.mtl";
