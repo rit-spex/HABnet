@@ -87,7 +87,6 @@ const setupScene = () => {
   scene.add(pointLight);
 
   console.log('finished scene setup, calling render');
-  render();
 };
 
 const setupButtons = () => {
@@ -126,5 +125,6 @@ const setupPage = () => {
   allGroup.add(nasasat);
   //allGroup.add(cubesat); //toggled off to start
   scene.add(allGroup);
+  render();
 };
 window.onload = setupPage;
