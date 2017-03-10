@@ -22,7 +22,7 @@ const render = () => {
 const setupModels = () => {
   var colladaLoader = new THREE.ColladaLoader();
   colladaLoader.options.convertUpAxis = true;
-  colladaLoader.load("cubesat.dae", function( collada ) {
+  colladaLoader.load("/assets/models/cubesat.dae", function( collada ) {
     cubesat = collada.scene;
     cubesat.traverse( function ( child ) {
       if ( child instanceof THREE.Mesh ) {
@@ -34,13 +34,13 @@ const setupModels = () => {
   });
 
   var mtlLoader = new THREE.MTLLoader();
-  var url = "nasa_cubesat.mtl";
+  var url = "/assets/models/nasa_cubesat.mtl";
   mtlLoader.load(url, function(materials) {
     materials.preload();
 
     var objLoader = new THREE.OBJLoader();
     objLoader.setMaterials( materials );
-    objLoader.load("nasa_cubesat.obj", function (obj) {
+    objLoader.load("/assets/models/nasa_cubesat.obj", function (obj) {
       nasasat = obj;
       nasasat.scale.set(50,50,50);
     });
@@ -64,7 +64,7 @@ const setupAxis = () => {
   var arrowHelperZ = new THREE.ArrowHelper( zDir, origin, length, blue );
 
   //put these in their own group so we can add/remove easily
-  var axisGroup = new THREE.Group();
+  axisGroup = new THREE.Group();
   axisGroup.add(arrowHelperX);
   axisGroup.add(arrowHelperY);
   axisGroup.add(arrowHelperZ);
