@@ -2,7 +2,7 @@ let camera;
 let renderer;
 let geometry;
 let material;
-let habBox;
+let allGroup;
 let pointLight;
 let scene;
 //create scene, camera, renderer
@@ -11,94 +11,44 @@ let scene;
 //render function
 const render = () => {
   console.log('running render function');
-  habBox.rotation.x = roll;
-  habBox.rotation.y = pitch;
-  habBox.rotation.z = heading;
+  allGroup.rotation.x = roll;
+  allGroup.rotation.y = pitch;
+  allGroup.rotation.z = heading;
   requestAnimationFrame( render );
   renderer.render( scene, camera );
 };
 
-const setupIssScene = () => {
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(
-  60, window.innerWidth/window.innerHeight, 0.1, 1000);
-  renderer = new THREE.WebGLRenderer({alpha: true});
-  renderer.setSize(window.innerWidth,window.innerHeight);
-  document.body.appendChild(renderer.domElement);
 
-  var loader = new THREE.OBJLoader();
+const setupModels = () => {
+  var colladaLoader = new THREE.ColladaLoader();
+  colladaLoader.options.convertUpAxis = true;
+  colladaLoader.load("cubesat.dae", function( collada ) {
+    cubesat = collada.scene;
+    cubesat.traverse( function ( child ) {
+      if ( child instanceof THREE.Mesh ) {
+        child.material.color.setHex('0xff7b00');
+      }
+    });
+    cubesat.scale.set(1000,1000,1000);
+    cubesat.updateMatrix();
+  }
 
-  // load a resource
-  loader.load(
-    // resource URL
-    '/assets/models/isscombined.obj',
-    // Function when resource is loaded
-    function ( station ) {
+  var mtlLoader = new THREE.MTLLoader();
+  var url = "nasa_cubesat.mtl";
+  mtlLoader.load(url, function(materials) {
+    materials.preload();
 
-      var xDir = new THREE.Vector3( 1, 0, 0 );
-      var yDir = new THREE.Vector3( 0, 1, 0 );
-      var zDir = new THREE.Vector3( 0, 0, 1 );
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials( materials );
+    objLoader.load("nasa_cubesat.obj", function (obj) {
+      nasasat = obj;
+      nasasat.scale.set(50,50,50);
+    });
+  });
 
-      var origin = new THREE.Vector3( 0, 0, 0 );
-      var length = 3;
-      var red = 0xff0000;
-      var green = 0x00ff00;
-      var blue = 0x0000ff;
+}
 
-      var arrowHelperX = new THREE.ArrowHelper( xDir, origin, length, red );
-      var arrowHelperY = new THREE.ArrowHelper( yDir, origin, length, green );
-      var arrowHelperZ = new THREE.ArrowHelper( zDir, origin, length, blue );
-
-      station.add( arrowHelperX );
-      station.add( arrowHelperY );
-      station.add( arrowHelperZ );
-
-      habBox = station;
-      scene.add(habBox);
-      camera.position.z = 50;
-
-      pointLight = new THREE.DirectionalLight(0xFFFFFF);
-      pointLight.position.y = 150;
-      pointLight.position.z = 200;
-      scene.add(pointLight);
-
-      console.log('finished scene setup, calling render');
-      render();
-    }
-  );
-};
-
-const setupScene = () => {
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(
-  60, window.innerWidth/window.innerHeight, 0.1, 1000);
-  renderer = new THREE.WebGLRenderer({alpha: true});
-  renderer.setSize(window.innerWidth,window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
-  //create obj
-  geometry = new THREE.BoxGeometry(1,1,1);
-  //x planes
-  geometry.faces[0].color.setHex(0xffb200);
-  geometry.faces[1].color.setHex(0xffb200);
-  geometry.faces[2].color.setHex(0xffb200);
-  geometry.faces[3].color.setHex(0xffb200);
-  //y planes
-  geometry.faces[4].color.setHex(0xff3000);
-  geometry.faces[5].color.setHex(0xff3000);
-  geometry.faces[6].color.setHex(0xff3000);
-  geometry.faces[7].color.setHex(0xff3000);
-  //z planes
-  geometry.faces[8].color.setHex(0xff7000);
-  geometry.faces[9].color.setHex(0xff7000);
-  geometry.faces[10].color.setHex(0xff7000);
-  geometry.faces[11].color.setHex(0xff7000);
-  geometry.colorsNeedUpdate = true;
-
-  material = new THREE.MeshLambertMaterial({color: 0xffffff, vertexColors: THREE.FaceColors, wireframe: false});
-  // var texture = THREE.ImageUtils.loadTexture('img/map.png');
-  habBox = new THREE.Mesh(geometry,material);
-
+const setupAxis = () => {
   var xDir = new THREE.Vector3( 1, 0, 0 );
   var yDir = new THREE.Vector3( 0, 1, 0 );
   var zDir = new THREE.Vector3( 0, 0, 1 );
@@ -113,11 +63,22 @@ const setupScene = () => {
   var arrowHelperY = new THREE.ArrowHelper( yDir, origin, length, green );
   var arrowHelperZ = new THREE.ArrowHelper( zDir, origin, length, blue );
 
-  habBox.add( arrowHelperX );
-  habBox.add( arrowHelperY );
-  habBox.add( arrowHelperZ );
+  //put these in their own group so we can add/remove easily
+  var axisGroup = new THREE.Group();
+  axisGroup.add(arrowHelperX);
+  axisGroup.add(arrowHelperY);
+  axisGroup.add(arrowHelperZ);
+}
 
-  scene.add(habBox);
+const setupScene = () => {
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(
+  60, window.innerWidth/window.innerHeight, 0.1, 1000);
+  renderer = new THREE.WebGLRenderer({alpha: true});
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+
   camera.position.z = 5;
 
   pointLight = new THREE.DirectionalLight(0xFFFFFF);
@@ -129,9 +90,41 @@ const setupScene = () => {
   render();
 };
 
+const setupButtons = () => {
+  modelToggleState = true;
+  axisToggleState = true;
+  document.getElementById("toggleModelBtn").onclick = function() {
+    if(modelToggleState) {
+      allGroup.add(nasasat);
+      allGroup.remove(cubesat);
+    } else {
+      allGroup.add(cubesat);
+      allGroup.remove(nasasat);
+    }
+    modelToggleState = !modelToggleState;
+  }
+  document.getElementById("toggleAxisBtn").onclick = function() {
+    if(axisToggleState) {
+      allGroup.remove(axisGroup);
+    } else {
+      allGroup.add(axisGroup);
+    }
+    axisToggleState = !axisToggleState;
+  }
+}
+
 const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
-  //setupScene(); // sets up renderer
-  setupIssScene();
+  setupButtons();
+  setupScene(); // sets up renderer
+  allGroup = new THREE.Group();
+  setupAxis();
+  setupModels();
+
+  //add stuff to groups and to the scene
+  allGroup.add(axisGroup);
+  allGroup.add(nasasat);
+  //allGroup.add(cubesat); //toggled off to start
+  scene.add(allGroup);
 };
 window.onload = setupPage;
