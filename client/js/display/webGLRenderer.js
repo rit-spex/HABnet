@@ -100,11 +100,11 @@ const setupButtons = () => {
   axisToggleState = true;
   document.getElementById("toggleModelBtn").onclick = function() {
     if(modelToggleState) {
-      allGroup.add(nasasat);
-      allGroup.remove(cubesat);
-    } else {
       allGroup.add(cubesat);
       allGroup.remove(nasasat);
+    } else {
+      allGroup.add(nasasat);
+      allGroup.remove(cubesat);
     }
     modelToggleState = !modelToggleState;
   }
