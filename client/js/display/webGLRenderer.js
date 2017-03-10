@@ -45,6 +45,7 @@ const setupModels = () => {
     objLoader.load("/assets/models/nasa_cubesat.obj", function (obj) {
       nasasat = obj;
       nasasat.scale.set(50,50,50);
+      allGroup.add(nasasat);
     });
   });
 
@@ -70,6 +71,8 @@ const setupAxis = () => {
   axisGroup.add(arrowHelperX);
   axisGroup.add(arrowHelperY);
   axisGroup.add(arrowHelperZ);
+  
+  allGroup.add(axisGroup);
 }
 
 const setupScene = () => {
@@ -123,9 +126,7 @@ const setupPage = () => {
   setupButtons();
 
   //add stuff to groups and to the scene
-  allGroup.add(axisGroup);
-  allGroup.add(nasasat);
-  //allGroup.add(cubesat); //toggled off to start
+  
   scene.add(allGroup);
   render();
 };
