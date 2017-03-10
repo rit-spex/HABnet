@@ -92,6 +92,11 @@ const connectSocketJson = (e) => {
 
     socket.emit('join', { name: user, type: 'dataListener' });
   });
+
+  socket.on('connectionList', (data) => {
+    console.log(`There are ${data.dataListeners.length} dataListener sockets
+     and ${data.dataSources.length} dataSources as of ${data.timestamp}`);
+  });
 };
 
 const init = () => {

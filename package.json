@@ -8,6 +8,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./src/app.js",
+    "debug": "node --inspect ./src/app.js",
     "pretest": "eslint ./src --fix",
     "test": "echo \"Tests Complete\""
   },
@@ -31,6 +32,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.2",
     "helmet": "^3.1.0",
+    "immutable": "^3.8.1",
     "influxdb-nodejs": "^2.5.1",
     "mongoose": "^4.6.7",
     "serve-favicon": "^2.3.0",
