@@ -57,7 +57,7 @@ const setupAxis = () => {
   var zDir = new THREE.Vector3( 0, 0, 1 );
 
   var origin = new THREE.Vector3( 0, 0, 0 );
-  var length = 5;
+  var length = 3;
   var red = 0xff0000;
   var green = 0x00ff00;
   var blue = 0x0000ff;
@@ -87,6 +87,7 @@ const setupScene = () => {
   camera.position.z = 7;
 
   pointLight = new THREE.DirectionalLight(0xFFFFFF);
+  pointLight.position.x = 200;
   pointLight.position.y = 150;
   pointLight.position.z = 200;
   scene.add(pointLight);
