@@ -86,10 +86,8 @@ const setupScene = () => {
 
   camera.position.z = 7;
 
-  pointLight = new THREE.DirectionalLight(0xFFFFFF);
-  pointLight.position.x = 200;
-  pointLight.position.y = 150;
-  pointLight.position.z = 200;
+  pointLight = new THREE.DirectionalLight();
+  pointLight.position.set( 0.75, 0.75, 1.0 ).normalize();
   scene.add(pointLight);
 
   console.log('finished scene setup, calling render');
