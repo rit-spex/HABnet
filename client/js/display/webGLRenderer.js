@@ -3,6 +3,8 @@ let renderer;
 let geometry;
 let material;
 let allGroup;
+let cubesat;
+let nasasat;
 let pointLight;
 let scene;
 //create scene, camera, renderer
