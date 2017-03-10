@@ -31,7 +31,7 @@ const setupModels = () => {
         child.material.color.setHex('0xff7b00');
       }
     });
-    cubesat.scale.set(80,80,80);
+    cubesat.scale.set(20,20,20);
     cubesat.updateMatrix();
   });
 
@@ -44,7 +44,7 @@ const setupModels = () => {
     objLoader.setMaterials( materials );
     objLoader.load("/assets/models/nasa_cubesat.obj", function (obj) {
       nasasat = obj;
-      nasasat.scale.set(4,4,4);
+      nasasat.scale.set(1,1,1);
       allGroup.add(nasasat);
     });
   });
@@ -57,7 +57,7 @@ const setupAxis = () => {
   var zDir = new THREE.Vector3( 0, 0, 1 );
 
   var origin = new THREE.Vector3( 0, 0, 0 );
-  var length = 3;
+  var length = 5;
   var red = 0xff0000;
   var green = 0x00ff00;
   var blue = 0x0000ff;
@@ -84,7 +84,7 @@ const setupScene = () => {
   document.body.appendChild(renderer.domElement);
 
 
-  camera.position.z = 5;
+  camera.position.z = 7;
 
   pointLight = new THREE.DirectionalLight(0xFFFFFF);
   pointLight.position.y = 150;
