@@ -25,18 +25,11 @@ const init = () => {
     if (window.DeviceOrientationEvent) {
     // Create an event listener
     $('#sendPacket').on('click', function(event) {
-      /*
-      pollData();
-      sendData();
-      */
       sendDataJson();
-      // updateUI();
     });
     $('#sendContinuousPacket').on('click', function(event) {
       send = !send;
-      if(send) {
-        continuousSend();
-      } else {
+      if(send) { continuousSend(); } else {
         if(requestID) {
           window.cancelAnimationFrame(requestID);
           requestID = undefined;
@@ -46,13 +39,8 @@ const init = () => {
   }
 };
 const continuousSend = () => {
-  /*
-  pollData();
-  sendData();
-  */
   sendDataJson();
-  $('#since_init_Input').val(parseInt($('#since_init_Input').val()) + 16)
-  // updateUI();
+  $('#since_init_Input').val(parseInt($('#since_init_Input').val()) + 16);
   requestID = window.requestAnimationFrame(continuousSend);
 };
 
