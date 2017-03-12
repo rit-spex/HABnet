@@ -79,8 +79,8 @@ const connectSocketJson = (e) => {
   socket.on('broadcastMobileData', (data) => {
     console.log('mobile data received');
     dataArray = data.payload;
-    roll = -dataArray.roll;
-    pitch = dataArray.pitch;
+    pitch = dataArray.roll;
+    roll = -dataArray.pitch;
     heading = dataArray.direction;
   });
 
