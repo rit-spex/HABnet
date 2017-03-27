@@ -18,6 +18,8 @@ const render = () => {
   allGroup.rotation.z = heading;
   requestAnimationFrame( render );
   renderer.render( scene, camera );
+  console.log("Sine: " + Math.sin(roll));
+  console.log("Cosine: " + Math.cos(heading));
 };
 
 
@@ -49,7 +51,7 @@ const setupModels = () => {
     });
   });
 
-}
+};
 
 const setupAxis = () => {
   var xDir = new THREE.Vector3( 1, 0, 0 );
@@ -73,7 +75,7 @@ const setupAxis = () => {
   axisGroup.add(arrowHelperZ);
 
   allGroup.add(axisGroup);
-}
+};
 
 const setupScene = () => {
   scene = new THREE.Scene();
@@ -114,7 +116,15 @@ const setupButtons = () => {
     }
     axisToggleState = !axisToggleState;
   }
-}
+};
+
+const setupMeter = () => {
+    var progressBar = document.createElement("div");
+    progressBar.id = "progressBar";
+    document.body.appendChild(progressBar);
+
+};
+
 
 const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
@@ -125,7 +135,7 @@ const setupPage = () => {
   setupButtons();
 
   //add stuff to groups and to the scene
-  
+
   scene.add(allGroup);
   render();
 };
