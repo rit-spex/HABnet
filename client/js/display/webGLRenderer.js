@@ -154,6 +154,7 @@ const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
   setupScene(); // sets up renderer
   document.body.style.backgroundImage = "url('/assets/img/space.jpg'";
+  setupProgressMeter();
   allGroup = new THREE.Group();
   setupAxis();
   setupModels();
