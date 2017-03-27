@@ -18,8 +18,12 @@ const render = () => {
   allGroup.rotation.z = heading;
   requestAnimationFrame( render );
   renderer.render( scene, camera );
-  console.log("Sine: " + Math.sin(roll));
-  console.log("Cosine: " + Math.cos(heading));
+  console.log("Sine(roll): " + Math.sin(roll));
+  console.log("Cosine(pitch): " + Math.cos(pitch));
+  var rawCalc = Math.sin(roll) * Math.cos(pitch);
+  var adjustedCalc = (rawCalc+1)/2; // [-1,1] -> [0,1]
+  console.log("raw # [-1,1]: " + rawCalc);
+  console.log("adjusted # [-1,1]: " + adjustedCalc);
 };
 
 
