@@ -127,7 +127,7 @@ const setupProgressMeter = () => {
     var progressElement = document.createElement("div");
     progressElement.id = "progressBar";
     document.body.appendChild(progressElement);
-    progressBar = new ProgressBar.Line("#progressBar"), {
+    progressBar = new ProgressBar.Line("#progressBar", {
         easing: 'easeInOut',
         strokeWidth: 3,
         trailWidth: 1,
@@ -145,7 +145,7 @@ const setupProgressMeter = () => {
             }
             bar.setText(val);
         }
-    };
+    });
 };
 
 
