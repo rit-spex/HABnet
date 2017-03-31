@@ -145,8 +145,7 @@ const setupProgressMeter = () => {
             }
             bar.setText(val);
         }
-    });
-
+    };
 };
 
 
