@@ -1,13 +1,11 @@
 let socket;
 let user;
-
+let socketList;
 let dataArray;
 let requestID;
 let send = false;
 const connectSocket = (e) => {
   socket = io.connect();
-
-
   socket.on('connect', () => {
     console.log('connected to server');
     if (!user) {
@@ -15,6 +13,11 @@ const connectSocket = (e) => {
     }
 
     socket.emit('join', { name: user, type: 'dataSource' });
+  });
+
+  socket.on('connectionList', (data) => {
+    socketList = data.dataSources;
+    updateSocketList();
   });
 };
 
@@ -25,10 +28,6 @@ const init = () => {
     if (window.DeviceOrientationEvent) {
     // Create an event listener
     $('#sendPacket').on('click', function(event) {
-      /*
-      pollData();
-      sendData();
-      */
       sendDataJson();
       // updateUI();
     });
@@ -124,9 +123,31 @@ const pollDataJson = () => {
   };
 };
 
-const deg2ra = (degree) => {
-   return degree*(Math.PI/180);
+const updateSocketList = () => {
+  const list = $('#socket-list')[0];
+  list.innerHTML = null;
+  $.each(socketList, (index, value) => {
+    $('<li />', { text: value.name })
+    .click(subscribeToSocket)
+    .attr('id', value.id)
+    .appendTo(list);
+  });
 };
+
+const subscribeToSocket = (event) => {
+  const data = {
+    target: event.target.id,
+  };
+  socket.emit('connectToSource', data, () => {
+    console.log(`This socket is now tracking ${event.target}`);
+  });
+};
+
+const deg2ra = (degree) => {
+  return degree * (Math.PI / 180);
+};
+
+
 
 
 window.onload = init;

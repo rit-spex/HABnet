@@ -26,14 +26,13 @@ const printConnectedSockets = () => {
 };
 
 const connectToSocket = (socket, target) => {
-  socket.join(target);
-  console.log(`${socket.name} has started listening to ${dataSources}`);
+  socket.join(target, () => console.log(socket.rooms));
+  console.log(`${socket.name} has started listening to ${target}`);
 };
 
 
 
 const addSocketToGroup = (data, socket) => {
-  
   if (data.type === 'dataSource') {
     dataSources = dataSources.set(socket.id, Immutable.fromJS(socket));
   } else if (data.type === 'dataListener') {
@@ -43,8 +42,18 @@ const addSocketToGroup = (data, socket) => {
   printConnectedSockets();
   const connections = {
     timestamp: Date.now(),
-    dataListeners: dataListeners.map(sock => sock.name).toArray(),
-    dataSources: dataSources.map(sock => sock.name).toArray(),
+    dataListeners: dataListeners.map(sock => {
+      return {
+        name: sock.name,
+        id: sock.id,
+      };
+    }).toArray(),
+    dataSources: dataSources.map(sock => {
+      return {
+        name: sock.name,
+        id: sock.id,
+      };
+    }).toArray(),
   };
 
   sendSocketData(socket, ALL_SOCKETS, 'connectionList', connections);
