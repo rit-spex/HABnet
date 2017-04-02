@@ -1,0 +1,115 @@
+const Immutable = require('immutable');
+const { ALL_SOCKETS } = require('../utils/Constants');
+const {
+  writeConnectionOpen,
+  writeConnectionClose,
+  writeDataPacket,
+} = require('./influxConnections');
+// socket lists
+let dataSources = Immutable.Map();
+let dataListeners = Immutable.Map();
+
+const sendSocketData = (socket, destination, messageType, payload) => {
+  socket.broadcast.to(destination).emit(messageType, payload);
+};
+
+const printConnectedSockets = () => {
+  console.log('Data Sources');
+  dataSources.map(source => {
+    console.log(source.name);
+  });
+
+  console.log('Data Listeners');
+  dataListeners.map(source => {
+    console.log(source.name);
+  });
+};
+
+const connectToSocket = (socket, target) => {
+  socket.join(target);
+  console.log(`${socket.name} has started listening to ${dataSources}`);
+};
+
+
+
+const addSocketToGroup = (data, socket) => {
+  
+  if (data.type === 'dataSource') {
+    dataSources = dataSources.set(socket.id, Immutable.fromJS(socket));
+  } else if (data.type === 'dataListener') {
+    dataListeners = dataListeners.set(socket.id, Immutable.fromJS(socket));
+  }
+
+  printConnectedSockets();
+  const connections = {
+    timestamp: Date.now(),
+    dataListeners: dataListeners.map(sock => sock.name).toArray(),
+    dataSources: dataSources.map(sock => sock.name).toArray(),
+  };
+
+  sendSocketData(socket, ALL_SOCKETS, 'connectionList', connections);
+};
+
+const removeSocketFromGroup = (data, socket) => {
+  if (dataSources.has(socket.id)) {
+    dataSources = dataSources.delete(socket.id);
+  } else if (dataListeners.has(socket.id)) {
+    dataListeners = dataListeners.delete(socket.id);
+  }
+
+  printConnectedSockets();
+
+  const connections = {
+    timestamp: Date.now(),
+    dataListeners: dataListeners.map(sock => sock.name).toArray(),
+    dataSources: dataSources.map(sock => sock.name).toArray(),
+  };
+
+  sendSocketData(socket, ALL_SOCKETS, 'connectionList', connections);
+};
+
+// setup socket listeners on join
+const onJoined = (sock, statisticsClient, dataClient) => {
+  const socket = sock;
+
+  socket.on('join', (data) => {
+    console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
+    // add metadata
+    socket.name = `${data.name}_${socket.id}`;
+    socket.join(ALL_SOCKETS);
+    writeConnectionOpen(statisticsClient, data);
+    addSocketToGroup(data, socket);
+  });
+
+  // Broadcast out received data
+  socket.on('sensorData', (data) => {
+    sendSocketData(socket, ALL_SOCKETS, 'broadcastData', data);
+    sendSocketData(socket, socket.id, 'broadcastData', data);
+    writeDataPacket(dataClient, data);
+  });
+
+  socket.on('mobileIMUData', (data) => {
+    sendSocketData(socket, ALL_SOCKETS, 'broadcastMobileData', data);
+    sendSocketData(socket, socket.id, 'broadcastMobileData', data);
+    writeDataPacket(dataClient, data);
+  });
+
+  socket.on('connectToSource', (data) => {
+    connectToSocket(socket, data.target);
+  });
+};
+
+// Setup Disconnection event listeners
+const onDisconnect = (sock, statisticsClient) => {
+  const socket = sock;
+
+  socket.on('disconnect', (data) => {
+    removeSocketFromGroup(data, socket);
+    writeConnectionClose(statisticsClient, data, socket.name);
+  });
+};
+
+module.exports = {
+  onDisconnect,
+  onJoined,
+};

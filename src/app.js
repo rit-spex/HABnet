@@ -1,13 +1,12 @@
 const { app, port } = require('./Express');
-const { onJoined, onDisconnect } = require('./Sockets');
-const { getInfluxClient, getStatisticsInfluxClient } = require('./InfluxDB');
+const { onJoined, onDisconnect } = require('./sockets/Sockets.js');
+const { getInfluxClient, getStatisticsInfluxClient } = require('./influxdb/InfluxDB.js');
 const io = require('socket.io').listen(app.listen(port));
 
 
 // call all setup code
 io.sockets.on('connection', (socket) => {
   console.log('started');
-
   onJoined(socket, getStatisticsInfluxClient(), getInfluxClient());
   onDisconnect(socket, getStatisticsInfluxClient(), getInfluxClient());
 });

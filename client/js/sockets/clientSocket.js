@@ -87,7 +87,7 @@ const connectSocketJson = (e) => {
   socket.on('connect', () => {
     console.log('connected to server');
     if (!user) {
-      user = 'unknown';
+      user = 'listenerClient';
     }
 
     socket.emit('join', { name: user, type: 'dataListener' });
