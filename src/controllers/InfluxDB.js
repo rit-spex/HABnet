@@ -1,4 +1,4 @@
-const { getConnections } = require('../InfluxDB.js');
+const { getConnections } = require('../influxdb/InfluxDB');
 // Return Influx Data
 const connectionStatistics = (req, res) => {
   console.log('client started');
@@ -10,7 +10,6 @@ const connectionStatistics = (req, res) => {
     console.log(`connections: ${data}`);
     res.status(200).type('text/csv').send(data);
   });
-
 };
 
 module.exports = {

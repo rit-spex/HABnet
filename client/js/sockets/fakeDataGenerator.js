@@ -1,13 +1,12 @@
 let socket;
 let user;
-
+let subscribedSocketList;
+let availableSocketList;
 let dataArray;
 let requestID;
 let send = false;
 const connectSocket = (e) => {
   socket = io.connect();
-
-
   socket.on('connect', () => {
     console.log('connected to server');
     if (!user) {
@@ -15,6 +14,16 @@ const connectSocket = (e) => {
     }
 
     socket.emit('join', { name: user, type: 'dataSource' });
+  });
+
+  socket.on('availableRooms', (data) => {
+    availableSocketList = data.dataSources;
+    updateSocketList();
+  });
+
+  socket.on('subscribedRooms', (data) => {
+    subscribedSocketList = data;
+    updateSubscribedList();
   });
 };
 
@@ -112,9 +121,51 @@ const pollDataJson = () => {
   };
 };
 
-const deg2ra = (degree) => {
-   return degree*(Math.PI/180);
+const updateSocketList = () => {
+  const list = $('#available-socket-list')[0];
+  list.innerHTML = null;
+  $.each(availableSocketList, (index, value) => {
+    $('<li />', { text: value.name })
+    .click(subscribeToSocket)
+    .attr('id', value.id)
+    .appendTo(list);
+  });
 };
+
+const updateSubscribedList = () => {
+  const list = $('#subscribed-socket-list')[0];
+  list.innerHTML = null;
+  $.each(subscribedSocketList, (index, value) => {
+    $('<li />', { text: value })
+    .click(unsubscribeToSocket)
+    .attr('id', value)
+    .appendTo(list);
+  });
+};
+
+const subscribeToSocket = (event) => {
+  const data = {
+    target: event.target.id,
+  };
+  socket.emit('connectToSocket', data, () => {
+    console.log(`This socket is now tracking ${event.target}`);
+  });
+};
+
+const unsubscribeToSocket = (event) => {
+  const data = {
+    target: event.target.id,
+  };
+  socket.emit('disconnectFromSocket', data, () => {
+    console.log(`This socket is no longer tracking ${event.target}`);
+  });
+};
+
+const deg2ra = (degree) => {
+  return degree * (Math.PI / 180);
+};
+
+
 
 
 window.onload = init;
