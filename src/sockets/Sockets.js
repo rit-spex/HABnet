@@ -21,15 +21,29 @@ const printConnectedSockets = () => {
   dataListeners.map(source => console.log(source.name));
 };
 
+const getSubscribedRooms = (socket) => {
+  let rooms = Immutable.Map(socket.rooms);
+  rooms = rooms.delete(socket.id);
+  socket.emit('subscribedRooms', rooms.toArray());
+};
+
 const connectToSocket = (socket, target) => {
-  socket.join(target, () => console.log(socket.rooms));
+  socket.join(target, () => {
+    console.log(socket.rooms);
+    getSubscribedRooms(socket);
+  });
   console.log(`${socket.name} has started listening to ${target}`);
 };
 
 const disconnectFromSocket = (socket, target) => {
-  socket.leave(target, () => console.log(socket.rooms));
+  socket.leave(target, () => {
+    console.log(socket.rooms);
+    getSubscribedRooms(socket);
+  });
   console.log(`${socket.name} has stopped listening to ${target}`);
 };
+
+
 
 const getCurrentConnections = () => {
   return {
@@ -60,7 +74,7 @@ const addSocketToGroup = (data, socket) => {
   printConnectedSockets();
   const connections = getCurrentConnections();
 
-  sendSocketData(socket, ALL_SOCKETS, 'connectionList', connections);
+  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
 };
 
 const removeSocketFromGroup = (data, socket) => {
@@ -78,7 +92,7 @@ const removeSocketFromGroup = (data, socket) => {
     dataSources: dataSources.map(sock => sock.name).toArray(),
   };
 
-  sendSocketData(socket, ALL_SOCKETS, 'connectionList', connections);
+  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
 };
 
 // setup socket listeners on join
@@ -107,11 +121,11 @@ const onJoined = (sock, statisticsClient, dataClient) => {
     writeDataPacket(dataClient, data);
   });
 
-  socket.on('connectToSource', (data) => {
+  socket.on('connectToSocket', (data) => {
     connectToSocket(socket, data.target);
   });
 
-  socket.on('disconnectFromSource', (data) => {
+  socket.on('disconnectFromSocket', (data) => {
     disconnectFromSocket(socket, data.target);
   });
 };
