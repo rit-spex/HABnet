@@ -15,14 +15,10 @@ const sendSocketData = (socket, destination, messageType, payload) => {
 
 const printConnectedSockets = () => {
   console.log('Data Sources');
-  dataSources.map(source => {
-    console.log(source.name);
-  });
+  dataSources.map(source => console.log(source.name));
 
   console.log('Data Listeners');
-  dataListeners.map(source => {
-    console.log(source.name);
-  });
+  dataListeners.map(source => console.log(source.name));
 };
 
 const connectToSocket = (socket, target) => {
@@ -30,17 +26,13 @@ const connectToSocket = (socket, target) => {
   console.log(`${socket.name} has started listening to ${target}`);
 };
 
+const disconnectFromSocket = (socket, target) => {
+  socket.leave(target, () => console.log(socket.rooms));
+  console.log(`${socket.name} has stopped listening to ${target}`);
+};
 
-
-const addSocketToGroup = (data, socket) => {
-  if (data.type === 'dataSource') {
-    dataSources = dataSources.set(socket.id, Immutable.fromJS(socket));
-  } else if (data.type === 'dataListener') {
-    dataListeners = dataListeners.set(socket.id, Immutable.fromJS(socket));
-  }
-
-  printConnectedSockets();
-  const connections = {
+const getCurrentConnections = () => {
+  return {
     timestamp: Date.now(),
     dataListeners: dataListeners.map(sock => {
       return {
@@ -55,6 +47,18 @@ const addSocketToGroup = (data, socket) => {
       };
     }).toArray(),
   };
+};
+
+
+const addSocketToGroup = (data, socket) => {
+  if (data.type === 'dataSource') {
+    dataSources = dataSources.set(socket.id, Immutable.fromJS(socket));
+  } else if (data.type === 'dataListener') {
+    dataListeners = dataListeners.set(socket.id, Immutable.fromJS(socket));
+  }
+
+  printConnectedSockets();
+  const connections = getCurrentConnections();
 
   sendSocketData(socket, ALL_SOCKETS, 'connectionList', connections);
 };
@@ -105,6 +109,10 @@ const onJoined = (sock, statisticsClient, dataClient) => {
 
   socket.on('connectToSource', (data) => {
     connectToSocket(socket, data.target);
+  });
+
+  socket.on('disconnectFromSource', (data) => {
+    disconnectFromSocket(socket, data.target);
   });
 };
 
