@@ -27,35 +27,67 @@ const render = () => {
   progressBar.set(adjustedCalc);
 };
 
+const addModel = (modelType,modelInfo,group) => {
+  switch(modelType.toLower()) {
+    case 'collada':
+    case 'dae':
+      addCollada(modelInfo,group);
+      break;
+    case 'obj'
+      addOBJ(modelInfo,group);
+      break;
+  }
+};
 
-const setupModels = () => {
-  var colladaLoader = new THREE.ColladaLoader();
-  colladaLoader.options.convertUpAxis = true;
-  colladaLoader.load("/assets/models/cubesat.dae", function( collada ) {
-    cubesat = collada.scene;
-    cubesat.traverse( function ( child ) {
-      if ( child instanceof THREE.Mesh ) {
-        child.material.color.setHex('0xff7b00');
-      }
-    });
-    cubesat.scale.set(20,20,20);
-    cubesat.updateMatrix();
-  });
-
+const addOBJ = (modelInfo,addToGroup) => {
   var mtlLoader = new THREE.MTLLoader();
-  var url = "/assets/models/nasa_cubesat.mtl";
-  mtlLoader.load(url, function(materials) {
+  var mtlUrl = "/assets/models/" + modelInfo.material;
+  mtlLoader.load(mtlUrl, function(materials) {
     materials.preload();
 
     var objLoader = new THREE.OBJLoader();
     objLoader.setMaterials( materials );
-    objLoader.load("/assets/models/nasa_cubesat.obj", function (obj) {
-      nasasat = obj;
-      nasasat.scale.set(1,1,1);
-      allGroup.add(nasasat);
+    var objUrl = "/assets/models/" + modelInfo.file;
+    objLoader.load(objUrl, function (obj) {
+      objModel = obj;
+      var scale = modelInfo.scale;
+      objModel.scale.set(scale,scale,scale);
+      if(addToGroup) { addToGroup.add(objModel) };
     });
   });
+};
 
+const addCollada = (modelInfo,addToGroup) => {
+  var colladaLoader = new THREE.ColladaLoader();
+  colladaLoader.options.convertUpAxis = true;
+  colladaLoader.load("/assets/models/cubesat.dae", function( collada ) {
+    colladaModel = collada.scene;
+    colladaModel.traverse( function ( child ) {
+    if ( child instanceof THREE.Mesh ) {
+      child.material.color.setHex(modelInfo.color);
+    }
+    });
+    var scale = modelInfo.scale;
+    colladaModel.scale.set(scale,scale,scale);
+    colladaModel.updateMatrix();
+    if(addToGroup) { addToGroup.add(colladaModel) };
+  });
+};
+
+const setupModels = () => {
+  var addModel1 = {
+  file: "cubesat.dae",
+  material: "0xff7b00"
+  scale: 20
+  };
+  addModel('dae',addModel1,null);
+
+  var addModel2 = {
+    file: "nasa_cubesat.obj",
+    color: "nasa_cubesat.mtl"
+    scale: 1
+  };
+  addModel('obj',addModel2,allGroup);
 };
 
 const setupAxis = () => {
@@ -104,48 +136,23 @@ const setupButtons = () => {
   modelToggleState = true;
   axisToggleState = true;
   document.getElementById("toggleModelBtn").onclick = function() {
-    if(modelToggleState) {
-      allGroup.add(cubesat);
-      allGroup.remove(nasasat);
-    } else {
-      allGroup.add(nasasat);
-      allGroup.remove(cubesat);
-    }
-    modelToggleState = !modelToggleState;
+  if(modelToggleState) {
+    allGroup.add(cubesat);
+    allGroup.remove(nasasat);
+  } else {
+    allGroup.add(nasasat);
+    allGroup.remove(cubesat);
+  }
+  modelToggleState = !modelToggleState;
   }
   document.getElementById("toggleAxisBtn").onclick = function() {
-    if(axisToggleState) {
-      allGroup.remove(axisGroup);
-    } else {
-      allGroup.add(axisGroup);
-    }
-    axisToggleState = !axisToggleState;
+  if(axisToggleState) {
+    allGroup.remove(axisGroup);
+  } else {
+    allGroup.add(axisGroup);
   }
-};
-
-const setupProgressMeter = () => {
-    var progressElement = document.createElement("div");
-    progressElement.id = "progressBar";
-    document.body.appendChild(progressElement);
-    progressBar = new ProgressBar.Line("#progressBar", {
-        easing: 'easeInOut',
-        strokeWidth: 3,
-        trailWidth: 1,
-        duration: 100,
-        trailColor: '#EEEEEE',
-        svgStyle: {width: '100%', height: '100%'},
-        from: {color: '#EA4531'},
-        to: {color: '#e5ff00'},
-        step: (state, bar) => {
-            var val = Math.round(bar.value() * 100);
-            if(val >= 80) {
-                bar.path.setAttribute('stroke', '#5dff00');
-            } else {
-                bar.path.setAttribute('stroke', state.color);
-            }
-            bar.setText(val);
-        }
-    });
+  axisToggleState = !axisToggleState;
+  }
 };
 
 
