@@ -5,7 +5,7 @@ const router = (app) => {
   app.get('/orientation', controllers.Graph.orientation);
   app.get('/mobileData', controllers.Graph.mobileData);
   app.get('/dataGenerator', controllers.Graph.dataGenerator);
-  // app.get('/connections.csv', controllers.InfluxDB.connectionStatistics);
+  app.get('/connections.csv', controllers.InfluxDB.connectionStatistics);
   app.get('/', controllers.Graph.graph);
 };
 
