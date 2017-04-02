@@ -33,7 +33,7 @@ const addModel = (modelType,modelInfo,group) => {
     case 'dae':
       addCollada(modelInfo,group);
       break;
-    case 'obj'
+    case 'obj':
       addOBJ(modelInfo,group);
       break;
   }
@@ -60,7 +60,8 @@ const addOBJ = (modelInfo,addToGroup) => {
 const addCollada = (modelInfo,addToGroup) => {
   var colladaLoader = new THREE.ColladaLoader();
   colladaLoader.options.convertUpAxis = true;
-  colladaLoader.load("/assets/models/cubesat.dae", function( collada ) {
+  var daeUrl = "/assets/models/" + modelInfo.file;
+  colladaLoader.load(daeUrl, function( collada ) {
     colladaModel = collada.scene;
     colladaModel.traverse( function ( child ) {
     if ( child instanceof THREE.Mesh ) {
