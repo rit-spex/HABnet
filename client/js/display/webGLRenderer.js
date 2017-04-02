@@ -78,14 +78,14 @@ const addCollada = (modelInfo,addToGroup) => {
 const setupModels = () => {
   var addModel1 = {
   file: "cubesat.dae",
-  material: "0xff7b00"
+  material: "0xff7b00",
   scale: 20
   };
   addModel('dae',addModel1,null);
 
   var addModel2 = {
     file: "nasa_cubesat.obj",
-    color: "nasa_cubesat.mtl"
+    color: "nasa_cubesat.mtl",
     scale: 1
   };
   addModel('obj',addModel2,allGroup);
