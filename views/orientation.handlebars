@@ -7,12 +7,14 @@
 <script src="/assets/js/display/solarMeter.js" ></script>
 <script src="/assets/js/display/webGLRenderer.js" ></script>
 <div class="row">
-    <div class="column column-15" style="text-align:center;">
+    <div class="column column-15">
         <form id="modelChanger">
             <ul>
-                <li><input type="checkbox" />Toggle Between Models</li>
-                <li><input type="radio" name="modelSelect" value="0" />NASA sat</li>
-                <li><input type="radio" name="modelSelect" value="1" />Cube sat</li>
+                <li><h1  class="text-centered">Options</h1></li>
+                <li><input type="checkbox" /> Show/Hide Axis</li>
+                <li><h3 class="text-centered">Change Model</h3></li>
+                <li><input type="radio" name="modelSelect" value="0" /> NASA cubesat</li>
+                <li><input type="radio" name="modelSelect" value="1" /> Basic cubesat</li>
             </ul>
         </form>
     </div>
@@ -20,6 +22,7 @@
     <div class="column column-15"></div>
 </div>
 <style>
+    .text-centered { text-align: center; }
 	body { margin: 0; }
 	canvas {padding-left: 0;
 				padding-right: 0;
