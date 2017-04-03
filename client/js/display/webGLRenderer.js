@@ -28,15 +28,17 @@ const render = () => {
 };
 
 const addModel = (modelType,modelInfo,group) => {
+  var modelAdded = null;
   switch(modelType.toLower()) {
     case 'collada':
     case 'dae':
-      addCollada(modelInfo,group);
+      modelAdded = addCollada(modelInfo,group);
       break;
     case 'obj':
-      addOBJ(modelInfo,group);
+      modelAdded = addOBJ(modelInfo,group);
       break;
   }
+  return modelAdded;
 };
 
 const addOBJ = (modelInfo,addToGroup) => {
@@ -55,6 +57,7 @@ const addOBJ = (modelInfo,addToGroup) => {
       if(addToGroup) { addToGroup.add(objModel) };
     });
   });
+  return objModel;
 };
 
 const addCollada = (modelInfo,addToGroup) => {
@@ -73,22 +76,28 @@ const addCollada = (modelInfo,addToGroup) => {
     colladaModel.updateMatrix();
     if(addToGroup) { addToGroup.add(colladaModel) };
   });
+  return colladaModel;
 };
 
 const setupModels = () => {
+  var modelsAdded = [];
   var addModel1 = {
   file: "cubesat.dae",
   surface: "0xff7b00",
   scale: 20
   };
-  addModel('dae',addModel1,null);
+  var added1 = addModel('dae',addModel1,null);
+  if(added1) {modelsAdded.push(added1);}
 
   var addModel2 = {
     file: "nasa_cubesat.obj",
     surface: "nasa_cubesat.mtl",
     scale: 1
   };
-  addModel('obj',addModel2,allGroup);
+  var added2 = addModel('obj',addModel2,allGroup);
+  if(added2) {modelsAdded.push(added2);}
+
+  return modelsAdded;
 };
 
 const setupAxis = () => {
@@ -116,12 +125,13 @@ const setupAxis = () => {
 };
 
 const setupScene = () => {
+  var space = getElementById('modelSpace')
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
-  60, window.innerWidth/window.innerHeight, 0.1, 1000);
+  60, space.innerWidth/space.innerHeight, 0.1, 1000);
   renderer = new THREE.WebGLRenderer({alpha: true});
-  renderer.setSize(window.innerWidth,window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+  renderer.setSize(space.innerWidth,space.innerHeight);
+  space.appendChild(renderer.domElement);
 
 
   camera.position.z = 7;
@@ -134,28 +144,33 @@ const setupScene = () => {
 };
 
 const setupButtons = () => {
-  modelToggleState = true;
-  axisToggleState = true;
-  document.getElementById("toggleModelBtn").onclick = function() {
-  if(modelToggleState) {
-    allGroup.add(cubesat);
-    allGroup.remove(nasasat);
-  } else {
-    allGroup.add(nasasat);
-    allGroup.remove(cubesat);
-  }
-  modelToggleState = !modelToggleState;
-  }
-  document.getElementById("toggleAxisBtn").onclick = function() {
-  if(axisToggleState) {
-    allGroup.remove(axisGroup);
-  } else {
-    allGroup.add(axisGroup);
-  }
-  axisToggleState = !axisToggleState;
-  }
+  $('#modelChanger').change(function(event){
+    var ele = event.target;
+    if(ele.name == "modelSelect" && ele.checked) {
+      toggleModel(ele.value);
+    } else {
+      toggleAxis(ele.checked);
+    }
+  });
 };
 
+const toggleAxis = (visible) => {
+  if(visible) {
+    allGroup.add(axisGroup);
+  } else {
+    allGroup.remove(axisGroup);
+  }
+}
+
+const toggleModel = (val) => {
+  for(int i=0 ; i<models.length ; i++) {
+    if(i==val){
+      allGroup.add(models[i]);
+    } else {
+      allGroup.remove(models[i]);
+    }
+
+}
 
 const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
@@ -164,7 +179,7 @@ const setupPage = () => {
   setupProgressMeter();
   allGroup = new THREE.Group();
   setupAxis();
-  setupModels();
+  models = setupModels();
   setupButtons();
 
   //add stuff to groups and to the scene
