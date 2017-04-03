@@ -139,7 +139,7 @@ const setupScene = () => {
   pointLight = new THREE.DirectionalLight();
   pointLight.position.set( 0.75, 0.75, 1.0 ).normalize();
   scene.add(pointLight);
-
+  scene.add(new THREE.DirectionalLightHelper(pointLight));
   console.log('finished scene setup, calling render');
 };
 
