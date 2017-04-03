@@ -163,7 +163,7 @@ const toggleAxis = (visible) => {
 }
 
 const toggleModel = (val) => {
-  for(int i=0 ; i<models.length ; i++) {
+  for(var i=0 ; i<models.length ; i++) {
     if(i==val){
       allGroup.add(models[i]);
     } else {
