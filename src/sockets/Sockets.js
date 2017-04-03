@@ -5,10 +5,12 @@ const {
   writeConnectionClose,
   writeDataPacket,
 } = require('./influxConnections');
+const { getDatabaseList } = require('../influxdb/InfluxDB');
+const { generateUniqueName } = require('../utils/Identification')
 // socket lists
 let dataSources = Immutable.Map();
 let dataListeners = Immutable.Map();
-
+let databases = [];
 const sendSocketData = (socket, destination, messageType, payload) => {
   socket.broadcast.to(destination).emit(messageType, payload);
 };
@@ -25,6 +27,26 @@ const getSubscribedRooms = (socket) => {
   let rooms = Immutable.Map(socket.rooms);
   rooms = rooms.delete(socket.id);
   socket.emit('subscribedRooms', rooms.toArray());
+};
+
+const influxDoesContainDB = (dbName) => {
+  getDatabaseList().then( dbs => databases = dbs);
+  return databases.includes(dbName);
+};
+
+const isClientConnected = (clientName) => {
+  const dataSourceNames = dataSources.map(source => source.name);
+  const dataListenerNames = dataListeners.map(source => source.name);
+  if (dataSourceNames.includes(clientName) || dataListenerNames.includes(clientName)) return true;
+  return false;
+};
+
+
+const getUniqueName = (clientName) => {
+ if(influxDoesContainDB(clientName) || isClientConnected(clientName)) {
+  return getUniqueName(generateUniqueName(clientName));
+ }
+ return clientName;
 };
 
 const connectToSocket = (socket, target) => {
@@ -102,7 +124,8 @@ const onJoined = (sock, statisticsClient, dataClient) => {
   socket.on('join', (data) => {
     console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
     // add metadata
-    socket.name = `${data.name}_${socket.id}`;
+    const name = getUniqueName(data.name);
+    socket.name = name;
     socket.join(ALL_SOCKETS);
     writeConnectionOpen(statisticsClient, data);
     addSocketToGroup(data, socket);

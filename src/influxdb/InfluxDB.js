@@ -5,12 +5,18 @@ dotenv.load();
 
 const getInfluxClient = () => {
   const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
-  const fieldSchema = {
-    socketName: 'string',
-    data: 'string',
-  };
 
-  influxClient.schema('http', fieldSchema, null);
+  influxClient.schema('http', null, null);
+  influxClient.createDatabase().catch(err => {
+    console.error('create database fail err:', err);
+  });
+  return influxClient;
+};
+
+const getSourceInfluxClient = (id) => {
+  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat(id)}`);
+
+  influxClient.schema('outbound', null, null);
   influxClient.createDatabase().catch(err => {
     console.error('create database fail err:', err);
   });
@@ -45,8 +51,14 @@ const getConnections = (database, series, connectionType) => {
   });
 };
 
+ async function getDatabaseList() {
+  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('server_statistics')}`);
+  return await influxClient.showDatabases();
+};
+
 module.exports = {
   getInfluxClient,
   getStatisticsInfluxClient,
   getConnections,
+  getDatabaseList,
 };

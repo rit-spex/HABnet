@@ -1,3 +1,4 @@
+const flatten = require('flat');
 
 const writeConnectionOpen = (client, data) => {
   client.write('http')
@@ -23,10 +24,9 @@ const writeConnectionClose = (client, data, name) => {
 
 const writeDataPacket = (client, data) => {
   client.write('http')
-    .field({
-      socketName: data.name,
-      data: JSON.stringify(data.buffer),
-    })
+    .field('name', data.name)
+    .field('dateSent', data.dateCreated)
+    .field(data.payload)
     .queue();
 
   if (client.writeQueueLength >= 100) {
