@@ -41,7 +41,7 @@ const addModel = (modelType,modelInfo,group) => {
 
 const addOBJ = (modelInfo,addToGroup) => {
   var mtlLoader = new THREE.MTLLoader();
-  var mtlUrl = "/assets/models/" + modelInfo.material;
+  var mtlUrl = "/assets/models/" + modelInfo.surface;
   mtlLoader.load(mtlUrl, function(materials) {
     materials.preload();
 
@@ -65,7 +65,7 @@ const addCollada = (modelInfo,addToGroup) => {
     colladaModel = collada.scene;
     colladaModel.traverse( function ( child ) {
     if ( child instanceof THREE.Mesh ) {
-      child.material.color.setHex(modelInfo.color);
+      child.material.color.setHex(modelInfo.surface);
     }
     });
     var scale = modelInfo.scale;
@@ -78,14 +78,14 @@ const addCollada = (modelInfo,addToGroup) => {
 const setupModels = () => {
   var addModel1 = {
   file: "cubesat.dae",
-  material: "0xff7b00",
+  surface: "0xff7b00",
   scale: 20
   };
   addModel('dae',addModel1,null);
 
   var addModel2 = {
     file: "nasa_cubesat.obj",
-    color: "nasa_cubesat.mtl",
+    surface: "nasa_cubesat.mtl",
     scale: 1
   };
   addModel('obj',addModel2,allGroup);
