@@ -15,6 +15,10 @@ const sendSocketData = (socket, destination, messageType, payload) => {
   socket.broadcast.to(destination).emit(messageType, payload);
 };
 
+const sendToClientPacket = (socket, messageType, payload) => {
+  socket.emit(messageType, payload);
+};
+
 const printConnectedSockets = () => {
   console.log('Data Sources');
   dataSources.map(source => console.log(source.name));
@@ -97,6 +101,7 @@ const addSocketToGroup = (data, socket) => {
   const connections = getCurrentConnections();
 
   sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
+  sendToClientPacket(socket, 'availablerooms', connections );
 };
 
 const removeSocketFromGroup = (data, socket) => {
@@ -115,6 +120,7 @@ const removeSocketFromGroup = (data, socket) => {
   };
 
   sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
+  sendToClientPacket(socket, 'availablerooms', connections );
 };
 
 // setup socket listeners on join
