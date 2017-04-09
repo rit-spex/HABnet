@@ -1,11 +1,11 @@
 const randomString = require('randomstring');
 const generateUniqueName = (baseName) => {
   const randomPart = randomString.generate({
-    length: 1,
+    length: 5,
     readable: true
   });
 
-  return `${baseName}${randomPart}`;
+  return `${baseName}_${randomPart}`;
 };
 
 module.exports = {

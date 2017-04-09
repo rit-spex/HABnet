@@ -5,12 +5,17 @@ const {
   writeConnectionClose,
   writeDataPacket,
 } = require('./influxConnections');
-const { getDatabaseList } = require('../influxdb/InfluxDB');
+const { 
+  getInfluxClient,
+  getStatisticsInfluxClient, 
+  getSourceInfluxClient,
+  getMeasurementList
+} = require('../influxdb/InfluxDB.js');
 const { generateUniqueName } = require('../utils/Identification')
 // socket lists
 let dataSources = Immutable.Map();
 let dataListeners = Immutable.Map();
-let databases = [];
+let measurements = [];
 const sendSocketData = (socket, destination, messageType, payload) => {
   socket.broadcast.to(destination).emit(messageType, payload);
 };
@@ -33,9 +38,10 @@ const getSubscribedRooms = (socket) => {
   socket.emit('subscribedRooms', rooms.toArray());
 };
 
-const influxDoesContainDB = (dbName) => {
-  getDatabaseList().then( dbs => databases = dbs);
-  return databases.includes(dbName);
+const DBDoesContainMeasurement = (measurementName) => {
+  getMeasurementList().then( influxMeasurements => measurements = influxMeasurements);
+  console.log(measurements.length);
+  return measurements.includes(measurementName);
 };
 
 const isClientConnected = (clientName) => {
@@ -47,7 +53,7 @@ const isClientConnected = (clientName) => {
 
 
 const getUniqueName = (clientName) => {
- if(influxDoesContainDB(clientName) || isClientConnected(clientName)) {
+ if(DBDoesContainMeasurement(clientName) || isClientConnected(clientName)) {
   return getUniqueName(generateUniqueName(clientName));
  }
  return clientName;
@@ -124,9 +130,10 @@ const removeSocketFromGroup = (data, socket) => {
 };
 
 // setup socket listeners on join
-const onJoined = (sock, statisticsClient, dataClient) => {
+const onJoined = (sock) => {
   const socket = sock;
-
+  const statisticsClient = getStatisticsInfluxClient();
+  const dataClient = getSourceInfluxClient();
   socket.on('join', (data) => {
     console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
     // add metadata
@@ -141,13 +148,13 @@ const onJoined = (sock, statisticsClient, dataClient) => {
   socket.on('sensorData', (data) => {
     sendSocketData(socket, ALL_SOCKETS, 'broadcastData', data);
     sendSocketData(socket, socket.id, 'broadcastData', data);
-    writeDataPacket(dataClient, data);
+    writeDataPacket(dataClient, data, socket.name);
   });
 
   socket.on('mobileIMUData', (data) => {
     sendSocketData(socket, ALL_SOCKETS, 'broadcastMobileData', data);
     sendSocketData(socket, socket.id, 'broadcastMobileData', data);
-    writeDataPacket(dataClient, data);
+    writeDataPacket(dataClient, data, socket.name);
   });
 
   socket.on('connectToSocket', (data) => {
@@ -160,9 +167,9 @@ const onJoined = (sock, statisticsClient, dataClient) => {
 };
 
 // Setup Disconnection event listeners
-const onDisconnect = (sock, statisticsClient) => {
+const onDisconnect = (sock) => {
   const socket = sock;
-
+  const statisticsClient = getStatisticsInfluxClient();
   socket.on('disconnect', (data) => {
     removeSocketFromGroup(data, socket);
     writeConnectionClose(statisticsClient, data, socket.name);

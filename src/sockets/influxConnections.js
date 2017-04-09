@@ -22,8 +22,8 @@ const writeConnectionClose = (client, data, name) => {
     .catch(console.error);
 };
 
-const writeDataPacket = (client, data) => {
-  client.write('http')
+const writeDataPacket = (client, data, id) => {
+  client.write(id)
     .field('name', data.name)
     .field('dateSent', data.dateCreated)
     .field(data.payload)
