@@ -1,5 +1,6 @@
 const Immutable = require('immutable');
 const { ALL_SOCKETS } = require('../utils/Constants');
+const { Connections } = require('../utils/Connections');
 const {
   writeConnectionOpen,
   writeConnectionClose,
@@ -13,9 +14,8 @@ const {
 } = require('../influxdb/InfluxDB.js');
 const { generateUniqueName } = require('../utils/Identification')
 // socket lists
-let dataSources = Immutable.Map();
-let dataListeners = Immutable.Map();
-let measurements = [];
+const clientConnections = new Connections();
+
 const sendSocketData = (socket, destination, messageType, payload) => {
   socket.broadcast.to(destination).emit(messageType, payload);
 };
@@ -26,10 +26,10 @@ const sendToClientPacket = (socket, messageType, payload) => {
 
 const printConnectedSockets = () => {
   console.log('Data Sources');
-  dataSources.map(source => console.log(source.name));
+  clientConnections.dataSources.map(source => console.log(source.name));
 
   console.log('Data Listeners');
-  dataListeners.map(source => console.log(source.name));
+   clientConnections.dataListeners.map(source => console.log(source.name));
 };
 
 const getSubscribedRooms = (socket) => {
@@ -38,22 +38,8 @@ const getSubscribedRooms = (socket) => {
   socket.emit('subscribedRooms', rooms.toArray());
 };
 
-const DBDoesContainMeasurement = (measurementName) => {
-  getMeasurementList().then( influxMeasurements => measurements = influxMeasurements);
-  console.log(measurements.length);
-  return measurements.includes(measurementName);
-};
-
-const isClientConnected = (clientName) => {
-  const dataSourceNames = dataSources.map(source => source.name);
-  const dataListenerNames = dataListeners.map(source => source.name);
-  if (dataSourceNames.includes(clientName) || dataListenerNames.includes(clientName)) return true;
-  return false;
-};
-
-
 const getUniqueName = (clientName) => {
- if(DBDoesContainMeasurement(clientName) || isClientConnected(clientName)) {
+ if(clientConnections.hasClientConnectedPreviously(clientName) && clientConnections.isClientConnected(clientName)) {
   return getUniqueName(generateUniqueName(clientName));
  }
  return clientName;
@@ -80,13 +66,13 @@ const disconnectFromSocket = (socket, target) => {
 const getCurrentConnections = () => {
   return {
     timestamp: Date.now(),
-    dataListeners: dataListeners.map(sock => {
+    dataListeners:  clientConnections.dataListeners.map(sock => {
       return {
         name: sock.name,
         id: sock.id,
       };
     }).toArray(),
-    dataSources: dataSources.map(sock => {
+    dataSources:  clientConnections.dataSources.map(sock => {
       return {
         name: sock.name,
         id: sock.id,
@@ -98,9 +84,9 @@ const getCurrentConnections = () => {
 
 const addSocketToGroup = (data, socket) => {
   if (data.type === 'dataSource') {
-    dataSources = dataSources.set(socket.id, Immutable.fromJS(socket));
+     clientConnections.dataSources =  clientConnections.dataSources.set(socket.id, Immutable.fromJS(socket));
   } else if (data.type === 'dataListener') {
-    dataListeners = dataListeners.set(socket.id, Immutable.fromJS(socket));
+     clientConnections.dataListeners =  clientConnections.dataListeners.set(socket.id, Immutable.fromJS(socket));
   }
 
   printConnectedSockets();
@@ -111,18 +97,18 @@ const addSocketToGroup = (data, socket) => {
 };
 
 const removeSocketFromGroup = (data, socket) => {
-  if (dataSources.has(socket.id)) {
-    dataSources = dataSources.delete(socket.id);
-  } else if (dataListeners.has(socket.id)) {
-    dataListeners = dataListeners.delete(socket.id);
+  if ( clientConnections.dataSources.has(socket.id)) {
+    clientConnections.dataSources =  clientConnections.dataSources.delete(socket.id);
+  } else if ( clientConnections.dataListeners.has(socket.id)) {
+    clientConnections.dataListeners =  clientConnections.dataListeners.delete(socket.id);
   }
 
   printConnectedSockets();
 
   const connections = {
     timestamp: Date.now(),
-    dataListeners: dataListeners.map(sock => sock.name).toArray(),
-    dataSources: dataSources.map(sock => sock.name).toArray(),
+    dataListeners:  clientConnections.dataListeners.map(sock => sock.name).toArray(),
+    dataSources:  clientConnections.dataSources.map(sock => sock.name).toArray(),
   };
 
   sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
