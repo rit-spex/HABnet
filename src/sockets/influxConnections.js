@@ -1,4 +1,3 @@
-
 const writeConnectionOpen = (client, data) => {
   client.write('http')
     .field({
@@ -21,12 +20,11 @@ const writeConnectionClose = (client, data, name) => {
     .catch(console.error);
 };
 
-const writeDataPacket = (client, data) => {
-  client.write('http')
-    .field({
-      socketName: data.name,
-      data: JSON.stringify(data.buffer),
-    })
+const writeDataPacket = (client, data, id) => {
+  client.write(id)
+    .field('name', data.name)
+    .field('dateSent', data.dateCreated)
+    .field(data.payload)
     .queue();
 
   if (client.writeQueueLength >= 100) {
