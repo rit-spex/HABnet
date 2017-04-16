@@ -1,9 +1,10 @@
 const Immutable = require('immutable');
 const { getMeasurementList } = require('../influxdb/InfluxDB.js');
+
 let instance = null;
 class Connections {
   constructor() {
-    if(!instance) {
+    if (!instance) {
       instance = this;
       this.takenNames = Immutable.Map();
       this.dataSources = Immutable.Map();
@@ -20,8 +21,8 @@ class Connections {
   }
 
   isClientConnected(clientName) {
-    const dataSourceNames =  this.dataSources.map(source => source.name);
-    const dataListenerNames =  this.dataListeners.map(source => source.name);
+    const dataSourceNames = this.dataSources.map(source => source.name);
+    const dataListenerNames = this.dataListeners.map(source => source.name);
     if (dataSourceNames.includes(clientName) || dataListenerNames.includes(clientName)) return true;
     return false;
   }
@@ -31,17 +32,17 @@ class Connections {
     return this.takenNames.includes(clientName);
   }
 
-   pullDBMeasurements() {
-    return new Promise((resolve, reject) => {
-      getMeasurementList().then( influxMeasurements => {
+  pullDBMeasurements() {
+    return new Promise((resolve) => {
+      getMeasurementList().then((influxMeasurements) => {
         this.takenNames = influxMeasurements;
         console.log(`There are ${this.takenNames.length} taken names in InfluxDB`);
         resolve(this);
-       });
       });
-    }
+    });
+  }
 }
 
 module.exports = {
-  Connections
+  Connections,
 };

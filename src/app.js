@@ -2,6 +2,7 @@ const { app, port } = require('./Express');
 const { onJoined, onDisconnect } = require('./sockets/Sockets.js');
 const { Connections } = require('./utils/Connections');
 const io = require('socket.io').listen(app.listen(port));
+
 const clientConnections = new Connections();
 
 clientConnections.pullDBMeasurements().then(() => {
@@ -12,6 +13,6 @@ clientConnections.pullDBMeasurements().then(() => {
     onDisconnect(socket);
   });
   console.log(`Listening on 127.0.0.1: ${port}`);
-})
+});
 
 

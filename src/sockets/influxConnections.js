@@ -1,5 +1,3 @@
-const flatten = require('flat');
-
 const writeConnectionOpen = (client, data) => {
   client.write('http')
     .field({
