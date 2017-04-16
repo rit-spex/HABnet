@@ -6,13 +6,12 @@ const {
   writeConnectionClose,
   writeDataPacket,
 } = require('./influxConnections');
-const { 
-  getInfluxClient,
-  getStatisticsInfluxClient, 
+const {
+  getStatisticsInfluxClient,
   getSourceInfluxClient,
-  getMeasurementList
 } = require('../influxdb/InfluxDB.js');
-const { generateUniqueName } = require('../utils/Identification')
+const { generateUniqueName } = require('../utils/Identification');
+
 // socket lists
 const clientConnections = new Connections();
 
@@ -29,7 +28,7 @@ const printConnectedSockets = () => {
   clientConnections.dataSources.map(source => console.log(source.name));
 
   console.log('Data Listeners');
-   clientConnections.dataListeners.map(source => console.log(source.name));
+  clientConnections.dataListeners.map(source => console.log(source.name));
 };
 
 const getSubscribedRooms = (socket) => {
@@ -39,10 +38,11 @@ const getSubscribedRooms = (socket) => {
 };
 
 const getUniqueName = (clientName) => {
- if(clientConnections.hasClientConnectedPreviously(clientName) && clientConnections.isClientConnected(clientName)) {
-  return getUniqueName(generateUniqueName(clientName));
- }
- return clientName;
+  if (clientConnections.hasClientConnectedPreviously(clientName)
+     && clientConnections.isClientConnected(clientName)) {
+    return getUniqueName(generateUniqueName(clientName));
+  }
+  return clientName;
 };
 
 const connectToSocket = (socket, target) => {
@@ -66,13 +66,13 @@ const disconnectFromSocket = (socket, target) => {
 const getCurrentConnections = () => {
   return {
     timestamp: Date.now(),
-    dataListeners:  clientConnections.dataListeners.map(sock => {
+    dataListeners: clientConnections.dataListeners.map((sock) => {
       return {
         name: sock.name,
         id: sock.id,
       };
     }).toArray(),
-    dataSources:  clientConnections.dataSources.map(sock => {
+    dataSources: clientConnections.dataSources.map((sock) => {
       return {
         name: sock.name,
         id: sock.id,
@@ -84,31 +84,31 @@ const getCurrentConnections = () => {
 
 const addSocketToGroup = (data, socket) => {
   if (data.type === 'dataSource') {
-     clientConnections.dataSources =  clientConnections.dataSources.set(socket.id, Immutable.fromJS(socket));
+    clientConnections.dataSources = clientConnections.dataSources.set(socket.id, Immutable.fromJS(socket));
   } else if (data.type === 'dataListener') {
-     clientConnections.dataListeners =  clientConnections.dataListeners.set(socket.id, Immutable.fromJS(socket));
+    clientConnections.dataListeners = clientConnections.dataListeners.set(socket.id, Immutable.fromJS(socket));
   }
 
   printConnectedSockets();
   const connections = getCurrentConnections();
 
   sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
-  sendToClientPacket(socket, 'availablerooms', connections );
+  sendToClientPacket(socket, 'availablerooms', connections);
 };
 
 const removeSocketFromGroup = (data, socket) => {
-  if ( clientConnections.dataSources.has(socket.id)) {
-    clientConnections.dataSources =  clientConnections.dataSources.delete(socket.id);
-  } else if ( clientConnections.dataListeners.has(socket.id)) {
-    clientConnections.dataListeners =  clientConnections.dataListeners.delete(socket.id);
+  if (clientConnections.dataSources.has(socket.id)) {
+    clientConnections.dataSources = clientConnections.dataSources.delete(socket.id);
+  } else if (clientConnections.dataListeners.has(socket.id)) {
+    clientConnections.dataListeners = clientConnections.dataListeners.delete(socket.id);
   }
 
   printConnectedSockets();
 
   const connections = {
     timestamp: Date.now(),
-    dataListeners:  clientConnections.dataListeners.map(sock => sock.name).toArray(),
-    dataSources:  clientConnections.dataSources.map(sock => sock.name).toArray(),
+    dataListeners: clientConnections.dataListeners.map(sock => sock.name).toArray(),
+    dataSources: clientConnections.dataSources.map(sock => sock.name).toArray(),
   };
 
   sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);

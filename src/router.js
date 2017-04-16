@@ -6,6 +6,8 @@ const router = (app) => {
   app.get('/mobileData', controllers.Graph.mobileData);
   app.get('/dataGenerator', controllers.Graph.dataGenerator);
   app.get('/connections.csv', controllers.InfluxDB.connectionStatistics);
+  app.get('/socketData.csv', controllers.InfluxDB.socketDataCSV);
+  app.get('/socketData/:socketID', controllers.InfluxDB.socketDataJSON);
   app.get('/', controllers.Graph.graph);
 };
 

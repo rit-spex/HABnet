@@ -54,6 +54,34 @@ const getConnections = (database, series, connectionType) => {
   });
 };
 
+const getCSVSentBySocket = (measurement) => {
+  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
+  const reader = influxClient.query(measurement);
+
+  reader.measurement = measurement;
+  reader.set('format', 'csv');
+  // reader.addField('timestamp');
+  return reader.then((data) => {
+    return data[measurement];
+  }).catch((err) => {
+    console.log(err.stack);
+  });
+};
+
+const getJSONSentBySocket = (measurement) => {
+  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
+  const reader = influxClient.query(measurement);
+
+  reader.measurement = measurement;
+  reader.set('format', 'json');
+  // reader.addField('timestamp');
+  return reader.then((data) => {
+    return data[measurement];
+  }).catch((err) => {
+    console.log(err.stack);
+  });
+};
+
 async function getMeasurementList() {
   const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
   return await influxClient.showMeasurements();
@@ -65,4 +93,6 @@ module.exports = {
   getConnections,
   getSourceInfluxClient,
   getMeasurementList,
+  getCSVSentBySocket,
+  getJSONSentBySocket,
 };
