@@ -3,38 +3,41 @@ const dotenv = require('dotenv');
 
 dotenv.load();
 
+let sourceClient;
+let statisticsClient;
+
 const getInfluxClient = () => {
   const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
 
   influxClient.schema('http', null, null);
-  influxClient.createDatabase().catch(err => {
+  influxClient.createDatabase().catch((err) => {
     console.error('create database fail err:', err);
   });
   return influxClient;
 };
 
 const getSourceInfluxClient = (id) => {
-  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
-
-  influxClient.schema(id, null, null);
-  influxClient.createDatabase().catch(err => {
-    console.error('create database fail err:', err);
-  });
-  return influxClient;
+  if (!sourceClient) {
+    sourceClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
+    sourceClient.schema(id, null, null);
+    sourceClient.createDatabase().catch((err) => {
+      console.error('create database fail err:', err);
+    });
+    return sourceClient;
+  }
+  return sourceClient;
 };
 
 const getStatisticsInfluxClient = () => {
-  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('server_statistics')}`);
-  const fieldSchema = {
-    connectionSource: 'string',
-    connected: 'boolean',
-  };
-
-  influxClient.schema('http', fieldSchema, null);
-  influxClient.createDatabase().catch(err => {
-    console.error('create database fail err:', err);
-  });
-  return influxClient;
+  if (!statisticsClient) {
+    statisticsClient = new Influx(`${process.env.INFLUXDB_URL.concat('server_statistics')}`);
+    statisticsClient.schema('http', null, null);
+    statisticsClient.createDatabase().catch((err) => {
+      console.error('create database fail err:', err);
+    });
+    return statisticsClient;
+  }
+  return statisticsClient;
 };
 
 const getConnections = (database, series, connectionType) => {
@@ -44,14 +47,14 @@ const getConnections = (database, series, connectionType) => {
   if (connectionType) reader.addField(connectionType);
   reader.measurement = 'http';
   reader.set('format', 'csv');
-  return reader.then(data => {
+  return reader.then((data) => {
     return data.http;
-  }).catch(err => {
+  }).catch((err) => {
     console.log(err.stack);
   });
 };
 
- async function getMeasurementList() {
+async function getMeasurementList() {
   const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
   return await influxClient.showMeasurements();
 };
