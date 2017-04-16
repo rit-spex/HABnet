@@ -87,6 +87,16 @@ async function getMeasurementList() {
   return await influxClient.showMeasurements();
 };
 
+
+const getMeasurementNamesJSON = () => {
+  const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
+  return influxClient.showMeasurements().then((data) => {
+    return data;
+  }).catch((err) => {
+    console.log(err.stack);
+  });
+};
+
 module.exports = {
   getInfluxClient,
   getStatisticsInfluxClient,
@@ -95,4 +105,5 @@ module.exports = {
   getMeasurementList,
   getCSVSentBySocket,
   getJSONSentBySocket,
+  getMeasurementNamesJSON,
 };

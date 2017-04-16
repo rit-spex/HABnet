@@ -1,4 +1,8 @@
-const { getConnections, getCSVSentBySocket, getJSONSentBySocket } = require('../influxdb/InfluxDB');
+const {
+  getConnections,
+  getCSVSentBySocket,
+  getJSONSentBySocket,
+  getMeasurementNamesJSON } = require('../influxdb/InfluxDB');
 
 // Return Influx Data
 const connectionStatistics = (req, res) => {
@@ -27,9 +31,17 @@ const socketDataJSON = (req, res) => {
   });
 };
 
+const measurementNames = (req, res) => {
+  getMeasurementNamesJSON().then((data) => {
+    res.status(200).type('application/json').send(data);
+  });
+};
+
+
 
 module.exports = {
   connectionStatistics,
   socketDataCSV,
   socketDataJSON,
+  measurementNames,
 };
