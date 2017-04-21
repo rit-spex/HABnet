@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../css/App.css';
 
-export default class AvionicsVisualizer extends React.Component {
+class About extends React.Component {
   constructor(props) {
     super(props);
     this.state = { test: 'foo' };
@@ -9,8 +9,10 @@ export default class AvionicsVisualizer extends React.Component {
   render() {
     return (
       <div className={styles.app}>
-        <h1>This is the Avionics Visualizer page</h1>
+        <h1>This is the About page</h1>
       </div>
     );
   }
 }
+
+export default About;

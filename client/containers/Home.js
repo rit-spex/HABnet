@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../css/App.css';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = { test: 'foo' };
@@ -14,3 +14,4 @@ export default class Home extends React.Component {
     );
   }
 }
+export default Home;

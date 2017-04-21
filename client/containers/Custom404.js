@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../css/App.css';
 
-export default class MobileDataCollection extends React.Component {
+class Custom404 extends React.Component {
   constructor(props) {
     super(props);
     this.state = { test: 'foo' };
@@ -9,8 +9,10 @@ export default class MobileDataCollection extends React.Component {
   render() {
     return (
       <div className={styles.app}>
-        <h1>This is the Mobile Data Collection page</h1>
+        <h1>This is the Custom 404 page</h1>
       </div>
     );
   }
 }
+
+export default Custom404;

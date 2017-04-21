@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import SPEXHeader from '../components/SPEXHeader.js';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { deepOrange500 } from 'material-ui/styles/colors';
-import Style from './Style.js';
+import SPEXHeader from '../components/SPEXHeader';
+//import Style from '../css/Style.js';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -19,7 +19,7 @@ class Main extends Component {
     render() {
         return(
             <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={Style.container}>
+                <div>
                     <SPEXHeader />
                     {this.props.children}
                 </div>

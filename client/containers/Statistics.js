@@ -1,16 +1,19 @@
 import React from 'react';
 import styles from '../css/App.css';
 
-export default class Custom404 extends React.Component {
+class Statistics extends React.Component {
   constructor(props) {
     super(props);
     this.state = { test: 'foo' };
   }
+
   render() {
     return (
       <div className={styles.app}>
-        <h1>This is the Custom 404 page</h1>
+        <h1>This is the Statistics page</h1>
       </div>
     );
   }
 }
+
+export default Statistics;
