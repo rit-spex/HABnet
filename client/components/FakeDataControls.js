@@ -1,39 +1,91 @@
 import React from 'react';
 import Toggle from 'material-ui/Toggle';
-
+import Slider from 'material-ui/Slider';
+import Paper from 'material-ui/Paper';
 const FakeDataControls = React.createClass({
 
   getInitialState() {
     return {
-      temp1: null,
-      pressure: null,
-      altitude: null,
-      humidty: null,
-      rotationX: null,
-      rotationY: null,
-      rotationZ: null,
-      accelX: null,
-      accelY: null,
-      accelZ: null,
-      magX: null,
-      magY: null,
-      magZ: null,
-      colorR: null,
-      colorG: null,
-      colorB: null,
-      lux: null,
+      temp1: 25,
+      pressure: 0.101,
+      altitude: 10,
+      humidity: 5,
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: 0,
+      accelX: 0,
+      accelY: 0,
+      accelZ: 0,
+      magX: 0,
+      magY: 0,
+      magZ: 0,
+      colorR: 125,
+      colorG: 125,
+      colorB: 125,
+      lux: 0,
+      colorTemp: 0,
       hasBarometer: false,
       hasIMU: false,
       hasColorSensor: false,
     };
   },
 
+  handleSlider(value, type) {
+    console.log(type);
+    const data = {};
+    data[`${type}`] = value;
+    this.setState(data);
+  },
+
+  handleToggle(isToggled, type) {
+    console.log(type);
+    const data = {};
+    data[`${type}`] = isToggled;
+    this.setState(data);
+  },
+
   renderBarometer() {
     const { temp1, pressure, altitude, humidity } = this.state;
     return (
-      <div>
-
-      </div>
+      <Paper style={{padding: '5px' }}zIndex={2}>
+        <span>{`Temperature: ${temp1} °C`}</span>
+        <Slider
+          min={0}
+          max={100}
+          step={1}
+          defaultValue={50}
+          value={this.state.temp1}
+          onChange={(evt, value) => { this.handleSlider(value, 'temp1'); }}
+        />
+        <span>{`Pressure: ${pressure} MPa`}</span>
+        <Slider
+          max={0.2}
+          min={0}
+          step={0.001}
+          axis="x-reverse"
+          defaultValue={0.101}
+          value={this.state.pressure}
+          onChange={(evt, value) => { this.handleSlider(value, 'pressure'); }}
+        />
+        <span>{`Altitude: ${altitude} m`}</span>
+        <Slider
+          min={0}
+          max={100000}
+          step={25}
+          defaultValue={20}
+          value={this.state.altitude}
+          onChange={(evt, value) => { this.handleSlider(value, 'altitude'); }}
+        />
+        <span>{`Humidity: ${humidity} %`}</span>
+        <Slider
+          min={0}
+          max={100}
+          step={0.1}
+          defaultValue={10}
+          value={this.state.humidity}
+          onChange={(evt, value) => { this.handleSlider(value, 'humidity'); }}
+        />
+      </Paper>
     );
   },
 
@@ -50,18 +102,142 @@ const FakeDataControls = React.createClass({
       magZ
     } = this.state;
     return (
-      <div>
-
-      </div>
+      <Paper style={{padding: '5px' }}zIndex={2}>
+        <span>{`Rotation-X: ${rotationX} degrees/s`}</span>
+        <Slider
+          min={-2000}
+          max={2000}
+          step={100}
+          defaultValue={0}
+          value={this.state.rotationX}
+          onChange={(evt, value) => { this.handleSlider(value, 'rotationX'); }}
+        />
+        <span>{`Rotation-Y: ${rotationY} degrees/s`}</span>
+        <Slider
+          min={-2000}
+          max={2000}
+          step={100}
+          defaultValue={0}
+          value={this.state.rotationY}
+          onChange={(evt, value) => { this.handleSlider(value, 'rotationY'); }}
+        />
+        <span>{`Rotation-Z: ${rotationZ} degrees/s`}</span>
+        <Slider
+          min={-2000}
+          max={2000}
+          step={100}
+          defaultValue={0}
+          value={this.state.rotationZ}
+          onChange={(evt, value) => { this.handleSlider(value, 'rotationZ'); }}
+        />
+        <span>{`Acceleration-X: ${accelX} m/s^2`}</span>
+        <Slider
+          min={-100}
+          max={100}
+          step={0.1}
+          defaultValue={0}
+          value={this.state.accelX}
+          onChange={(evt, value) => { this.handleSlider(value, 'accelX'); }}
+        />
+        <span>{`Acceleration-Y: ${accelY} m/s^2`}</span>
+        <Slider
+          min={-100}
+          max={100}
+          step={0.1}
+          defaultValue={0}
+          value={this.state.accelY}
+          onChange={(evt, value) => { this.handleSlider(value, 'accelY'); }}
+        />
+        <span>{`Acceleration-Z: ${accelZ} m/s^2`}</span>
+        <Slider
+          min={-100}
+          max={100}
+          step={0.1}
+          defaultValue={0}
+          value={this.state.accelZ}
+          onChange={(evt, value) => { this.handleSlider(value, 'accelZ'); }}
+        />
+        <span>{`Magnetometer-X: ${magX} gauss`}</span>
+        <Slider
+          min={-8.1}
+          max={8.1}
+          step={0.01}
+          defaultValue={0}
+          value={this.state.magX}
+          onChange={(evt, value) => { this.handleSlider(value, 'magX'); }}
+        />
+        <span>{`Magnetometer-Y: ${magY} gauss`}</span>
+        <Slider
+          min={-8.1}
+          max={8.1}
+          step={0.01}
+          defaultValue={0}
+          value={this.state.magY}
+          onChange={(evt, value) => { this.handleSlider(value, 'magY'); }}
+        />
+        <span>{`Magnetometer-Z: ${magZ} gauss`}</span>
+        <Slider
+          min={-8.1}
+          max={8.1}
+          step={0.01}
+          defaultValue={0}
+          value={this.state.magZ}
+          onChange={(evt, value) => { this.handleSlider(value, 'magZ'); }}
+        />
+      </Paper>
     );
   },
 
   renderColorSensor() {
-    const { colorR, colorG, colorB, lux, hasColorSensor } = this.state;
+    const { colorR, colorG, colorB, lux, colorTemp } = this.state;
     return (
-      <div>
-    
-      </div>
+      <Paper style={{padding: '5px' }}zIndex={2}>
+        <span>{`Red Light: ${colorR}`}</span>
+        <Slider
+          min={0}
+          max={255}
+          step={1}
+          defaultValue={125}
+          value={this.state.colorR}
+          onChange={(evt, value) => { this.handleSlider(value, 'colorR'); }}
+        />
+        <span>{`Green Light: ${colorG}`}</span>
+        <Slider
+          min={0}
+          max={255}
+          step={1}
+          defaultValue={125}
+          value={this.state.colorG}
+          onChange={(evt, value) => { this.handleSlider(value, 'colorG'); }}
+        />
+        <span>{`Blue Light: ${colorB}`}</span>
+        <Slider
+          min={0}
+          max={255}
+          step={1}
+          defaultValue={125}
+          value={this.state.colorB}
+          onChange={(evt, value) => { this.handleSlider(value, 'colorB'); }}
+        />
+        <span>{`Color Temperature: ${colorTemp} K`}</span>
+        <Slider
+          min={1000}
+          max={30000}
+          step={100}
+          defaultValue={7000}
+          value={this.state.colorTemp}
+          onChange={(evt, value) => { this.handleSlider(value, 'colorTemp'); }}
+        />
+        <span>{`Lux: ${lux} lumens/m^2`}</span>
+        <Slider
+          min={0}
+          max={65000}
+          step={500}
+          defaultValue={20000}
+          value={this.state.lux}
+          onChange={(evt, value) => { this.handleSlider(value, 'lux'); }}
+        />
+      </Paper>
     );
   },
 
@@ -69,11 +245,11 @@ const FakeDataControls = React.createClass({
     const { hasBarometer, hasIMU, hasColorSensor } = this.state;
     return (
       <div>
-        <Toggle label="Show Barometer" />
+        <Toggle label="Show Barometer" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasBarometer'); }} />
         {hasBarometer && this.renderBarometer()}
-        <Toggle label="Show IMU" />
+        <Toggle label="Show IMU" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasIMU'); }} />
         {hasIMU && this.renderIMU()}
-        <Toggle label="Show Color Sensor" />
+        <Toggle label="Show Color Sensor" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasColorSensor'); }}/>
         {hasColorSensor && this.renderColorSensor()}
       </div>
     );
