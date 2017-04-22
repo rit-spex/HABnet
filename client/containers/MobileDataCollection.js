@@ -1,4 +1,5 @@
 import React from 'react';
+import MobileOrientationCollector from '../components/MobileOrientationCollector';
 //import styles from '../css/App.css';
 
  class MobileDataCollection extends React.Component {
@@ -10,6 +11,7 @@ import React from 'react';
     return (
       <div >
         <h1>This is the Mobile Data Collection page</h1>
+        <MobileOrientationCollector />
       </div>
     );
   }
