@@ -57,13 +57,16 @@ const MobileOrientationCollector = React.createClass({
       pitch,
       yaw,
     } = this.state;
-    return (
-      <div>
-        <h2>{`Pitch: ${pitch.toFixed(3)}`}</h2>
-        <h2>{`Roll: ${roll.toFixed(3)}`}</h2>
-        <h2>{`Yaw/Direction: ${yaw.toFixed(3)}`}</h2>
-      </div>
-    );
+    if (pitch && roll && yaw) {
+      return (
+        <div>
+          <h2>{`Pitch: ${pitch.toFixed(3)}`}</h2>
+          <h2>{`Roll: ${roll.toFixed(3)}`}</h2>
+          <h2>{`Yaw/Direction: ${yaw.toFixed(3)}`}</h2>
+        </div>
+      );
+    }
+    return (<span>DeviceOrientation api is not supported on this device </span>);
   },
 
   renderMotion() {
@@ -75,16 +78,19 @@ const MobileOrientationCollector = React.createClass({
       rotationY,
       rotationZ,
     } = this.state;
-    return (
-      <div>
-        <h2>{`Accel-X: ${accelX.toFixed(3)}`}</h2>
-        <h2>{`Accel-Y: ${accelY.toFixed(3)}`}</h2>
-        <h2>{`Accel-Z: ${accelZ.toFixed(3)}`}</h2>
-        <h2>{`Rotation-X: ${rotationX.toFixed(3)}`}</h2>
-        <h2>{`Rotation-Y: ${rotationY.toFixed(3)}`}</h2>
-        <h2>{`Rotation-Z: ${rotationZ.toFixed(3)}`}</h2>
-      </div>
-    );
+    if (accelX && accelY && accelZ && rotationX && rotationY && rotationZ) {
+      return (
+        <div>
+          <h2>{`Accel-X: ${accelX.toFixed(3)}`}</h2>
+          <h2>{`Accel-Y: ${accelY.toFixed(3)}`}</h2>
+          <h2>{`Accel-Z: ${accelZ.toFixed(3)}`}</h2>
+          <h2>{`Rotation-X: ${rotationX.toFixed(3)}`}</h2>
+          <h2>{`Rotation-Y: ${rotationY.toFixed(3)}`}</h2>
+          <h2>{`Rotation-Z: ${rotationZ.toFixed(3)}`}</h2>
+        </div>
+      );
+    }
+    return (<span>DeviceMotion api is not supported on this device </span>);
   },
 
   render() {

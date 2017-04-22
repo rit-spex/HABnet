@@ -1,4 +1,5 @@
 import React from 'react';
+import FakeDataControls from '../components/FakeDataControls';
 //import styles from '../css/App.css';
 
  class FakeDataGenerator extends React.Component {
@@ -10,6 +11,7 @@ import React from 'react';
     return (
       <div >
         <h1>This is the Fake Data Generator page</h1>
+        <FakeDataControls />
       </div>
     );
   }
