@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../css/App.css';
+//import styles from '../css/App.css';
 
  class FakeDataGenerator extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ import styles from '../css/App.css';
   }
   render() {
     return (
-      <div className={styles.app}>
+      <div >
         <h1>This is the Fake Data Generator page</h1>
       </div>
     );

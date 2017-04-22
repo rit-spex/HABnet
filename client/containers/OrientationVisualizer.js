@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../css/App.css';
+//import styles from '../css/App.css';
 
 class OrientationVisualizer extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class OrientationVisualizer extends React.Component {
   }
   render() {
     return (
-      <div className={styles.app}>
+      <div >
         <h1>This is the Orientation Visualizer page</h1>
       </div>
     );

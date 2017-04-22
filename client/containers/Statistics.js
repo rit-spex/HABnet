@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../css/App.css';
+//import styles from '../css/App.css';
 
 class Statistics extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class Statistics extends React.Component {
 
   render() {
     return (
-      <div className={styles.app}>
+      <div >
         <h1>This is the Statistics page</h1>
       </div>
     );

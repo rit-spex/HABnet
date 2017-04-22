@@ -45,7 +45,7 @@ class SPEXHeader extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <AppBar
-         title="SPEXcast"
+         title="HABnet"
          iconClassNameRight="muidocs-icon-navigation-expand-more"
          onLeftIconButtonTouchTap={this.handleMenuTouch.bind(this)}
        >
@@ -62,20 +62,38 @@ class SPEXHeader extends Component {
         <MenuItem
           rightIcon={<Headset/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
-          containerElement={<Link to="/episodes" />}>
-          Episodes
+          containerElement={<Link to="/statistics" />}>
+          Statistics
         </MenuItem>
         <MenuItem
           rightIcon={<People/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
-          containerElement={<Link to="/about" />}>
-          About Us
+          containerElement={<Link to="/orientation" />}>
+          Orientation Visualizer
         </MenuItem>
         <MenuItem
           rightIcon={<Toys/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
-          containerElement={<Link to="/soundboard" />}>
-          Soundboard
+          containerElement={<Link to="/avionics" />}>
+          Avionics Visualizer
+        </MenuItem>
+        <MenuItem
+          rightIcon={<Toys/>}
+          onTouchTap={this.handleMenuItemTouch.bind(this)}
+          containerElement={<Link to="/mobileData" />}>
+          Mobile Data Collection
+        </MenuItem>
+        <MenuItem
+          rightIcon={<Toys/>}
+          onTouchTap={this.handleMenuItemTouch.bind(this)}
+          containerElement={<Link to="/dataGenerator" />}>
+          Fake Data Generator
+        </MenuItem>
+        <MenuItem
+          rightIcon={<Toys/>}
+          onTouchTap={this.handleMenuItemTouch.bind(this)}
+          containerElement={<Link to="/about" />}>
+          About
         </MenuItem>
         <MenuItem
           rightIcon={<OpenInNew/>}

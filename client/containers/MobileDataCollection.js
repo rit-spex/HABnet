@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../css/App.css';
+//import styles from '../css/App.css';
 
  class MobileDataCollection extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ import styles from '../css/App.css';
   }
   render() {
     return (
-      <div className={styles.app}>
+      <div >
         <h1>This is the Mobile Data Collection page</h1>
       </div>
     );
