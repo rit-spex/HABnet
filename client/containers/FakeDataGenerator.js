@@ -23,12 +23,10 @@ const FakeDataGenerator = React.createClass({
       this.socket.emit('join', { name: username, type: 'dataSource' });
       this.setState({ isSocketConnected: true });
     });
-  },
 
-  socketConnectedCallback(isSocketConnected, socketName) {
-    this.setState({
-      isSocketConnected,
-      socketName,
+    this.socket.on('disconnect', () => {
+      console.log('disconnected to server');
+      this.setState({ isSocketConnected: false });
     });
   },
 
@@ -36,6 +34,7 @@ const FakeDataGenerator = React.createClass({
     const { isSocketConnected, socketName } = this.state;
     return (
       <div >
+        <h1>Fake Data Generator</h1>
         <h1>{`This data source is named: ${socketName}`}</h1>
         {!isSocketConnected && 
         <DataSocketInitializer connectSocket={this.connectSocket} socketName={socketName}/>}

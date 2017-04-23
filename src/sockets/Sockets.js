@@ -38,8 +38,8 @@ const getSubscribedRooms = (socket) => {
 };
 
 const getUniqueName = (clientName) => {
-  if (clientConnections.hasClientConnectedPreviously(clientName)
-     && clientConnections.isClientConnected(clientName)) {
+  if (clientConnections.isClientConnected(clientName)) return getUniqueName(generateUniqueName(clientName));
+  if (clientConnections.hasClientConnectedPreviously(clientName) && clientConnections.isClientConnected(clientName)) {
     return getUniqueName(generateUniqueName(clientName));
   }
   return clientName;
