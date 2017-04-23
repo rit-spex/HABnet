@@ -1,7 +1,8 @@
 const setupProgressMeter = () => {
+  console.log("solar magic");
   var progressElement = document.createElement("div");
   progressElement.id = "progressBar";
-  document.body.appendChild(progressElement);
+  progressElement.style.margin = "25p25p25p25p25p25p25p25pocument.getElementById('modelSpace').appendChild(progressElement);
   progressBar = new ProgressBar.Line("#progressBar", {
     easing: 'easeInOut',
     strokeWidth: 3,
@@ -22,3 +23,7 @@ const setupProgressMeter = () => {
     }
   });
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+  setupProgressMeter();
+});
