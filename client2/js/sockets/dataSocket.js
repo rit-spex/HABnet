@@ -80,11 +80,9 @@ const sendDataJson = () => {
 };
 
 const updateUI = () => {
-  console.log(`Pitch: ${pitch}`);
-  console.log(`Roll: ${roll}`);
-  $('#pitch').text(`Pitch: ${pitch}`);
-  $('#roll').text(`Roll: ${roll}`);
-  $('#direction').text(`Direction: ${direction}`);
+  $('#pitch').text(`Pitch: ${pitch.toFixed(3)}`);
+  $('#roll').text(`Roll: ${roll.toFixed(3)}`);
+  $('#direction').text(`Direction: ${direction.toFixed(3)}`);
 };
 
 const deg2ra = (degree) => {

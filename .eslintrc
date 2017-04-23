@@ -4,6 +4,15 @@
     "no-underscore-dangle" : "off",
     "no-plusplus": "off",
     "no-console": 0,
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "new-cap": "off"
+  },
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
   }
 }

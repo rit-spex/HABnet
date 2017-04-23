@@ -1,6 +1,6 @@
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
-const router = require('./router.js');
+const router = require('./routes/router.js');
 const path = require('path');
 const compression = require('compression');
 const favicon = require('serve-favicon');

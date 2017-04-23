@@ -87,10 +87,15 @@ const connectSocketJson = (e) => {
   socket.on('connect', () => {
     console.log('connected to server');
     if (!user) {
-      user = 'unknown';
+      user = 'listenerClient';
     }
 
     socket.emit('join', { name: user, type: 'dataListener' });
+  });
+
+  socket.on('connectionList', (data) => {
+    console.log(`There are ${data.dataListeners.length} dataListener sockets
+     and ${data.dataSources.length} dataSources as of ${data.timestamp}`);
   });
 };
 
