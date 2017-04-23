@@ -128,6 +128,7 @@ const onJoined = (sock) => {
     socket.join(ALL_SOCKETS);
     writeConnectionOpen(statisticsClient, data);
     addSocketToGroup(data, socket);
+    socket.emit('joinedSuccessfully', { name });
   });
 
   // Broadcast out received data

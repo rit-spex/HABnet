@@ -1,11 +1,7 @@
 import React from 'react';
 //import styles from '../css/App.css';
 
-class OrientationVisualizer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { test: 'foo' };
-  }
+const OrientationVisualizer = React.createClass({
   render() {
     return (
       <div >
@@ -13,7 +9,7 @@ class OrientationVisualizer extends React.Component {
       </div>
     );
   }
-}
+});
 
 export default OrientationVisualizer;
 

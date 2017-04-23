@@ -1,19 +1,48 @@
 import React from 'react';
+import io from 'socket.io-client';
 import FakeDataControls from '../components/FakeDataControls';
+import DataSocketInitializer from '../components/DataSocketInitializer';
 //import styles from '../css/App.css';
 
- class FakeDataGenerator extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { test: 'foo' };
-  }
+
+const FakeDataGenerator = React.createClass({
+  getInitialState() {
+    return {
+      isSocketConnected: false,
+      socketName: 'fakeDataClient',
+    };
+  },
+
+  connectSocket(username) {
+    this.socket = io.connect();
+    this.socket.on('joinedSuccessfully', (data) => {
+      this.setState({ socketName: data.name });
+    });
+    this.socket.on('connect', () => {
+      console.log('connected to server');
+      this.socket.emit('join', { name: username, type: 'dataSource' });
+      this.setState({ isSocketConnected: true });
+    });
+  },
+
+  socketConnectedCallback(isSocketConnected, socketName) {
+    this.setState({
+      isSocketConnected,
+      socketName,
+    });
+  },
+
   render() {
+    const { isSocketConnected, socketName } = this.state;
     return (
       <div >
-        <h1>This is the Fake Data Generator page</h1>
-        <FakeDataControls />
+        <h1>{`This data source is named: ${socketName}`}</h1>
+        {!isSocketConnected && 
+        <DataSocketInitializer connectSocket={this.connectSocket} socketName={socketName}/>}
+        {isSocketConnected && <FakeDataControls socket={this.socket}/>}
       </div>
     );
-  }
-}
+  },
+});
+
 export default FakeDataGenerator;

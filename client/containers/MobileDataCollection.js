@@ -2,11 +2,7 @@ import React from 'react';
 import MobileOrientationCollector from '../components/MobileOrientationCollector';
 //import styles from '../css/App.css';
 
- class MobileDataCollection extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { test: 'foo' };
-  }
+const MobileDataCollection = React.createClass({
   render() {
     return (
       <div >
@@ -14,8 +10,8 @@ import MobileOrientationCollector from '../components/MobileOrientationCollector
         <MobileOrientationCollector />
       </div>
     );
-  }
-}
+  },
+});
 
 export default MobileDataCollection;
 

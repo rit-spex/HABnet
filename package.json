@@ -50,7 +50,7 @@
     "redux-thunk": "^2.2.0",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.5.1",
-    "socket.io-client": "^1.5.1",
+    "socket.io-client": "^1.7.3",
     "stats-webpack-plugin": "^0.6.0",
     "underscore": "^1.8.3",
     "webpack": "^2.4.1",

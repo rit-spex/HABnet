@@ -2,9 +2,14 @@ import React from 'react';
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+
 const FakeDataControls = React.createClass({
 
   getInitialState() {
+    this.isSending = false;
     return {
       temp1: 25,
       pressure: 0.101,
@@ -27,7 +32,34 @@ const FakeDataControls = React.createClass({
       hasBarometer: false,
       hasIMU: false,
       hasColorSensor: false,
+      timestamp: 0,
     };
+  },
+
+  pollDataJson() {
+    const cleanedState = this.state;
+    delete cleanedState['hasColorSensor'];
+    delete cleanedState['hasIMU'];
+    delete cleanedState['hasBarometer'];
+    return cleanedState;
+  },
+
+  sendDataJSON() {
+    const dataPacket = {
+      dateCreated: Date.now(),
+      name: this.props.username,
+      payload: this.pollDataJson(),
+    };
+
+    this.props.socket.emit('sensorData', dataPacket, (response) =>{
+      console.log(response);
+    });
+  },
+
+  continuousSend() {
+    this.sendDataJson();
+    this.setState({timestamp: Date.now()});
+    this.requestID = window.requestAnimationFrame(this.continuousSend);
   },
 
   handleSlider(value, type) {
@@ -44,10 +76,24 @@ const FakeDataControls = React.createClass({
     this.setState(data);
   },
 
+  handleSendPacketsContinuously() {
+    this.isSending = !this.isSending;
+    if (this.isSending) {
+      this.continuousSend();
+    } else {
+      window.cancelAnimationFrame(this.requestID);
+      this.requestID = undefined;
+    }
+  },
+  
+  handleSendOnePacket() {
+    this.sendDataJSON();
+  },
+
   renderBarometer() {
     const { temp1, pressure, altitude, humidity } = this.state;
     return (
-      <Paper style={{padding: '5px' }}zIndex={2}>
+      <Paper style={{padding: '5px' }}zDepth={2}>
         <span>{`Temperature: ${temp1} °C`}</span>
         <Slider
           min={0}
@@ -102,7 +148,7 @@ const FakeDataControls = React.createClass({
       magZ
     } = this.state;
     return (
-      <Paper style={{padding: '5px' }}zIndex={2}>
+      <Paper style={{padding: '5px' }}zDepth={2}>
         <span>{`Rotation-X: ${rotationX} degrees/s`}</span>
         <Slider
           min={-2000}
@@ -191,7 +237,7 @@ const FakeDataControls = React.createClass({
   renderColorSensor() {
     const { colorR, colorG, colorB, lux, colorTemp } = this.state;
     return (
-      <Paper style={{padding: '5px' }}zIndex={2}>
+      <Paper style={{padding: '5px' }}zDepth={2}>
         <span>{`Red Light: ${colorR}`}</span>
         <Slider
           min={0}
@@ -242,7 +288,7 @@ const FakeDataControls = React.createClass({
   },
 
   render() {
-    const { hasBarometer, hasIMU, hasColorSensor } = this.state;
+    const { hasBarometer, hasIMU, hasColorSensor, timestamp } = this.state;
     return (
       <div>
         <Toggle label="Show Barometer" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasBarometer'); }} />
@@ -251,6 +297,24 @@ const FakeDataControls = React.createClass({
         {hasIMU && this.renderIMU()}
         <Toggle label="Show Color Sensor" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasColorSensor'); }}/>
         {hasColorSensor && this.renderColorSensor()}
+        <TextField
+          id="text-field-controlled"
+          value={`Recorded time: ${timestamp} ms`}
+          disabled={true}
+        />
+        <Divider />
+        <RaisedButton
+          label="Send one packet"
+          primary={true}
+          style={{ margin: '12px' }} 
+          onTouchTap={this.handleSendOnePacket}
+          />
+        <RaisedButton
+          label="Send packets continously"
+          primary={true}
+          style={{ margin: '12px' }}
+          onTouchTap={this.handleSendPacketsContinuously}
+          />
       </div>
     );
   },
