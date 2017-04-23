@@ -12,24 +12,24 @@ let scene;
 
 //render function
 const render = () => {
-  console.log('running render function');
+//  console.log('running render function');
   allGroup.rotation.x = roll;
   allGroup.rotation.y = pitch;
   allGroup.rotation.z = heading;
   requestAnimationFrame( render );
   renderer.render( scene, camera );
-  console.log("Sine(roll): " + Math.sin(roll));
-  console.log("Cosine(pitch): " + Math.cos(pitch));
+//  console.log("Sine(roll): " + Math.sin(roll));
+//  console.log("Cosine(pitch): " + Math.cos(pitch));
   var rawCalc = Math.sin(roll) * Math.cos(pitch);
   var adjustedCalc = (rawCalc+1)/2; // [-1,1] -> [0,1]
-  console.log("raw # [-1,1]: " + rawCalc);
-  console.log("adjusted # [-1,1]: " + adjustedCalc);
-  progressBar.set(adjustedCalc);
+//  console.log("raw # [-1,1]: " + rawCalc);
+//  console.log("adjusted # [-1,1]: " + adjustedCalc);
+//  progressBar.set(adjustedCalc);
 };
 
 const addModel = (modelType,modelInfo,group) => {
   var modelAdded = null;
-  switch(modelType.toLower()) {
+  switch(modelType.toLowerCase()) {
     case 'collada':
     case 'dae':
       modelAdded = addCollada(modelInfo,group);
@@ -38,10 +38,12 @@ const addModel = (modelType,modelInfo,group) => {
       modelAdded = addOBJ(modelInfo,group);
       break;
   }
+//  console.log(modelAdded);
   return modelAdded;
 };
 
 const addOBJ = (modelInfo,addToGroup) => {
+  console.log("OBJ");
   var mtlLoader = new THREE.MTLLoader();
   var mtlUrl = "/assets/models/" + modelInfo.surface;
   mtlLoader.load(mtlUrl, function(materials) {
@@ -51,21 +53,27 @@ const addOBJ = (modelInfo,addToGroup) => {
     objLoader.setMaterials( materials );
     var objUrl = "/assets/models/" + modelInfo.file;
     objLoader.load(objUrl, function (obj) {
-      objModel = obj;
+      //console.log(objModel);
+      var objModel = obj;
+      models.push(objModel);
+      console.log(models);
       var scale = modelInfo.scale;
       objModel.scale.set(scale,scale,scale);
+      allGroup.add(objModel);
       if(addToGroup) { addToGroup.add(objModel) };
     });
   });
-  return objModel;
 };
 
 const addCollada = (modelInfo,addToGroup) => {
+  console.log("collada");
   var colladaLoader = new THREE.ColladaLoader();
   colladaLoader.options.convertUpAxis = true;
   var daeUrl = "/assets/models/" + modelInfo.file;
   colladaLoader.load(daeUrl, function( collada ) {
-    colladaModel = collada.scene;
+    var colladaModel = collada.scene;
+    models.push(colladaModel);
+    console.log(models);
     colladaModel.traverse( function ( child ) {
     if ( child instanceof THREE.Mesh ) {
       child.material.color.setHex(modelInfo.surface);
@@ -76,28 +84,32 @@ const addCollada = (modelInfo,addToGroup) => {
     colladaModel.updateMatrix();
     if(addToGroup) { addToGroup.add(colladaModel) };
   });
-  return colladaModel;
 };
 
-const setupModels = () => {
-  var modelsAdded = [];
+const setupModels = (models) => {
   var addModel1 = {
   file: "cubesat.dae",
   surface: "0xff7b00",
   scale: 20
   };
-  var added1 = addModel('dae',addModel1,null);
-  if(added1) {modelsAdded.push(added1);}
 
+  console.log("adding cubesat.dae");
+
+  var added1 = addModel('dae',addModel1,null);
+  console.log(added1);
   var addModel2 = {
     file: "nasa_cubesat.obj",
     surface: "nasa_cubesat.mtl",
     scale: 1
   };
-  var added2 = addModel('obj',addModel2,allGroup);
-  if(added2) {modelsAdded.push(added2);}
 
-  return modelsAdded;
+  console.log("adding nasa_cubesat.obj");
+  
+  var added2 = addModel('obj',addModel2,null);
+  console.log(added2);
+
+  console.log("here");
+  console.log(models);
 };
 
 const setupAxis = () => {
@@ -117,6 +129,7 @@ const setupAxis = () => {
 
   //put these in their own group so we can add/remove easily
   axisGroup = new THREE.Group();
+  axisGroup.name = "axisGroup";
   axisGroup.add(arrowHelperX);
   axisGroup.add(arrowHelperY);
   axisGroup.add(arrowHelperZ);
@@ -125,21 +138,30 @@ const setupAxis = () => {
 };
 
 const setupScene = () => {
-  var space = getElementById('modelSpace')
+  var space = document.getElementById('modelSpace');
+  var width = space.clientWidth;
+  var height = space.clientHeight;
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
-  60, space.innerWidth/space.innerHeight, 0.1, 1000);
+  60, width/height, 0.1, 1000);
   renderer = new THREE.WebGLRenderer({alpha: true});
-  renderer.setSize(space.innerWidth,space.innerHeight);
+  renderer.setSize(width,height);
   space.appendChild(renderer.domElement);
 
+  var planeGeo = new THREE.PlaneGeometry(12,9);
+  var planeMat = new THREE.MeshBasicMaterial( {color: 0x222222} );
+  var plane = new THREE.Mesh(planeGeo, planeMat);
+  plane.rotateX(-Math.PI /3);
+  plane.position.y = -5;
+  scene.add( plane );
 
   camera.position.z = 7;
 
-  pointLight = new THREE.DirectionalLight();
-  pointLight.position.set( 0.75, 0.75, 1.0 ).normalize();
-  scene.add(pointLight);
-  scene.add(new THREE.DirectionalLightHelper(pointLight));
+  dirLight = new THREE.DirectionalLight();
+  dirLight.castShadow = true;
+  dirLight.position.set( 0.5, 0.5, 1.0 ).normalize();
+  scene.add(dirLight);
+  scene.add(new THREE.DirectionalLightHelper(dirLight));
   console.log('finished scene setup, calling render');
 };
 
@@ -169,22 +191,27 @@ const toggleModel = (val) => {
     } else {
       allGroup.remove(models[i]);
     }
-
+  }
 }
 
 const setupPage = () => {
   init(); // client Socket init function; overwritten by this onload assignment
   setupScene(); // sets up renderer
-  document.body.style.backgroundImage = "url('/assets/img/space.jpg'";
-  setupProgressMeter();
+  var space = document.getElementById("modelSpace");
+  //space.style.backgroundImage = "url('/assets/img/space.jpg'";
+//  setupProgressMeter();
   allGroup = new THREE.Group();
+  allGroup.name = "allGroup";
   setupAxis();
-  models = setupModels();
+  models = new Array;
+  console.log("setupModels");
+  setupModels(models);
   setupButtons();
-
+  console.log(allGroup.children);
   //add stuff to groups and to the scene
-
+  //allGroup.add(models[0]);
   scene.add(allGroup);
+  console.log(scene.children);
   render();
 };
 window.onload = setupPage;
