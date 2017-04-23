@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
+import Immutable from 'immutable';
 
 const MobileOrientationCollector = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
+    username: PropTypes.string.isRequired,
   },
 
   getInitialState() {
@@ -32,6 +34,24 @@ const MobileOrientationCollector = React.createClass({
     }
   },
 
+  pollDataJson() {
+    let cleanedState = Immutable.Map(this.state);
+    cleanedState = cleanedState.delete('showMotion').delete('showOrientation');
+    return cleanedState.toJS();
+  },
+
+  sendDataJson() {
+    const dataPacket = {
+      dateCreated: Date.now(),
+      name: this.props.username,
+      payload: this.pollDataJson(),
+    };
+
+    this.props.socket.emit('sensorData', dataPacket, (response) => {
+      console.log(response);
+    });
+  },
+
   handleMotion(event) {
     this.setState({
       accelX: event.acceleration.x,
@@ -40,7 +60,7 @@ const MobileOrientationCollector = React.createClass({
       rotationX: event.rotationRate.x,
       rotationY: event.rotationRate.y,
       rotationZ: event.rotationRate.z,
-    });
+    }, this.sendDataJson());
   },
 
   handleOrientation(event) {
@@ -48,7 +68,7 @@ const MobileOrientationCollector = React.createClass({
       pitch: event.beta,
       roll: event.gamma,
       yaw: event.alpha,
-    });
+    }, this.sendDataJson());
   },
 
   renderOrientation() {

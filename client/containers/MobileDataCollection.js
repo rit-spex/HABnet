@@ -37,7 +37,7 @@ const MobileDataCollection = React.createClass({
         <h2>{`This data source is named: ${socketName}`}</h2>
         {!isSocketConnected && 
         <DataSocketInitializer connectSocket={this.connectSocket} socketName={socketName}/>}
-        {isSocketConnected && <MobileOrientationCollector socket={this.socket}/>}
+        {isSocketConnected && <MobileOrientationCollector username={socketName} socket={this.socket}/>}
       </div>
     );
   },

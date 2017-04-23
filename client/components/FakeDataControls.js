@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Immutable from 'immutable';
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import Paper from 'material-ui/Paper';
@@ -41,11 +42,11 @@ const FakeDataControls = React.createClass({
   },
 
   pollDataJson() {
-    const cleanedState = this.state;
-    delete cleanedState['hasColorSensor'];
-    delete cleanedState['hasIMU'];
-    delete cleanedState['hasBarometer'];
-    return cleanedState;
+    let cleanedState = Immutable.Map(this.state);
+    cleanedState = cleanedState.delete('hasColorSensor')
+    .delete('hasIMU')
+    .delete('hasBarometer');
+    return cleanedState.toJS();
   },
 
   sendDataJson() {
