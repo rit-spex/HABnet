@@ -6,11 +6,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import Headset from 'material-ui/svg-icons/hardware/headset';
+import MultilineChart from 'material-ui/svg-icons/editor/multiline-chart';
 import People from 'material-ui/svg-icons/social/people';
 import OpenInNew from 'material-ui/svg-icons/action/open-in-new';
 import Home from 'material-ui/svg-icons/action/home';
 import Toys from 'material-ui/svg-icons/hardware/toys';
+import PhoneLink from 'material-ui/svg-icons/communication/phonelink-ring';
+import Plane from 'material-ui/svg-icons/device/airplanemode-active';
+import Rotation from 'material-ui/svg-icons/action/settings-overscan';
+import BubbleChart from 'material-ui/svg-icons/editor/bubble-chart';
 // import Style from './Style.js';
 const muiTheme = getMuiTheme({
   palette: {
@@ -60,37 +64,37 @@ class SPEXHeader extends Component {
           Home
         </MenuItem>
         <MenuItem
-          rightIcon={<Headset/>}
+          rightIcon={<MultilineChart/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
           containerElement={<Link to="/statistics" />}>
           Statistics
         </MenuItem>
         <MenuItem
-          rightIcon={<People/>}
+          rightIcon={<Rotation/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
           containerElement={<Link to="/orientation" />}>
           Orientation Visualizer
         </MenuItem>
         <MenuItem
-          rightIcon={<Toys/>}
+          rightIcon={<Plane/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
           containerElement={<Link to="/avionics" />}>
           Avionics Visualizer
         </MenuItem>
         <MenuItem
-          rightIcon={<Toys/>}
+          rightIcon={<PhoneLink/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
           containerElement={<Link to="/mobileData" />}>
           Mobile Data Collection
         </MenuItem>
         <MenuItem
-          rightIcon={<Toys/>}
+          rightIcon={<BubbleChart/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
           containerElement={<Link to="/dataGenerator" />}>
           Fake Data Generator
         </MenuItem>
         <MenuItem
-          rightIcon={<Toys/>}
+          rightIcon={<People/>}
           onTouchTap={this.handleMenuItemTouch.bind(this)}
           containerElement={<Link to="/about" />}>
           About
