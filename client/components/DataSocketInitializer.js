@@ -35,8 +35,7 @@ const DataSocketInitializer = React.createClass({
         <h1>socket Initializer</h1>
         <TextField
           id="text-field-default"
-          defaultValue={socketName}
-          value={this.state.socketName}
+          value={socketName}
           onChange={this.handleChange}
         />
         <Divider />

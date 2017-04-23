@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import Paper from 'material-ui/Paper';
@@ -7,6 +7,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 
 const FakeDataControls = React.createClass({
+  propTypes: {
+    socket: PropTypes.object.isRequired,
+    username: PropTypes.string.isRequired,
+  },
 
   getInitialState() {
     this.isSending = false;
@@ -32,7 +36,7 @@ const FakeDataControls = React.createClass({
       hasBarometer: false,
       hasIMU: false,
       hasColorSensor: false,
-      timestamp: 0,
+      timeStamp: 0,
     };
   },
 
@@ -44,21 +48,21 @@ const FakeDataControls = React.createClass({
     return cleanedState;
   },
 
-  sendDataJSON() {
+  sendDataJson() {
     const dataPacket = {
       dateCreated: Date.now(),
       name: this.props.username,
       payload: this.pollDataJson(),
     };
 
-    this.props.socket.emit('sensorData', dataPacket, (response) =>{
+    this.props.socket.emit('sensorData', dataPacket, (response) => {
       console.log(response);
     });
   },
 
   continuousSend() {
     this.sendDataJson();
-    this.setState({timestamp: Date.now()});
+    this.setState({ timeStamp: Date.now() });
     this.requestID = window.requestAnimationFrame(this.continuousSend);
   },
 
@@ -87,7 +91,7 @@ const FakeDataControls = React.createClass({
   },
   
   handleSendOnePacket() {
-    this.sendDataJSON();
+    this.sendDataJson();
   },
 
   renderBarometer() {
@@ -288,7 +292,7 @@ const FakeDataControls = React.createClass({
   },
 
   render() {
-    const { hasBarometer, hasIMU, hasColorSensor, timestamp } = this.state;
+    const { hasBarometer, hasIMU, hasColorSensor, timeStamp } = this.state;
     return (
       <div>
         <Toggle label="Show Barometer" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasBarometer'); }} />
@@ -299,7 +303,7 @@ const FakeDataControls = React.createClass({
         {hasColorSensor && this.renderColorSensor()}
         <TextField
           id="text-field-controlled"
-          value={`Recorded time: ${timestamp} ms`}
+          value={`Recorded time: ${timeStamp} ms`}
           disabled={true}
         />
         <Divider />

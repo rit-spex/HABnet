@@ -38,7 +38,7 @@ const FakeDataGenerator = React.createClass({
         <h1>{`This data source is named: ${socketName}`}</h1>
         {!isSocketConnected && 
         <DataSocketInitializer connectSocket={this.connectSocket} socketName={socketName}/>}
-        {isSocketConnected && <FakeDataControls socket={this.socket}/>}
+        {isSocketConnected && <FakeDataControls username={socketName} socket={this.socket}/>}
       </div>
     );
   },

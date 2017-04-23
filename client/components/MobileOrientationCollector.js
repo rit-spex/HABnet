@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const MobileOrientationCollector = React.createClass({
   propTypes: {
-    socket: PropTypes.object,
+    socket: PropTypes.object.isRequired,
   },
 
   getInitialState() {
