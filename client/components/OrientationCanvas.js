@@ -22,7 +22,7 @@ const OrientationCanvas = React.createClass({
       60, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(this.renderer.domElement);
+    this.canvasNode.appendChild(this.renderer.domElement);
   },
 
   setupLight() {
@@ -36,11 +36,11 @@ const OrientationCanvas = React.createClass({
   },
 
   setupAxis() {
-    const xDir = new THREE.Vector3( 1, 0, 0 );
-    const yDir = new THREE.Vector3( 0, 1, 0 );
-    const zDir = new THREE.Vector3( 0, 0, 1 );
+    const xDir = new THREE.Vector3(1, 0, 0);
+    const yDir = new THREE.Vector3(0, 1, 0);
+    const zDir = new THREE.Vector3(0, 0, 1);
 
-    const origin = new THREE.Vector3( 0, 0, 0 );
+    const origin = new THREE.Vector3(0, 0, 0);
     const length = 3;
     const red = 0xff0000;
     const green = 0x00ff00;
@@ -125,7 +125,7 @@ const OrientationCanvas = React.createClass({
 
   addOBJ(modelInfo, addToGroup) {
     const mtlLoader = new MTLLoader();
-    const mtlUrl = `/assets/models/${modelInfo.surface}`;
+    const mtlUrl = `../models/${modelInfo.surface}`;
     let objModel = null;
     mtlLoader.load(mtlUrl, (materials) => {
       materials.preload();
@@ -180,7 +180,7 @@ const OrientationCanvas = React.createClass({
   },
 
   render() {
-    return (null);
+    return (<div ref={(node) => { this.canvasNode = node; }} />);
   },
 });
 
