@@ -17,6 +17,11 @@ const OrientationCanvas = React.createClass({
     this.renderScene();
   },
 
+  componentWillUnmount() {
+    window.cancelAnimationFrame(this.requestID);
+    this.requestID = undefined;
+  },
+
   setupScene() {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
@@ -177,7 +182,7 @@ const OrientationCanvas = React.createClass({
     this.allGroup.rotation.x = -15;
     this.allGroup.rotation.y = 15;
     this.allGroup.rotation.z = 15;
-    window.requestAnimationFrame(this.renderScene);
+    this.requestID = window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
   },
 
