@@ -13,6 +13,10 @@ const FakeDataGenerator = React.createClass({
     };
   },
 
+  componentWillUnmount() {
+    this.socket.disconnect();
+  },
+
   connectSocket(username) {
     this.socket = io.connect();
     this.socket.on('joinedSuccessfully', (data) => {
