@@ -30,6 +30,8 @@ const SocketManager = React.createClass({
         subscribedSocketList: data,
       });
     });
+    socket.emit('getSubscribedRooms');
+    socket.emit('getAvailableRooms');
   },
 
 

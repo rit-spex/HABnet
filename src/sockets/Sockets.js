@@ -90,10 +90,14 @@ const addSocketToGroup = (data, socket) => {
   }
 
   printConnectedSockets();
+  getAvailableRooms(socket);
+};
+
+const getAvailableRooms = (socket) => {
   const connections = getCurrentConnections();
 
   sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
-  sendToClientPacket(socket, 'availablerooms', connections);
+  sendToClientPacket(socket, 'availableRooms', connections);
 };
 
 const removeSocketFromGroup = (data, socket) => {
@@ -104,15 +108,7 @@ const removeSocketFromGroup = (data, socket) => {
   }
 
   printConnectedSockets();
-
-  const connections = {
-    timestamp: Date.now(),
-    dataListeners: clientConnections.dataListeners.map(sock => sock.name).toArray(),
-    dataSources: clientConnections.dataSources.map(sock => sock.name).toArray(),
-  };
-
-  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
-  sendToClientPacket(socket, 'availablerooms', connections );
+  getAvailableRooms(socket);
 };
 
 // setup socket listeners on join
@@ -150,6 +146,14 @@ const onJoined = (sock) => {
 
   socket.on('disconnectFromSocket', (data) => {
     disconnectFromSocket(socket, data.target);
+  });
+
+  socket.on('getSubscribedRooms', () => {
+    getSubscribedRooms(socket);
+  });
+
+  socket.on('getAvailableRooms', () => {
+    getAvailableRooms(socket);
   });
 };
 
