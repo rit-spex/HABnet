@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -21,6 +22,7 @@ module.exports = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin([ { from: 'client/assets', to: 'assets' } ]),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
@@ -40,6 +42,9 @@ module.exports = {
     }, {
       test: /\.css$/,
       loader: 'style-loader!css-loader?modules&localIdentName=[name]---[local]---[hash:base64:5]',
+    }, {
+      test: /\.dae$/,
+      loader: 'file-loader?name=[name].[ext]&publicPath=assets/models/',
     }],
   },
 };

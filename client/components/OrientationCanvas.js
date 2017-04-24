@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import ColladaLoader from 'three-collada-loader';
 import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
+OBJLoader(THREE);
 
 const OrientationCanvas = React.createClass({
   componentDidMount() {
@@ -13,7 +14,7 @@ const OrientationCanvas = React.createClass({
     this.models = this.setupModels();
 
     this.scene.add(this.allGroup);
-    this.renderScene()
+    this.renderScene();
   },
 
   setupScene() {
@@ -125,13 +126,15 @@ const OrientationCanvas = React.createClass({
 
   addOBJ(modelInfo, addToGroup) {
     const mtlLoader = new MTLLoader();
-    const mtlUrl = `../models/${modelInfo.surface}`;
+    //const mtlUrl = `assets/models/${modelInfo.surface}`;
     let objModel = null;
+    mtlLoader.setPath('assets/models/');
+    const mtlUrl = modelInfo.surface;
     mtlLoader.load(mtlUrl, (materials) => {
       materials.preload();
 
-      // const objLoader = new THREE.OBJLoader();
-      const objLoader = OBJLoader(THREE);
+      const objLoader = new THREE.OBJLoader();
+      // const objLoader = OBJLoader(THREE);
       objLoader.setMaterials(materials);
       const objUrl = `/assets/models/${modelInfo.file}`;
       objLoader.load(objUrl, (obj) => {
@@ -156,7 +159,7 @@ const OrientationCanvas = React.createClass({
 
   swithcModel(modelIndex) {
     for (let i = 0; i < this.models.length; i++) {
-      if (i === modelIndex){
+      if (i === modelIndex) {
         this.allGroup.add(this.models[i]);
       } else {
         this.allGroup.remove(this.models[i]);
@@ -171,12 +174,11 @@ const OrientationCanvas = React.createClass({
     this.allGroup.rotation.y = pitch;
     this.allGroup.rotation.z = heading;
     */
-    this.allGroup.rotation.x = 0;
-    this.allGroup.rotation.y = 0;
-    this.allGroup.rotation.z = 0;
+    this.allGroup.rotation.x = -15;
+    this.allGroup.rotation.y = 15;
+    this.allGroup.rotation.z = 15;
     window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
-  
   },
 
   render() {

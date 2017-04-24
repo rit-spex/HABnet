@@ -49,7 +49,11 @@ module.exports = {
     }, {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&localIdentName=[name]---[local]---[hash:base64:5]!postcss'),
-    }],
+    }, {
+      test: /\.dae$/,
+      loader: 'file-loader',
+    }
+    ],
   },
   postcss: [
     require('autoprefixer'),
