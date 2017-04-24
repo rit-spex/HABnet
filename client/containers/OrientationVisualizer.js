@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import io from 'socket.io-client';
 import OrientationCanvas from '../components/OrientationCanvas';
 import SocketManager from '../components/SocketManager';
@@ -35,12 +35,12 @@ const OrientationVisualizer = React.createClass({
   },
 
   render() {
+    const { isSocketConnected } = this.state;
     return (
       <div >
         <h1>This is the Orientation Visualizer page</h1>
-        <SocketManager socket={this.socket}>
-          <OrientationCanvas socket={this.socket}/>
-        </SocketManager>
+        <SocketManager socket={this.socket} />
+        {isSocketConnected && <OrientationCanvas socket={this.socket}/> }
       </div>
     );
   },

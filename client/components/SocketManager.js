@@ -14,24 +14,48 @@ const SocketManager = React.createClass({
   },
 
   componentDidMount() {
+    this.socket = this.props.socket;
     this.setupSocketListeners();
   },
 
+  handleSubscribeToSocket(target) {
+    const data = {
+      target,
+    };
+    this.socket.emit('connectToSocket', data, () => {
+      console.log(`This socket is now tracking ${target}`);
+      this.fetchRoomLists();
+    });
+  },
+
+  handleUnsubscribeFromSocket(target) {
+    const data = {
+      target,
+    };
+    this.socket.emit('disconnectFromSocket', data, () => {
+      console.log(`This socket is no longer tracking ${target}`);
+      this.fetchRoomLists();
+    });
+  },
+
   setupSocketListeners() {
-    const { socket } = this.props;
-    socket.on('availableRooms', (data) => {
+    this.socket.on('availableRooms', (data) => {
       this.setState({
         availableSocketList: data.dataSources,
       });
     });
 
-    socket.on('subscribedRooms', (data) => {
+    this.socket.on('subscribedRooms', (data) => {
       this.setState({
         subscribedSocketList: data,
       });
     });
-    socket.emit('getSubscribedRooms');
-    socket.emit('getAvailableRooms');
+    this.fetchRoomLists();
+  },
+
+  fetchRoomLists() {
+    this.props.socket.emit('getSubscribedRooms');
+    this.props.socket.emit('getAvailableRooms');
   },
 
 
@@ -46,7 +70,11 @@ const SocketManager = React.createClass({
         <List>
         {availableSocketList.map((dataSocket, index) => {
           return (
-            <ListItem key={index} primaryText={dataSocket.name} />
+            <ListItem
+              key={index}
+              primaryText={dataSocket.name}
+              onTouchTap={ () => { this.handleSubscribeToSocket(dataSocket.name); }}
+            />
           );
         })}
         </List>
@@ -54,7 +82,11 @@ const SocketManager = React.createClass({
         <List>
         {subscribedSocketList.map((dataSocket, index) => {
           return (
-            <ListItem key={index} primaryText={dataSocket.name} />
+            <ListItem
+              key={index}
+              primaryText={dataSocket}
+              onTouchTap={() => { this.handleUnsubscribeFromSocket(dataSocket); }}
+            />
           );
         })}
         </List>

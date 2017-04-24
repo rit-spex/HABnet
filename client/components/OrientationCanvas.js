@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import * as THREE from 'three';
 import ColladaLoader from 'three-collada-loader';
 import MTLLoader from 'three-mtl-loader';
@@ -6,6 +6,10 @@ import OBJLoader from 'three-obj-loader';
 OBJLoader(THREE);
 
 const OrientationCanvas = React.createClass({
+  propTypes: {
+    socket: PropTypes.object.isRequired,
+  },
+
   componentDidMount() {
     this.setupScene();
     this.setupLight();

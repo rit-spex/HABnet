@@ -49,6 +49,7 @@ const connectToSocket = (socket, target) => {
   socket.join(target, () => {
     console.log(socket.rooms);
     getSubscribedRooms(socket);
+    getAvailableRooms(socket);
   });
   console.log(`${socket.name} has started listening to ${target}`);
 };
@@ -57,6 +58,7 @@ const disconnectFromSocket = (socket, target) => {
   socket.leave(target, () => {
     console.log(socket.rooms);
     getSubscribedRooms(socket);
+    getAvailableRooms(socket);
   });
   console.log(`${socket.name} has stopped listening to ${target}`);
 };
