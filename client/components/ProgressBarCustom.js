@@ -7,10 +7,10 @@ const ProgressBarCustom = React.createClass({
   },
 
   setupProgressBar() {
-    this.progressNode = document.createElement("div");
-    this.progressNode.id = "progressBar";
-    this.progressNode.style.margin = "25px";
-    this.progressBar = new ProgressBar.Line("#progressBar", {
+    this.div = document.createElement("div");
+    this.div.id = "progressBar";
+    this.div.style.margin = "25px";
+    this.progressBar = new ProgressBar.Line(this.div, {
       easing: 'easeInOut',
       strokeWidth: 3,
       trailWidth: 1,
@@ -28,10 +28,12 @@ const ProgressBarCustom = React.createClass({
         }
         bar.setText(val);
       }
+    });
+    this.progressNode.appendChild(this.div);
   },
 
   render() {
-    return (<div ref{(node) => { this.progressNode = node; }} />);
+    return (<div ref={(node) => { this.progressNode = node; }} />);
   },
 });
 
