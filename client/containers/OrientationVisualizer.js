@@ -1,5 +1,6 @@
 import React from 'react';
 import OrientationCanvas from '../components/OrientationCanvas';
+import ProgressBarCustom from '../components/ProgressBarCustom';
 
 //import styles from '../css/App.css';
 
