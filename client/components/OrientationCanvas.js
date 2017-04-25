@@ -10,7 +10,17 @@ const OrientationCanvas = React.createClass({
     socket: PropTypes.object.isRequired,
   },
 
+  getInitialState() {
+    return {
+      roll: 0,
+      pitch: 0,
+      yaw: 0,
+    };
+  },
+
   componentDidMount() {
+    this.socket = this.props.socket;
+    this.setupSocket();
     this.setupScene();
     this.setupLight();
     this.allGroup = new THREE.Group();
@@ -24,6 +34,18 @@ const OrientationCanvas = React.createClass({
   componentWillUnmount() {
     window.cancelAnimationFrame(this.requestID);
     this.requestID = undefined;
+  },
+
+  setupSocket() {
+    this.socket.on('broadcastMobileData', (data) => {
+      console.log('mobile data received');
+      const payload = data.payload;
+      this.setState({
+        roll: payload.roll,
+        pitch: -payload.pitch,
+        yaw: payload.yaw,
+      });
+    });
   },
 
   setupScene() {
@@ -178,14 +200,15 @@ const OrientationCanvas = React.createClass({
 
   renderScene() {
     console.log('running render function');
-    /*
+    const { roll, pitch, yaw } = this.state;
     this.allGroup.rotation.x = roll;
     this.allGroup.rotation.y = pitch;
-    this.allGroup.rotation.z = heading;
-    */
+    this.allGroup.rotation.z = yaw;
+    /*
     this.allGroup.rotation.x = -15;
     this.allGroup.rotation.y = 15;
     this.allGroup.rotation.z = 15;
+    */
     this.requestID = window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
   },

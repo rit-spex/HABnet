@@ -47,7 +47,7 @@ const MobileOrientationCollector = React.createClass({
       payload: this.pollDataJson(),
     };
 
-    this.props.socket.emit('sensorData', dataPacket, (response) => {
+    this.props.socket.emit('mobileIMUData', dataPacket, (response) => {
       console.log(response);
     });
   },
