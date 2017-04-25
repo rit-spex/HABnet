@@ -10,10 +10,10 @@ const OrientationVisualizer = React.createClass({
       <div >
         <h1>This is the Orientation Visualizer page</h1>
         <OrientationCanvas />
+        <ProgressBarCustom />
       </div>
     );
   },
 });
 
 export default OrientationVisualizer;
-
