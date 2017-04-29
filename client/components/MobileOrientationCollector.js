@@ -18,6 +18,7 @@ const MobileOrientationCollector = React.createClass({
       rotationX: 0,
       rotationY: 0,
       rotationZ: 0,
+      isDeg: true,
       showMotion: false,
       showOrientation: false,
     };

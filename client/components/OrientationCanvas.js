@@ -5,6 +5,10 @@ import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
 OBJLoader(THREE);
 
+const deg2ra = (degree) => {
+   return degree*(Math.PI/180);
+};
+
 const OrientationCanvas = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
@@ -37,14 +41,22 @@ const OrientationCanvas = React.createClass({
   },
 
   setupSocket() {
-    this.socket.on('broadcastMobileData', (data) => {
+    this.socket.on('broadcastData', (data) => {
       console.log('mobile data received');
       const payload = data.payload;
-      this.setState({
-        roll: payload.roll,
-        pitch: -payload.pitch,
-        yaw: payload.yaw,
-      });
+      if (payload.isDeg) {
+        this.setState({
+          roll: deg2ra(payload.roll),
+          pitch: -deg2ra(payload.pitch),
+          yaw: deg2ra(payload.yaw),
+        });
+      } else {
+        this.setState({
+          roll: payload.roll,
+          pitch: -payload.pitch,
+          yaw: payload.yaw,
+        });
+      }
     });
   },
 

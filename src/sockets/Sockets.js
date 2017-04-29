@@ -19,6 +19,11 @@ const sendSocketData = (socket, destination, messageType, payload) => {
   socket.broadcast.to(destination).emit(messageType, payload);
 };
 
+const sendToRoom = (socket, destinationRoom, messageType, payload) => {
+  // socket.server.in(destinationRoom).emit(messageType, payload);
+  socket.to(destinationRoom).emit(messageType, payload);
+};
+
 const sendToClientPacket = (socket, messageType, payload) => {
   socket.emit(messageType, payload);
 };
@@ -125,6 +130,7 @@ const onJoined = (sock) => {
     const name = getUniqueName(data.name);
     socket.name = name;
     socket.join(ALL_SOCKETS);
+    socket.join(data.name);
     writeConnectionOpen(statisticsClient, data);
     addSocketToGroup(data, socket);
     socket.emit('joinedSuccessfully', { name });
@@ -132,13 +138,13 @@ const onJoined = (sock) => {
 
   // Broadcast out received data
   socket.on('sensorData', (data) => {
-    sendSocketData(socket, ALL_SOCKETS, 'broadcastData', data);
+    sendToRoom(socket, socket.name, 'broadcastData', data);
     sendSocketData(socket, socket.id, 'broadcastData', data);
     writeDataPacket(dataClient, data, socket.name);
   });
 
   socket.on('mobileIMUData', (data) => {
-    sendSocketData(socket, ALL_SOCKETS, 'broadcastMobileData', data);
+    sendToRoom(socket, socket.name, 'broadcastData', data);
     sendSocketData(socket, socket.id, 'broadcastMobileData', data);
     writeDataPacket(dataClient, data, socket.name);
   });
