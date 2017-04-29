@@ -34,6 +34,7 @@ const printConnectedSockets = () => {
 const getSubscribedRooms = (socket) => {
   let rooms = Immutable.Map(socket.rooms);
   rooms = rooms.delete(socket.id);
+  rooms = rooms.delete(ALL_SOCKETS);
   socket.emit('subscribedRooms', rooms.toArray());
 };
 

@@ -12,6 +12,10 @@ const MobileDataCollection = React.createClass({
     };
   },
 
+  componentWillUnmount() {
+    this.socket.disconnect();
+  },
+
   connectSocket(username) {
     this.socket = io.connect();
     this.socket.on('joinedSuccessfully', (data) => {
@@ -30,7 +34,7 @@ const MobileDataCollection = React.createClass({
   },
 
   render() {
-   const { isSocketConnected, socketName } = this.state;
+    const { isSocketConnected, socketName } = this.state;
     return (
       <div >
         <h1>Mobile Data Collector</h1>
