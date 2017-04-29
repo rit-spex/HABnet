@@ -38,6 +38,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "helmet": "^3.1.0",
+    "highcharts": "^5.0.10",
     "html-webpack-plugin": "^2.28.0",
     "immutable": "^3.8.1",
     "influxdb-nodejs": "^2.5.1",
