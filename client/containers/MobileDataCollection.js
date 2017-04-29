@@ -13,7 +13,9 @@ const MobileDataCollection = React.createClass({
   },
 
   componentWillUnmount() {
-    this.socket.disconnect();
+    if (this.socket) {
+      this.socket.disconnect();
+    }
   },
 
   connectSocket(username) {
