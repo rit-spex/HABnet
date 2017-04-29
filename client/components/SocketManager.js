@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 
 const SocketManager = React.createClass({
   propTypes: {

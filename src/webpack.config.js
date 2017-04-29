@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -20,11 +22,19 @@ module.exports = {
       inject: 'body',
       filename: 'index.html',
     }),
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.DedupePlugin(),
-    new CopyWebpackPlugin([ { from: 'client/assets', to: 'assets' } ]),
+    new CopyWebpackPlugin([{ from: 'client/assets', to: 'assets' }]),
     new webpack.NoErrorsPlugin(),
+    new BundleAnalyzerPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
@@ -35,7 +45,7 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel-loader',
       query: {
-        'presets': ['react', 'es2015', 'stage-2', 'react-hmre'],
+        presets: ['react', 'es2015', 'stage-2', 'react-hmre'],
       },
     }, {
       test: /\.json?$/,

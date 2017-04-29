@@ -26,7 +26,7 @@ const MobileOrientationCollector = React.createClass({
 
   componentDidMount() {
     if (window.DeviceMotionEvent) {
-      window.addEventListener("devicemotion", this.handleMotion, true);
+      window.addEventListener('devicemotion', this.handleMotion, true);
       this.setState({ showMotion: false });
     }
     if (window.DeviceOrientationEvent) {

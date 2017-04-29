@@ -2,8 +2,6 @@ import React from 'react';
 import io from 'socket.io-client';
 import FakeDataControls from '../components/FakeDataControls';
 import DataSocketInitializer from '../components/DataSocketInitializer';
-//import styles from '../css/App.css';
-
 
 const FakeDataGenerator = React.createClass({
   getInitialState() {

@@ -2,7 +2,6 @@ import React from 'react';
 import io from 'socket.io-client';
 import MobileOrientationCollector from '../components/MobileOrientationCollector';
 import DataSocketInitializer from '../components/DataSocketInitializer';
-//import styles from '../css/App.css';
 
 const MobileDataCollection = React.createClass({
   getInitialState() {
@@ -43,7 +42,11 @@ const MobileDataCollection = React.createClass({
         <h2>{`This data source is named: ${socketName}`}</h2>
         {!isSocketConnected && 
         <DataSocketInitializer connectSocket={this.connectSocket} socketName={socketName}/>}
-        {isSocketConnected && <MobileOrientationCollector username={socketName} socket={this.socket}/>}
+        {isSocketConnected &&
+        <MobileOrientationCollector
+          username={socketName}
+          socket={this.socket}
+        />}
       </div>
     );
   },

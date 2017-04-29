@@ -3,10 +3,11 @@ import * as THREE from 'three';
 import ColladaLoader from 'three-collada-loader';
 import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
+
 OBJLoader(THREE);
 
 const deg2ra = (degree) => {
-   return degree*(Math.PI/180);
+  return degree * (Math.PI / 180);
 };
 
 const OrientationCanvas = React.createClass({
@@ -94,7 +95,7 @@ const OrientationCanvas = React.createClass({
     const arrowHelperY = new THREE.ArrowHelper(yDir, origin, length, green);
     const arrowHelperZ = new THREE.ArrowHelper(zDir, origin, length, blue);
 
-    //put these in their own group so we can add/remove easily
+    // put these in their own group so we can add/remove easily
     this.axisGroup = new THREE.Group();
     this.axisGroup.add(arrowHelperX);
     this.axisGroup.add(arrowHelperY);
@@ -169,7 +170,6 @@ const OrientationCanvas = React.createClass({
 
   addOBJ(modelInfo, addToGroup) {
     const mtlLoader = new MTLLoader();
-    //const mtlUrl = `assets/models/${modelInfo.surface}`;
     let objModel = null;
     mtlLoader.setPath('assets/models/');
     const mtlUrl = modelInfo.surface;
@@ -177,7 +177,6 @@ const OrientationCanvas = React.createClass({
       materials.preload();
 
       const objLoader = new THREE.OBJLoader();
-      // const objLoader = OBJLoader(THREE);
       objLoader.setMaterials(materials);
       const objUrl = `/assets/models/${modelInfo.file}`;
       objLoader.load(objUrl, (obj) => {
