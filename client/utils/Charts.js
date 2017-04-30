@@ -16,7 +16,7 @@ export function getTempAxis() {
       text: '°C',
     },
     softMin: 24,
-    max: 30,
+    softMax: 30,
   };
 }
 
@@ -49,8 +49,8 @@ export function getHumidityAxis() {
     title: {
       text: '%',
     },
-    min: 0,
-    max: 100,
+    softMin: 0,
+    softMax: 100,
   };
 }
 
@@ -109,8 +109,8 @@ export function getAltitudeAxis() {
         text: 'Cruising altitude of a 747',
       },
     }],
-    min: 0,
-    max: 1000,
+    softMin: 0,
+    softMax: 1000,
   };
 }
 
@@ -160,8 +160,8 @@ export function getAccelAxis() {
         text: '-1g',
       },
     }],
-    min: -10,
-    max: 10,
+    softMin: -10,
+    softMax: 10,
   };
 }
 
@@ -239,8 +239,8 @@ export function getGyroAxis() {
         text: '50 RPM',
       },
     }],
-    min: -360,
-    max: 360,
+    softMin: -360,
+    softMax: 360,
   };
 }
 
@@ -285,8 +285,8 @@ export function getMagAxis() {
     title: {
       text: 'Gauss',
     },
-    min: -0.5,
-    max: 0.5,
+    softMin: -0.5,
+    softMax: 0.5,
   };
 }
 
