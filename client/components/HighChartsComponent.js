@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'highcharts/highstock';
+import * as Chart from '../utils/Charts';
 
 require('highcharts/modules/exporting')(Highcharts);
 // Alternatively, this is how to load Highstock or Highmaps 
@@ -22,11 +23,9 @@ const HighChartsComponent = React.createClass({
   propTypes: {
     title: PropTypes.string,
     source: PropTypes.string.isRequired,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
     type: PropTypes.oneOf(chartTypes).isRequired,
     container: PropTypes.string.isRequired,
-    options: PropTypes.object,
-    sourceName: PropTypes.string,
   },
 
   componentDidMount() {
@@ -35,7 +34,7 @@ const HighChartsComponent = React.createClass({
 
   componentWillUnmount() {
     this.chart.destroy();
-},
+  },
 
   setupChart() {
     Highcharts.setOptions({
@@ -47,7 +46,7 @@ const HighChartsComponent = React.createClass({
       },
     });
 
-    this.chart = Highcharts.stockChart(this,props.container, {
+    this.chart = Highcharts.stockChart(this.props.container, {
       chart: this.getChartOptions(),
       navigator: this.getNavigatorOptions(),
       scrollbar: this.getScrollbarOptions(),
@@ -62,7 +61,29 @@ const HighChartsComponent = React.createClass({
   },
 
   getChartOptions() {
-
+    const { type, data } = this.props;
+    switch (type) {
+      case 'TEMPERATURE':
+        return Chart.processTempData(data);
+      case 'HUMIDITY':
+        return Chart.processHumidityData(data);
+      case 'ALTITUDE':
+        return Chart.processAltitudeData(data);
+      case 'ACCELEROMETER':
+        return Chart.processAccelData(data);
+      case 'GYROSCOPE':
+        return Chart.processGyroData(data);
+      case 'MAGNETOMETER':
+        return Chart.processMagData(data);
+      case 'RGB':
+        return Chart.processRGBData(data);
+      case 'LUX':
+        return Chart.processLUXData(data);
+      case 'COLOR_TEMP':
+        return Chart.processColorTempData(data);
+      default:
+        return null;
+    }
   },
 
   getNavigatorOptions() {
@@ -97,14 +118,14 @@ const HighChartsComponent = React.createClass({
   },
 
   getChartTitle() {
-    const { title, sourceName, type } = this.props;
+    const { title, source, type } = this.props;
     if (title) {
       return {
-        text: `${title}-${sourceName}`,
+        text: `${title}-${type}-${source}`,
       };
     }
     return {
-      text: `${type}-${sourceName}`,
+      text: `${type}-${source}`,
     };
   },
 
@@ -115,13 +136,29 @@ const HighChartsComponent = React.createClass({
   },
 
   getYAxisOptions() {
-    return {
-      title: {
-        text: this.getUnits(),
-      },
-      softMin: this.getMin(),
-      max: this.getMax(),
-    };
+    const { type } = this.props;
+    switch (type) {
+      case 'TEMPERATURE':
+        return Chart.getTempAxis();
+      case 'HUMIDITY':
+        return Chart.getHumidityAxis();
+      case 'ALTITUDE':
+        return Chart.getAltitudeAxis();
+      case 'ACCELEROMETER':
+        return Chart.getAccelAxis();
+      case 'GYROSCOPE':
+        return Chart.getGyroAxis();
+      case 'MAGNETOMETER':
+        return Chart.getMagAxis();
+      case 'RGB':
+        return Chart.getRGBAxis();
+      case 'LUX':
+        return Chart.getLUXAxis();
+      case 'COLOR_TEMP':
+        return Chart.getColorTempAxis();
+      default:
+        return null;
+    }
   },
 
   getLegendOptions() {
@@ -137,45 +174,29 @@ const HighChartsComponent = React.createClass({
   },
 
   getSeries() {
-
-  },
-
-  getUnits() {
     const { type } = this.props;
     switch (type) {
       case 'TEMPERATURE':
-        return '°C';
+        return Chart.getTempSeries();
       case 'HUMIDITY':
-        return '%';
+        return Chart.getHumiditySeries();
       case 'ALTITUDE':
-        return 'meters';
+        return Chart.getAltitudeSeries();
       case 'ACCELEROMETER':
+        return Chart.getAccelSeries();
       case 'GYROSCOPE':
+        return Chart.getGyroSeries();
       case 'MAGNETOMETER':
+        return Chart.getMagSeries();
       case 'RGB':
+        return Chart.getRGBSeries();
       case 'LUX':
+        return Chart.getLUXSeries();
       case 'COLOR_TEMP':
+        return Chart.getColorTempSeries();
       default:
+        return null;
     }
-  },
-
-  getMin() {
-
-  },
-
-  getMax() {
-
-  },
-
-  loadChart() {
-    const series = this.series;
-    setInterval(() => {
-      if (dataArray) {
-        let x = (new Date()).getTime(),
-          y = Math.round(Math.random() * 100);
-        series[0].addPoint([x, dataArray[1]], true, true, false);
-      }
-    }, 100);
   },
 
   render() {

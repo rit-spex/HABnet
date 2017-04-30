@@ -53,23 +53,8 @@ $(() => {
 
     rangeSelector: {
       enabled: false,
-      buttons: [{
-        count: 1,
-        type: 'minute',
-        text: '1M',
-      }, {
-        count: 5,
-        type: 'minute',
-        text: '5M',
-      }, {
-        type: 'all',
-        text: 'All',
-      }],
       inputEnabled: false,
       selected: 0,
-    },
-    legend: {
-      enabled: true,
     },
     title: {
       text: 'Temperature',
@@ -81,7 +66,6 @@ $(() => {
       title: {
         text: '°C',
       },
-
       softMin: 24,
       max: 30,
     },
