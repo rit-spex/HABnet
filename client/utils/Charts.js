@@ -33,12 +33,13 @@ export function processTempData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.temp1], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -66,12 +67,13 @@ export function processHumidityData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.humidity], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -126,12 +128,13 @@ export function processAltitudeData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.altitude], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -185,7 +188,7 @@ export function processAccelData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.accelX], true, true, false);
@@ -193,6 +196,7 @@ export function processAccelData(data) {
             series[2].addPoint([x, data.accelZ], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -267,7 +271,7 @@ export function processGyroData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.gyroX], true, true, false);
@@ -275,6 +279,7 @@ export function processGyroData(data) {
             series[2].addPoint([x, data.gyroZ], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -313,7 +318,7 @@ export function processMagData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.magX], true, true, false);
@@ -321,6 +326,7 @@ export function processMagData(data) {
             series[2].addPoint([x, data.magZ], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -339,7 +345,7 @@ export function processRGBData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.colorR], true, true, false);
@@ -347,6 +353,7 @@ export function processRGBData(data) {
             series[2].addPoint([x, data.colorB], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -365,12 +372,13 @@ export function processLUXData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.lux], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
@@ -389,12 +397,13 @@ export function processColorTempData(data) {
     events: {
       load() {
         const series = this.series;
-        setInterval(() => {
+        const intervalId = setInterval(() => {
           if (data) {
             const x = (new Date()).getTime();
             series[0].addPoint([x, data.colorTemp], true, true, false);
           }
         }, 100);
+        window.graphIntervals.push(intervalId);
       },
     },
   };
