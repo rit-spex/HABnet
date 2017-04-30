@@ -8,3 +8,20 @@ body {
   max-width: 1280px;
   margin: auto;
 }
+
+.statistics-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.statistics-chart {
+  flex-grow: 1;
+  flex-direction: ltr;
+  min-width: 500px;
+  margin: auto;
+}
+
+@media screen and (min-width : 320px) {
+  .statistics-chart {
+    min-width: 300px;
+  }
+}

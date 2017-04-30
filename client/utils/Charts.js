@@ -9,6 +9,18 @@ export function generateDefaultData() {
   return data;
 }
 
+export const ChartTypes = [
+  'TEMPERATURE',
+  'HUMIDITY',
+  'ALTITUDE',
+  'ACCELEROMETER',
+  'GYROSCOPE',
+  'MAGNETOMETER',
+  'RGB',
+  'LUX',
+  'COLOR_TEMP',
+];
+
 
 export function getTempAxis() {
   return {

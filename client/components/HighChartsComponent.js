@@ -3,33 +3,21 @@ import Highcharts from 'highcharts/highstock';
 import * as Chart from '../utils/Charts';
 
 require('highcharts/modules/exporting')(Highcharts);
-// Alternatively, this is how to load Highstock or Highmaps 
-// var Highcharts = require('highcharts/highstock'); 
-// var Highcharts = require('highcharts/highmaps'); 
- 
-const chartTypes = [
-  'TEMPERATURE',
-  'HUMIDITY',
-  'ALTITUDE',
-  'ACCELEROMETER',
-  'GYROSCOPE',
-  'MAGNETOMETER',
-  'RGB',
-  'LUX',
-  'COLOR_TEMP',
-];
+// Alternatively, this is how to load Highstock or Highmaps
+// var Highcharts = require('highcharts/highstock');
+// var Highcharts = require('highcharts/highmaps');
 
 const HighChartsComponent = React.createClass({
   propTypes: {
     title: PropTypes.string,
     source: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(chartTypes).isRequired,
+    type: PropTypes.oneOf(Chart.ChartTypes).isRequired,
     container: PropTypes.string.isRequired,
   },
 
   componentDidMount() {
-    if(!window.graphIntervals) {
+    if (!window.graphIntervals) {
       window.graphIntervals = [];
     }
     this.setupChart();
