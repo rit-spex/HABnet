@@ -1,5 +1,8 @@
 import React from 'react';
-//import styles from '../css/App.css';
+import io from 'socket.io-client';
+import OrientationCanvas from '../components/OrientationCanvas';
+import ProgressBarCustom from '../components/ProgressBarCustom';
+import SocketManager from '../components/SocketManager';
 
 class AvionicsVisualizer extends React.Component {
   constructor(props) {

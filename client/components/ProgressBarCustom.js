@@ -15,16 +15,16 @@ const ProgressBarCustom = React.createClass({
     this.socket = this.props.socket;
     this.setupSocket();
     this.setupProgressBar();
-  }
+  },
 
   setupSocket() {
-    this.socket.on('broadcastData', (data) = > {
+    this.socket.on('broadcastData', (data) => {
       const payload = data.payload;
       this.setState({
         lux: payload.lux
       });
-    }
-  }
+    });
+  },
 
   setupProgressBar() {
     this.div = document.createElement("div");
@@ -55,7 +55,7 @@ const ProgressBarCustom = React.createClass({
   update() {
     const { lux } = this.state;
     this.progressBar.set(lux);
-  }
+  },
 
   render() {
     return (<div ref={(node) => { this.progressNode = node; }} />);

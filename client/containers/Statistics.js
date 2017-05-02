@@ -1,6 +1,6 @@
 import React from 'react';
 import Chart from '../components/Chart';
-import ChartManager from '../components/ChartManager';
+//import ChartManager from '../components/ChartManager';
 
 class Statistics extends React.Component {
   constructor(props) {
