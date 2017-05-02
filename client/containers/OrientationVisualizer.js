@@ -1,11 +1,8 @@
 import React, { PropTypes } from 'react';
 import io from 'socket.io-client';
 import OrientationCanvas from '../components/OrientationCanvas';
-<<<<<<< HEAD
 import ProgressBarCustom from '../components/ProgressBarCustom';
-=======
 import SocketManager from '../components/SocketManager';
->>>>>>> 866a77182a1ac24921829cc608f32dfab2013341
 
 //import styles from '../css/App.css';
 
@@ -43,13 +40,9 @@ const OrientationVisualizer = React.createClass({
     return (
       <div >
         <h1>This is the Orientation Visualizer page</h1>
-<<<<<<< HEAD
-        <OrientationCanvas />
         <ProgressBarCustom />
-=======
         <SocketManager socket={this.socket} />
         {isSocketConnected && <OrientationCanvas socket={this.socket}/> }
->>>>>>> 866a77182a1ac24921829cc608f32dfab2013341
       </div>
     );
   },
