@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import * as THREE from 'three';
 import ColladaLoader from 'three-collada-loader';
 import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
 
+OBJLoader(THREE);
+
+const deg2ra = (degree) => {
+  return degree * (Math.PI / 180);
+};
+
 const OrientationCanvas = React.createClass({
+  propTypes: {
+    socket: PropTypes.object.isRequired,
+  },
+
+  getInitialState() {
+    return {
+      roll: 0,
+      pitch: 0,
+      yaw: 0,
+    };
+  },
+
   componentDidMount() {
+    this.socket = this.props.socket;
+    this.setupSocket();
     this.setupScene();
     this.setupLight();
     this.allGroup = new THREE.Group();
@@ -13,7 +33,32 @@ const OrientationCanvas = React.createClass({
     this.models = this.setupModels();
 
     this.scene.add(this.allGroup);
-    this.renderScene()
+    this.renderScene();
+  },
+
+  componentWillUnmount() {
+    window.cancelAnimationFrame(this.requestID);
+    this.requestID = undefined;
+  },
+
+  setupSocket() {
+    this.socket.on('broadcastData', (data) => {
+      console.log('mobile data received');
+      const payload = data.payload;
+      if (payload.isDeg) {
+        this.setState({
+          roll: deg2ra(payload.roll),
+          pitch: -deg2ra(payload.pitch),
+          yaw: deg2ra(payload.yaw),
+        });
+      } else {
+        this.setState({
+          roll: payload.roll,
+          pitch: -payload.pitch,
+          yaw: payload.yaw,
+        });
+      }
+    });
   },
 
   setupScene() {
@@ -50,7 +95,7 @@ const OrientationCanvas = React.createClass({
     const arrowHelperY = new THREE.ArrowHelper(yDir, origin, length, green);
     const arrowHelperZ = new THREE.ArrowHelper(zDir, origin, length, blue);
 
-    //put these in their own group so we can add/remove easily
+    // put these in their own group so we can add/remove easily
     this.axisGroup = new THREE.Group();
     this.axisGroup.add(arrowHelperX);
     this.axisGroup.add(arrowHelperY);
@@ -125,13 +170,13 @@ const OrientationCanvas = React.createClass({
 
   addOBJ(modelInfo, addToGroup) {
     const mtlLoader = new MTLLoader();
-    const mtlUrl = `../models/${modelInfo.surface}`;
     let objModel = null;
+    mtlLoader.setPath('assets/models/');
+    const mtlUrl = modelInfo.surface;
     mtlLoader.load(mtlUrl, (materials) => {
       materials.preload();
 
-      // const objLoader = new THREE.OBJLoader();
-      const objLoader = OBJLoader(THREE);
+      const objLoader = new THREE.OBJLoader();
       objLoader.setMaterials(materials);
       const objUrl = `/assets/models/${modelInfo.file}`;
       objLoader.load(objUrl, (obj) => {
@@ -156,7 +201,7 @@ const OrientationCanvas = React.createClass({
 
   swithcModel(modelIndex) {
     for (let i = 0; i < this.models.length; i++) {
-      if (i === modelIndex){
+      if (i === modelIndex) {
         this.allGroup.add(this.models[i]);
       } else {
         this.allGroup.remove(this.models[i]);
@@ -166,17 +211,17 @@ const OrientationCanvas = React.createClass({
 
   renderScene() {
     console.log('running render function');
-    /*
+    const { roll, pitch, yaw } = this.state;
     this.allGroup.rotation.x = roll;
     this.allGroup.rotation.y = pitch;
-    this.allGroup.rotation.z = heading;
+    this.allGroup.rotation.z = yaw;
+    /*
+    this.allGroup.rotation.x = -15;
+    this.allGroup.rotation.y = 15;
+    this.allGroup.rotation.z = 15;
     */
-    this.allGroup.rotation.x = 0;
-    this.allGroup.rotation.y = 0;
-    this.allGroup.rotation.z = 0;
-    window.requestAnimationFrame(this.renderScene);
+    this.requestID = window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
-  
   },
 
   render() {

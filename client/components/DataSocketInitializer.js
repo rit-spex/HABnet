@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
+
 const DataSocketInitializer = React.createClass({
   propTypes: {
     connectSocket: PropTypes.func.isRequired,

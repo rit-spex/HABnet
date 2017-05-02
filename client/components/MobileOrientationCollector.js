@@ -18,6 +18,7 @@ const MobileOrientationCollector = React.createClass({
       rotationX: 0,
       rotationY: 0,
       rotationZ: 0,
+      isDeg: true,
       showMotion: false,
       showOrientation: false,
     };
@@ -25,7 +26,7 @@ const MobileOrientationCollector = React.createClass({
 
   componentDidMount() {
     if (window.DeviceMotionEvent) {
-      window.addEventListener("devicemotion", this.handleMotion, true);
+      window.addEventListener('devicemotion', this.handleMotion, true);
       this.setState({ showMotion: false });
     }
     if (window.DeviceOrientationEvent) {
@@ -47,7 +48,7 @@ const MobileOrientationCollector = React.createClass({
       payload: this.pollDataJson(),
     };
 
-    this.props.socket.emit('sensorData', dataPacket, (response) => {
+    this.props.socket.emit('mobileIMUData', dataPacket, (response) => {
       console.log(response);
     });
   },

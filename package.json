@@ -28,13 +28,17 @@
     "babel-core": "^6.24.1",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
+    "compression-webpack-plugin": "^0.4.0",
     "cookie-parser": "^1.4.3",
+    "copy-webpack-plugin": "^4.0.1",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.14.2",
     "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
     "helmet": "^3.1.0",
+    "highcharts": "^5.0.10",
     "html-webpack-plugin": "^2.28.0",
     "immutable": "^3.8.1",
     "influxdb-nodejs": "^2.5.1",
@@ -90,6 +94,7 @@
     "rimraf": "^2.6.1",
     "sinon": "^2.1.0",
     "sinon-chai": "^2.9.0",
-    "style-loader": "^0.16.1"
+    "style-loader": "^0.16.1",
+    "webpack-bundle-analyzer": "^2.4.0"
   }
 }
