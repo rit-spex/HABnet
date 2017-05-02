@@ -31,7 +31,6 @@ module.exports = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new CopyWebpackPlugin([{ from: 'client/assets', to: 'assets' }]),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({

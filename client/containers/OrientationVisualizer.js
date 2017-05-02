@@ -17,6 +17,12 @@ const OrientationVisualizer = React.createClass({
     this.connectSocket();
   },
 
+  componentWillUnmount() {
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+  },
+
   connectSocket() {
     this.socket = io.connect();
     this.socket.on('joinedSuccessfully', (data) => {
