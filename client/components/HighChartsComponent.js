@@ -58,30 +58,7 @@ const HighChartsComponent = React.createClass({
   },
 
   getChartOptions() {
-    const { type } = this.props;
-    const data = this.dataStore.data.get(this.props.source);
-    switch (type) {
-      case 'TEMPERATURE':
-        return Chart.processTempData(data);
-      case 'HUMIDITY':
-        return Chart.processHumidityData(data);
-      case 'ALTITUDE':
-        return Chart.processAltitudeData(data);
-      case 'ACCELEROMETER':
-        return Chart.processAccelData(data);
-      case 'GYROSCOPE':
-        return Chart.processGyroData(data);
-      case 'MAGNETOMETER':
-        return Chart.processMagData(data);
-      case 'RGB':
-        return Chart.processRGBData(data);
-      case 'LUX':
-        return Chart.processLUXData(data);
-      case 'COLOR_TEMP':
-        return Chart.processColorTempData(data);
-      default:
-        return null;
-    }
+    return {};
   },
 
   getNavigatorOptions() {
