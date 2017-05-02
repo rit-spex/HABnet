@@ -199,7 +199,7 @@ const OrientationCanvas = React.createClass({
     }
   },
 
-  swithcModel(modelIndex) {
+  switchModel(modelIndex) {
     for (let i = 0; i < this.models.length; i++) {
       if (i === modelIndex) {
         this.allGroup.add(this.models[i]);
