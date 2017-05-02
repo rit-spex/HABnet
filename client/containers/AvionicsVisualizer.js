@@ -10,10 +10,12 @@ class AvionicsVisualizer extends React.Component {
     return (
       <div >
         <h1>This is the Avionics Visualizer page</h1>
+        <SocketManager socket={this.socket} />
+        {isSocketConnected && <ProgressBarCustom socket={this.socket}/> }
+        {isSocketConnected && <OrientationCanvas socket={this.socket}/> }
       </div>
     );
   }
 }
 
 export default AvionicsVisualizer;
-
