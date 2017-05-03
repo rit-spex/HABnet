@@ -184,7 +184,11 @@ const OrientationCanvas = React.createClass({
         const scale = modelInfo.scale;
         objModel.scale.set(scale, scale, scale);
         if (addToGroup) {
-          addToGroup.add(objModel);
+          let child;
+          for (let i = 0; i < objModel.children.length; i++) {
+            child = objModel.children[i];
+            addToGroup.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
+          }
         }
       });
     });
@@ -215,11 +219,6 @@ const OrientationCanvas = React.createClass({
     this.allGroup.rotation.x = roll;
     this.allGroup.rotation.y = pitch;
     this.allGroup.rotation.z = yaw;
-    /*
-    this.allGroup.rotation.x = -15;
-    this.allGroup.rotation.y = 15;
-    this.allGroup.rotation.z = 15;
-    */
     this.requestID = window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
   },
