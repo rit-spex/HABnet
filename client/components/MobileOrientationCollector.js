@@ -15,10 +15,11 @@ const MobileOrientationCollector = React.createClass({
       accelX: 0,
       accelY: 0,
       accelZ: 0,
-      rotationX: 0,
-      rotationY: 0,
-      rotationZ: 0,
+      gyroX: 0,
+      gyroY: 0,
+      gyroZ: 0,
       isDeg: true,
+      isIMU: false,
       showMotion: false,
       showOrientation: false,
     };
@@ -27,7 +28,10 @@ const MobileOrientationCollector = React.createClass({
   componentDidMount() {
     if (window.DeviceMotionEvent) {
       window.addEventListener('devicemotion', this.handleMotion, true);
-      this.setState({ showMotion: false });
+      this.setState({
+        showMotion: true,
+        isIMU: true,
+      });
     }
     if (window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', this.handleOrientation);
@@ -58,9 +62,9 @@ const MobileOrientationCollector = React.createClass({
       accelX: event.acceleration.x,
       accelY: event.acceleration.y,
       accelZ: event.acceleration.z,
-      rotationX: event.rotationRate.x,
-      rotationY: event.rotationRate.y,
-      rotationZ: event.rotationRate.z,
+      gyroX: event.rotationRate.x,
+      gyroY: event.rotationRate.y,
+      gyroZ: event.rotationRate.z,
     }, this.sendDataJson());
   },
 
@@ -95,19 +99,19 @@ const MobileOrientationCollector = React.createClass({
       accelX,
       accelY,
       accelZ,
-      rotationX,
-      rotationY,
-      rotationZ,
+      gyroX,
+      gyroY,
+      gyroZ,
     } = this.state;
-    if (accelX && accelY && accelZ && rotationX && rotationY && rotationZ) {
+    if (accelX && accelY && accelZ && gyroX && gyroY && gyroZ) {
       return (
         <div>
           <h2>{`Accel-X: ${accelX.toFixed(3)}`}</h2>
           <h2>{`Accel-Y: ${accelY.toFixed(3)}`}</h2>
           <h2>{`Accel-Z: ${accelZ.toFixed(3)}`}</h2>
-          <h2>{`Rotation-X: ${rotationX.toFixed(3)}`}</h2>
-          <h2>{`Rotation-Y: ${rotationY.toFixed(3)}`}</h2>
-          <h2>{`Rotation-Z: ${rotationZ.toFixed(3)}`}</h2>
+          <h2>{`Gyro-X: ${gyroX.toFixed(3)}`}</h2>
+          <h2>{`Gyro-Y: ${gyroY.toFixed(3)}`}</h2>
+          <h2>{`Gyro-Z: ${gyroZ.toFixed(3)}`}</h2>
         </div>
       );
     }
@@ -116,7 +120,6 @@ const MobileOrientationCollector = React.createClass({
 
   render() {
     const {
-
       showMotion,
       showOrientation,
     } = this.state;
