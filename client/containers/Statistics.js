@@ -16,6 +16,7 @@ class Statistics extends React.Component {
       subscribedSocketList: [],
       charts: [],
     };
+    this.removeChart = this.removeChart.bind(this);
   }
 
   componentWillMount() {
@@ -87,6 +88,16 @@ class Statistics extends React.Component {
     });
   }
 
+  removeChart(chartIndex) {
+    if (chartIndex > -1) {
+      const newCharts = this.state.charts;
+      newCharts.splice(chartIndex, 1);
+      this.setState({
+        charts: newCharts,
+      });
+    }
+  }
+
   subscribeToSocket(target, callback) {
     const data = {
       target,
@@ -113,6 +124,8 @@ class Statistics extends React.Component {
        <ChartManager
         availableDataSources={availableSocketList}
         handleCreateChart={this.createChart.bind(this)}
+        charts={charts}
+        onRemoveChart={this.removeChart}
         />
         <div className="statistics-container">
           {charts.map((chart, index) => {

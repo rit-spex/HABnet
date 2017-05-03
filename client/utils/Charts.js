@@ -35,7 +35,6 @@ export function getTempAxis() {
 export function getTempSeries() {
   return [{
     name: 'Temperature(C)',
-    showInNavigator: true,
     data: generateDefaultData(),
   }];
 }
@@ -286,11 +285,28 @@ export function updateMagData(data, series) {
 }
 
 export function getRGBAxis() {
-
+  return {
+    title: {
+      text: 'Color Intensity 0-255',
+    },
+    softMin: 0,
+    softMax: 255,
+  };
 }
 
 export function getRGBSeries() {
-  
+  return [{
+    name: 'Red (int)',
+    data: generateDefaultData(),
+  },
+  {
+    name: 'Green (int)',
+    data: generateDefaultData(),
+  },
+  {
+    name: 'Blue (int)',
+    data: generateDefaultData(),
+  }];
 }
 
 
@@ -305,11 +321,20 @@ export function updateRGBData(data, series) {
 
 
 export function getLUXAxis() {
-
+  return {
+    title: {
+      text: 'Lumens',
+    },
+    softMin: 0,
+    softMax: 1000,
+  };
 }
 
 export function getLUXSeries() {
-  
+  return [{
+    name: 'Lumens',
+    data: generateDefaultData(),
+  }];
 }
 
 export function updateLUXData(data, series) {
@@ -320,11 +345,20 @@ export function updateLUXData(data, series) {
 }
 
 export function getColorTempAxis() {
-
+  return {
+    title: {
+      text: 'Kelvin',
+    },
+    softMin: 1000,
+    softMax: 25000,
+  };
 }
 
 export function getColorTempSeries() {
-  
+  return [{
+    name: 'Kelvin',
+    data: generateDefaultData(),
+  }];
 }
 
 export function updateColorTempData(data, series) {
