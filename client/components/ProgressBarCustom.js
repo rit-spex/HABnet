@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ProgressBar from '../utils/progressbar.min.js';
 
 const ProgressBarCustom = React.createClass({

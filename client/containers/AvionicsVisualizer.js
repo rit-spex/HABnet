@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import io from 'socket.io-client';
 import OrientationCanvas from '../components/OrientationCanvas';
 import ProgressBarCustom from '../components/ProgressBarCustom';
