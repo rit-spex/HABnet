@@ -66,7 +66,7 @@ const OrientationCanvas = React.createClass({
     this.camera = new THREE.PerspectiveCamera(
       60, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize(800,600);//window.innerWidth, window.innerHeight);
+    this.renderer.setSize(800, 600);//window.innerWidth, window.innerHeight);
     this.canvasNode.appendChild(this.renderer.domElement);
   },
 

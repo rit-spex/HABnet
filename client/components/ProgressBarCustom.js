@@ -4,11 +4,17 @@ import ProgressBar from '../utils/progressbar.min.js';
 const ProgressBarCustom = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
-},
+  },
+
+  getInitialState() {
+    return {
+      lux: null,
+    };
+  },
 
   componentDidMount() {
     this.setup();
-    this.update()
+    this.update();
   },
 
   setup() {
@@ -21,7 +27,7 @@ const ProgressBarCustom = React.createClass({
     this.socket.on('broadcastData', (data) => {
       const payload = data.payload;
       this.setState({
-        lux: payload.lux
+        lux: payload.lux,
       });
     });
   },
