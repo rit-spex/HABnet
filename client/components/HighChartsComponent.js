@@ -18,18 +18,15 @@ const HighChartsComponent = React.createClass({
   },
 
   componentDidMount() {
-    if (!window.graphIntervals) {
-      window.graphIntervals = [];
-    }
     this.dataStore = new DataStore();
     this.setupChart();
   },
 
   componentWillUnmount() {
     this.chart.destroy();
-    window.graphIntervals.map((intervalId) => {
-      window.clearInterval(intervalId);
-    });
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
   },
 
   setupChart() {
