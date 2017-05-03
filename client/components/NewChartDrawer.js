@@ -46,7 +46,7 @@ const NewChartDrawer = React.createClass({
     this.validateChart();
     if (chartValid) {
       const namedChartType = ChartTypes[chartType];
-      const namedDataSource = availableDataSources[dataSource].name;
+      const namedDataSource = availableDataSources[dataSource];
       handleCreateChart(namedChartType, namedDataSource, chartName);
     }
   },
@@ -105,7 +105,7 @@ const NewChartDrawer = React.createClass({
             >
             {availableDataSources.map((source, index) => {
               return (
-                <MenuItem key={index} value={index} primaryText={source.name} />
+                <MenuItem key={index} value={index} primaryText={source} />
               );
             })}
             </SelectField>

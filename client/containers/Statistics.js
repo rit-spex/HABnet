@@ -50,7 +50,7 @@ class Statistics extends React.Component {
   setupSocketListeners() {
     this.socket.on('availableRooms', (data) => {
       this.setState({
-        availableSocketList: data.dataSources,
+        availableSocketList: data,
       });
     });
 

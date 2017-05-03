@@ -33,7 +33,7 @@ const DataSocketInitializer = React.createClass({
     const { socketName } = this.state;
     return (
       <div>
-        <h1>socket Initializer</h1>
+        <h1>Socket Initializer</h1>
         <TextField
           id="text-field-default"
           value={socketName}

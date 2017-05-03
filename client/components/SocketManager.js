@@ -4,6 +4,7 @@ import { List, ListItem } from 'material-ui/List';
 const SocketManager = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
+    username: PropTypes.string.isRequired,
   },
 
   getInitialState() {
@@ -41,13 +42,13 @@ const SocketManager = React.createClass({
   setupSocketListeners() {
     this.socket.on('availableRooms', (data) => {
       this.setState({
-        availableSocketList: data.dataSources,
+        availableSocketList: this.cleanseAvailableSocketList(data),
       });
     });
 
     this.socket.on('subscribedRooms', (data) => {
       this.setState({
-        subscribedSocketList: data,
+        subscribedSocketList: this.cleanseSubscribedSocketList(data),
       });
     });
     this.fetchRoomLists();
@@ -58,22 +59,39 @@ const SocketManager = React.createClass({
     this.props.socket.emit('getAvailableRooms');
   },
 
+  cleanseSubscribedSocketList(sockets) {
+    const cleanSockets = sockets;
+    const index = cleanSockets.indexOf(this.props.username);
+    if (index > -1) {
+      cleanSockets.splice(index, 1);
+    }
+    return cleanSockets;
+  },
+
+  cleanseAvailableSocketList(sockets) {
+    const cleanSockets = sockets;
+    this.state.subscribedSocketList.forEach(socket => {
+      const index = cleanSockets.indexOf(socket);
+      if (index > -1) {
+        cleanSockets.splice(index, 1);
+      }
+    });
+    return cleanSockets;
+  },
+
 
   render() {
     const { availableSocketList, subscribedSocketList } = this.state;
     return (
       <div>
-        <h2>
-          This component will handle socket initializtion and connecting to data sources
-        </h2>
         <h3>Available Data Sources</h3>
         <List>
         {availableSocketList.map((dataSocket, index) => {
           return (
             <ListItem
               key={index}
-              primaryText={dataSocket.name}
-              onTouchTap={ () => { this.handleSubscribeToSocket(dataSocket.name); }}
+              primaryText={dataSocket}
+              onTouchTap={ () => { this.handleSubscribeToSocket(dataSocket); }}
             />
           );
         })}
