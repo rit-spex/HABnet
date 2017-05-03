@@ -66,7 +66,7 @@ const OrientationCanvas = React.createClass({
     this.camera = new THREE.PerspectiveCamera(
       60, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(800, 600);//window.innerWidth, window.innerHeight);
     this.canvasNode.appendChild(this.renderer.domElement);
   },
 
@@ -184,7 +184,11 @@ const OrientationCanvas = React.createClass({
         const scale = modelInfo.scale;
         objModel.scale.set(scale, scale, scale);
         if (addToGroup) {
-          addToGroup.add(objModel);
+          let child;
+          for (let i = 0; i < objModel.children.length; i++) {
+            child = objModel.children[i];
+            addToGroup.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
+          }
         }
       });
     });
@@ -199,7 +203,7 @@ const OrientationCanvas = React.createClass({
     }
   },
 
-  swithcModel(modelIndex) {
+  switchModel(modelIndex) {
     for (let i = 0; i < this.models.length; i++) {
       if (i === modelIndex) {
         this.allGroup.add(this.models[i]);
@@ -215,11 +219,6 @@ const OrientationCanvas = React.createClass({
     this.allGroup.rotation.x = roll;
     this.allGroup.rotation.y = pitch;
     this.allGroup.rotation.z = yaw;
-    /*
-    this.allGroup.rotation.x = -15;
-    this.allGroup.rotation.y = 15;
-    this.allGroup.rotation.z = 15;
-    */
     this.requestID = window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
   },

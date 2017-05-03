@@ -50,7 +50,7 @@ class Statistics extends React.Component {
   setupSocketListeners() {
     this.socket.on('availableRooms', (data) => {
       this.setState({
-        availableSocketList: data.dataSources,
+        availableSocketList: data,
       });
     });
 
@@ -110,7 +110,7 @@ class Statistics extends React.Component {
     return (
       <div>
        <h1>This is the Statistics page</h1>
-       <ChartManager 
+       <ChartManager
         availableDataSources={availableSocketList}
         handleCreateChart={this.createChart.bind(this)}
         />

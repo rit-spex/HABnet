@@ -4,6 +4,7 @@ import * as Chart from '../utils/Charts';
 import DataStore from '../utils/DataStore';
 
 require('highcharts/modules/exporting')(Highcharts);
+require('highcharts-boost');
 // Alternatively, this is how to load Highstock or Highmaps
 // var Highcharts = require('highcharts/highstock');
 // var Highcharts = require('highcharts/highmaps');

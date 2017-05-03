@@ -29,14 +29,21 @@ const FakeDataControls = React.createClass({
       magX: 0,
       magY: 0,
       magZ: 0,
+      roll: 0,
+      pitch: 0,
+      yaw: 0,
       colorR: 125,
       colorG: 125,
       colorB: 125,
       lux: 0,
       colorTemp: 0,
+      solarPower: 0,
       hasBarometer: false,
       hasIMU: false,
       hasColorSensor: false,
+      hasMobile: false,
+      hasAvionics: false,
+      isDeg: true,
       timeStamp: 0,
     };
   },
@@ -135,6 +142,85 @@ const FakeDataControls = React.createClass({
           defaultValue={10}
           value={this.state.humidity}
           onChange={(evt, value) => { this.handleSlider(value, 'humidity'); }}
+        />
+      </Paper>
+    );
+  },
+
+  renderMobile() {
+    const { roll, pitch, yaw } = this.state;
+    return (
+      <Paper style={{padding: '5px' }} zDepth={2}>
+        <span>{`Roll: ${roll} °`}</span>
+        <Slider
+          min={-180}
+          max={180}
+          step={1}
+          defaultValue={0}
+          value={this.state.roll}
+          onChange={(evt, value) => { this.handleSlider(value, 'roll'); }}
+        />
+        <span>{`Pitch: ${pitch} °`}</span>
+        <Slider
+          min={-180}
+          max={180}
+          step={1}
+          defaultValue={0}
+          value={this.state.pitch}
+          onChange={(evt, value) => { this.handleSlider(value, 'pitch'); }}
+        />
+        <span>{`Yaw: ${yaw} °`}</span>
+        <Slider
+          min={0}
+          max={360}
+          step={1}
+          defaultValue={1}
+          value={this.state.yaw}
+          onChange={(evt, value) => { this.handleSlider(value, 'yaw'); }}
+        />
+      </Paper>
+    );
+  },
+
+  renderAvionics() {
+    const { roll, pitch, yaw, solarPower } = this.state;
+    return (
+      <Paper style={{padding: '5px' }} zDepth={2}>
+        <span>{`Roll: ${roll} °`}</span>
+        <Slider
+          min={-180}
+          max={180}
+          step={1}
+          defaultValue={0}
+          value={this.state.roll}
+          onChange={(evt, value) => { this.handleSlider(value, 'roll'); }}
+        />
+        <span>{`Pitch: ${pitch} °`}</span>
+        <Slider
+          min={-180}
+          max={180}
+          step={1}
+          defaultValue={0}
+          value={this.state.pitch}
+          onChange={(evt, value) => { this.handleSlider(value, 'pitch'); }}
+        />
+        <span>{`Yaw: ${yaw} °`}</span>
+        <Slider
+          min={0}
+          max={360}
+          step={1}
+          defaultValue={1}
+          value={this.state.yaw}
+          onChange={(evt, value) => { this.handleSlider(value, 'yaw'); }}
+        />
+        <span>{`Solar Power: ${solarPower} %`}</span>
+        <Slider
+          min={0}
+          max={100}
+          step={0.1}
+          defaultValue={50}
+          value={this.state.solarPower}
+          onChange={(evt, value) => { this.handleSlider(value, 'solarPower'); }}
         />
       </Paper>
     );
@@ -293,7 +379,7 @@ const FakeDataControls = React.createClass({
   },
 
   render() {
-    const { hasBarometer, hasIMU, hasColorSensor, timeStamp } = this.state;
+    const { hasBarometer, hasIMU, hasColorSensor, hasMobile, hasAvionics, timeStamp } = this.state;
     return (
       <div>
         <Toggle label="Show Barometer" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasBarometer'); }} />
@@ -302,6 +388,10 @@ const FakeDataControls = React.createClass({
         {hasIMU && this.renderIMU()}
         <Toggle label="Show Color Sensor" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasColorSensor'); }}/>
         {hasColorSensor && this.renderColorSensor()}
+        <Toggle label="Show Mobile" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasMobile'); }}/>
+        {hasMobile && this.renderMobile()}
+        <Toggle label="Show Avionics" onToggle={(evt, isToggled) => { this.handleToggle(isToggled, 'hasAvionics'); }}/>
+        {hasAvionics && this.renderAvionics()}
         <TextField
           id="text-field-controlled"
           value={`Recorded time: ${timeStamp} ms`}

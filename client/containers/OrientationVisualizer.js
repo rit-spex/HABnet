@@ -41,11 +41,11 @@ const OrientationVisualizer = React.createClass({
   },
 
   render() {
-    const { isSocketConnected } = this.state;
+    const { isSocketConnected, username } = this.state;
     return (
       <div >
         <h1>This is the Orientation Visualizer page</h1>
-        <SocketManager socket={this.socket} />
+        <SocketManager socket={this.socket} username={username}/>
         {isSocketConnected && <OrientationCanvas socket={this.socket}/> }
       </div>
     );
@@ -53,4 +53,3 @@ const OrientationVisualizer = React.createClass({
 });
 
 export default OrientationVisualizer;
-

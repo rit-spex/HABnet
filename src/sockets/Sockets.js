@@ -36,11 +36,37 @@ const printConnectedSockets = () => {
   clientConnections.dataListeners.map(source => console.log(source.name));
 };
 
+const getCurrentConnections = () => {
+  return {
+    timestamp: Date.now(),
+    dataListeners: clientConnections.dataListeners.map((sock) => {
+      return {
+        name: sock.name,
+        id: sock.id,
+      };
+    }).toArray(),
+    dataSources: clientConnections.dataSources.map((sock) => {
+      return {
+        name: sock.name,
+        id: sock.id,
+      };
+    }).toArray(),
+  };
+};
+
 const getSubscribedRooms = (socket) => {
   let rooms = Immutable.Map(socket.rooms);
   rooms = rooms.delete(socket.id);
   rooms = rooms.delete(ALL_SOCKETS);
   socket.emit('subscribedRooms', rooms.toArray());
+};
+
+const getAvailableRooms = (socket) => {
+  //const connections = getCurrentConnections();
+  const connections = clientConnections.dataSources.map((sock) => { return sock.name; }).toArray();
+
+  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
+  sendToClientPacket(socket, 'availableRooms', connections);
 };
 
 const getUniqueName = (clientName) => {
@@ -72,25 +98,6 @@ const disconnectFromSocket = (socket, target) => {
   console.log(`${socket.name} has stopped listening to ${target}`);
 };
 
-const getCurrentConnections = () => {
-  return {
-    timestamp: Date.now(),
-    dataListeners: clientConnections.dataListeners.map((sock) => {
-      return {
-        name: sock.name,
-        id: sock.id,
-      };
-    }).toArray(),
-    dataSources: clientConnections.dataSources.map((sock) => {
-      return {
-        name: sock.name,
-        id: sock.id,
-      };
-    }).toArray(),
-  };
-};
-
-
 const addSocketToGroup = (data, socket) => {
   if (data.type === 'dataSource') {
     clientConnections.dataSources = clientConnections.dataSources.set(socket.id, Immutable.fromJS(socket));
@@ -100,13 +107,6 @@ const addSocketToGroup = (data, socket) => {
 
   printConnectedSockets();
   getAvailableRooms(socket);
-};
-
-const getAvailableRooms = (socket) => {
-  const connections = getCurrentConnections();
-
-  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
-  sendToClientPacket(socket, 'availableRooms', connections);
 };
 
 const removeSocketFromGroup = (data, socket) => {
