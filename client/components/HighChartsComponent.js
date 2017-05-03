@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'highcharts/highstock';
 import * as Chart from '../utils/Charts';
+import DataStore from '../utils/DataStore';
 
 require('highcharts/modules/exporting')(Highcharts);
 // Alternatively, this is how to load Highstock or Highmaps
@@ -11,7 +12,6 @@ const HighChartsComponent = React.createClass({
   propTypes: {
     title: PropTypes.string,
     source: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
     type: PropTypes.oneOf(Chart.ChartTypes).isRequired,
     container: PropTypes.string.isRequired,
   },
@@ -20,6 +20,7 @@ const HighChartsComponent = React.createClass({
     if (!window.graphIntervals) {
       window.graphIntervals = [];
     }
+    this.dataStore = new DataStore();
     this.setupChart();
   },
 
@@ -52,32 +53,12 @@ const HighChartsComponent = React.createClass({
       exporting: this.getExportingOptions(),
       series: this.getSeries(),
     });
+    const data = this.dataStore.data.get(this.props.source);
+    this.intervalId = setInterval(this.updateGraph, 100);
   },
 
   getChartOptions() {
-    const { type, data } = this.props;
-    switch (type) {
-      case 'TEMPERATURE':
-        return Chart.processTempData(data);
-      case 'HUMIDITY':
-        return Chart.processHumidityData(data);
-      case 'ALTITUDE':
-        return Chart.processAltitudeData(data);
-      case 'ACCELEROMETER':
-        return Chart.processAccelData(data);
-      case 'GYROSCOPE':
-        return Chart.processGyroData(data);
-      case 'MAGNETOMETER':
-        return Chart.processMagData(data);
-      case 'RGB':
-        return Chart.processRGBData(data);
-      case 'LUX':
-        return Chart.processLUXData(data);
-      case 'COLOR_TEMP':
-        return Chart.processColorTempData(data);
-      default:
-        return null;
-    }
+    return {};
   },
 
   getNavigatorOptions() {
@@ -171,26 +152,40 @@ const HighChartsComponent = React.createClass({
     const { type } = this.props;
     switch (type) {
       case 'TEMPERATURE':
+        this.updater = Chart.updateTempData;
         return Chart.getTempSeries();
       case 'HUMIDITY':
+        this.updater = Chart.updateHumidityData;
         return Chart.getHumiditySeries();
       case 'ALTITUDE':
+        this.updater = Chart.updateAltitudeData;
         return Chart.getAltitudeSeries();
       case 'ACCELEROMETER':
+        this.updater = Chart.updateAccelData;
         return Chart.getAccelSeries();
       case 'GYROSCOPE':
+        this.updater = Chart.updateGyroData;
         return Chart.getGyroSeries();
       case 'MAGNETOMETER':
+        this.updater = Chart.updateMagData;
         return Chart.getMagSeries();
       case 'RGB':
+        this.updater = Chart.updateRGBData;
         return Chart.getRGBSeries();
       case 'LUX':
+        this.updater = Chart.updateLUXData;
         return Chart.getLUXSeries();
       case 'COLOR_TEMP':
+        this.updater = Chart.updateColorTempData;
         return Chart.getColorTempSeries();
       default:
         return null;
     }
+  },
+
+  updateGraph() {
+    const data = this.dataStore.data.get(this.props.source);
+    this.updater(data, this.chart.series);
   },
 
   render() {

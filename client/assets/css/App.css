@@ -13,11 +13,25 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
+
 .statistics-chart {
   flex-grow: 1;
   flex-direction: ltr;
   min-width: 500px;
   margin: auto;
+}
+
+.add-chart {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  z-index: 10;
+}
+
+.chart-drawer {
+  margin-left: 1em;
+  margin-right: 1em;
+  width: 100%;
 }
 
 @media screen and (min-width : 320px) {
