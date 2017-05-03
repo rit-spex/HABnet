@@ -5,11 +5,48 @@ import ProgressBarCustom from '../components/ProgressBarCustom';
 import SocketManager from '../components/SocketManager';
 
 class AvionicsVisualizer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { test: 'foo' };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { test: 'foo' };
+  // }
+
+
+  getInitialState() {
+    return {
+      username: 'AvionicsVisualizer',
+      isSocketConnected: false,
+    };
+  },
+
+  componentWillMount() {
+    this.connectSocket();
+  },
+
+  componentWillUnmount() {
+    if (this.socket) {
+      this.socket.disconnect();
+    }
+  },
+
+  connectSocket() {
+    this.socket = io.connect();
+    this.socket.on('joinedSuccessfully', (data) => {
+      this.setState({ username: data.name });
+    });
+    this.socket.on('connect', () => {
+      console.log('connected to server');
+      this.socket.emit('join', { name: this.state.username, type: 'dataListener' });
+      this.setState({ isSocketConnected: true });
+    });
+
+    this.socket.on('disconnect', () => {
+      console.log('disconnected to server');
+      this.setState({ isSocketConnected: false });
+    });
+  },
+
   render() {
+    const { isSocketConnected } = this.state;
     return (
       <div >
         <h1>This is the Avionics Visualizer page</h1>

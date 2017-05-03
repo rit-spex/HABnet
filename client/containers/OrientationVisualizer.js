@@ -46,6 +46,7 @@ const OrientationVisualizer = React.createClass({
       <div >
         <h1>This is the Orientation Visualizer page</h1>
         <SocketManager socket={this.socket} />
+        {isSocketConnected && <ProgressBarCustom socket={this.socket}/> }
         {isSocketConnected && <OrientationCanvas socket={this.socket}/> }
       </div>
     );
