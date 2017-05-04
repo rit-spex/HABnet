@@ -13,6 +13,7 @@ const deg2ra = (degree) => {
 const OrientationCanvas = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
+    model: PropTypes.number
   },
 
   getInitialState() {
@@ -62,11 +63,13 @@ const OrientationCanvas = React.createClass({
   },
 
   setupScene() {
+    var width = window.innerWidth * 0.8 < 800 ? 800 : window.innerWidth * 0.7
+    var height = window.innerHeight * 0.8 < 600 ? 600 : window.innerHeight * 0.7
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
-      60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      60, width / height, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize(800, 600);//window.innerWidth, window.innerHeight);
+    this.renderer.setSize(width, height);//window.innerWidth, window.innerHeight);
     this.canvasNode.appendChild(this.renderer.domElement);
   },
 
@@ -224,6 +227,9 @@ const OrientationCanvas = React.createClass({
   },
 
   render() {
+    if(this.model != null) {
+        console.log("MODEL: "+this.props.model);
+    }
     return (<div ref={(node) => { this.canvasNode = node; }} />);
   },
 });

@@ -11,6 +11,7 @@ class AvionicsVisualizer extends React.Component {
       username: 'AvionicsVisualizer',
       isSocketConnected: false,
     };
+    this.model = 0;
   }
 
   componentWillMount() {
@@ -40,14 +41,20 @@ class AvionicsVisualizer extends React.Component {
     });
   }
 
+  toggleModel() {
+    this.model = this.model ? 0 : 1;
+  }
+
   render() {
     const { isSocketConnected } = this.state;
     return (
       <div >
         <h1>This is the Avionics Visualizer page</h1>
         <SocketManager socket={this.socket} />
+        <a href="#" onClick={toggleModel}>Button1</a>
+        <a href="#" onClick={toggleModel}>Button1</a>
         {isSocketConnected && <ProgressBarCustom socket={this.socket}/> }
-        {isSocketConnected && <OrientationCanvas socket={this.socket}/> }
+        {isSocketConnected && <OrientationCanvas socket={this.socket} model={this.model} /> }
       </div>
     );
   }
