@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import io from 'socket.io-client';
+import RaisedButton from 'material-ui/RaisedButton'
 import OrientationCanvas from '../components/OrientationCanvas';
 import ProgressBarCustom from '../components/ProgressBarCustom';
 import SocketManager from '../components/SocketManager';
@@ -9,13 +10,13 @@ class AvionicsVisualizer extends React.Component {
     super(props);
     this.state = {
       username: 'AvionicsVisualizer',
-      isSocketConnected: false,
+      isSocketConnected: false
     };
-    this.model = 0;
   }
 
   componentWillMount() {
     this.connectSocket();
+    this.model = 0;
   }
 
   componentWillUnmount() {
@@ -41,7 +42,7 @@ class AvionicsVisualizer extends React.Component {
     });
   }
 
-  toggleModel() {
+  toggleModel(e) {
     this.model = this.model ? 0 : 1;
   }
 
@@ -51,8 +52,8 @@ class AvionicsVisualizer extends React.Component {
       <div >
         <h1>This is the Avionics Visualizer page</h1>
         <SocketManager socket={this.socket} />
-        <a href="#" onClick={toggleModel}>Button1</a>
-        <a href="#" onClick={toggleModel}>Button1</a>
+        <RaisedButton label="Toggle1" onTouchTap={this.toggleModel} />
+        <RaisedButton label="Toggle2" onTouchTap={this.toggleModel} />
         {isSocketConnected && <ProgressBarCustom socket={this.socket}/> }
         {isSocketConnected && <OrientationCanvas socket={this.socket} model={this.model} /> }
       </div>
