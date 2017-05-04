@@ -79,7 +79,7 @@ const OrientationCanvas = React.createClass({
     this.pointLight = new THREE.DirectionalLight();
     this.pointLight.position.set(0.75, 0.75, 1.0).normalize();
     this.scene.add(this.pointLight);
-    this.scene.add(new THREE.DirectionalLightHelper(this.pointLight));
+//    this.scene.add(new THREE.DirectionalLightHelper(this.pointLight));
     console.log('finished scene setup, calling render');
   },
 
