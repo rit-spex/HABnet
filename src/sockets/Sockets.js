@@ -19,6 +19,11 @@ const sendSocketData = (socket, destination, messageType, payload) => {
   socket.broadcast.to(destination).emit(messageType, payload);
 };
 
+const sendToRoom = (socket, destinationRoom, messageType, payload) => {
+  // socket.server.in(destinationRoom).emit(messageType, payload);
+  socket.to(destinationRoom).emit(messageType, payload);
+};
+
 const sendToClientPacket = (socket, messageType, payload) => {
   socket.emit(messageType, payload);
 };
@@ -30,38 +35,6 @@ const printConnectedSockets = () => {
   console.log('Data Listeners');
   clientConnections.dataListeners.map(source => console.log(source.name));
 };
-
-const getSubscribedRooms = (socket) => {
-  let rooms = Immutable.Map(socket.rooms);
-  rooms = rooms.delete(socket.id);
-  socket.emit('subscribedRooms', rooms.toArray());
-};
-
-const getUniqueName = (clientName) => {
-  if (clientConnections.hasClientConnectedPreviously(clientName)
-     && clientConnections.isClientConnected(clientName)) {
-    return getUniqueName(generateUniqueName(clientName));
-  }
-  return clientName;
-};
-
-const connectToSocket = (socket, target) => {
-  socket.join(target, () => {
-    console.log(socket.rooms);
-    getSubscribedRooms(socket);
-  });
-  console.log(`${socket.name} has started listening to ${target}`);
-};
-
-const disconnectFromSocket = (socket, target) => {
-  socket.leave(target, () => {
-    console.log(socket.rooms);
-    getSubscribedRooms(socket);
-  });
-  console.log(`${socket.name} has stopped listening to ${target}`);
-};
-
-
 
 const getCurrentConnections = () => {
   return {
@@ -81,6 +54,49 @@ const getCurrentConnections = () => {
   };
 };
 
+const getSubscribedRooms = (socket) => {
+  let rooms = Immutable.Map(socket.rooms);
+  rooms = rooms.delete(socket.id);
+  rooms = rooms.delete(ALL_SOCKETS);
+  socket.emit('subscribedRooms', rooms.toArray());
+};
+
+const getAvailableRooms = (socket) => {
+  //const connections = getCurrentConnections();
+  const connections = clientConnections.dataSources.map((sock) => { return sock.name; }).toArray();
+
+  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
+  sendToClientPacket(socket, 'availableRooms', connections);
+};
+
+const getUniqueName = (clientName) => {
+  if (clientConnections.isClientConnected(clientName)) {
+    return getUniqueName(generateUniqueName(clientName));
+  }
+  if (clientConnections.hasClientConnectedPreviously(clientName) &&
+   clientConnections.isClientConnected(clientName)) {
+    return getUniqueName(generateUniqueName(clientName));
+  }
+  return clientName;
+};
+
+const connectToSocket = (socket, target) => {
+  socket.join(target, () => {
+    console.log(socket.rooms);
+    getSubscribedRooms(socket);
+    getAvailableRooms(socket);
+  });
+  console.log(`${socket.name} has started listening to ${target}`);
+};
+
+const disconnectFromSocket = (socket, target) => {
+  socket.leave(target, () => {
+    console.log(socket.rooms);
+    getSubscribedRooms(socket);
+    getAvailableRooms(socket);
+  });
+  console.log(`${socket.name} has stopped listening to ${target}`);
+};
 
 const addSocketToGroup = (data, socket) => {
   if (data.type === 'dataSource') {
@@ -90,10 +106,7 @@ const addSocketToGroup = (data, socket) => {
   }
 
   printConnectedSockets();
-  const connections = getCurrentConnections();
-
-  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
-  sendToClientPacket(socket, 'availablerooms', connections);
+  getAvailableRooms(socket);
 };
 
 const removeSocketFromGroup = (data, socket) => {
@@ -104,15 +117,7 @@ const removeSocketFromGroup = (data, socket) => {
   }
 
   printConnectedSockets();
-
-  const connections = {
-    timestamp: Date.now(),
-    dataListeners: clientConnections.dataListeners.map(sock => sock.name).toArray(),
-    dataSources: clientConnections.dataSources.map(sock => sock.name).toArray(),
-  };
-
-  sendSocketData(socket, ALL_SOCKETS, 'availableRooms', connections);
-  sendToClientPacket(socket, 'availablerooms', connections );
+  getAvailableRooms(socket);
 };
 
 // setup socket listeners on join
@@ -126,19 +131,23 @@ const onJoined = (sock) => {
     const name = getUniqueName(data.name);
     socket.name = name;
     socket.join(ALL_SOCKETS);
+    socket.join(data.name);
     writeConnectionOpen(statisticsClient, data);
     addSocketToGroup(data, socket);
+    socket.emit('joinedSuccessfully', { name });
   });
 
   // Broadcast out received data
   socket.on('sensorData', (data) => {
-    sendSocketData(socket, ALL_SOCKETS, 'broadcastData', data);
-    sendSocketData(socket, socket.id, 'broadcastData', data);
-    writeDataPacket(dataClient, data, socket.name);
+    let receivedData = data;
+    if (typeof receivedData === 'string') receivedData = JSON.parse(data);
+    sendToRoom(socket, socket.name, 'broadcastData', receivedData);
+    sendSocketData(socket, socket.id, 'broadcastData', receivedData);
+    writeDataPacket(dataClient, receivedData, socket.name);
   });
 
   socket.on('mobileIMUData', (data) => {
-    sendSocketData(socket, ALL_SOCKETS, 'broadcastMobileData', data);
+    sendToRoom(socket, socket.name, 'broadcastData', data);
     sendSocketData(socket, socket.id, 'broadcastMobileData', data);
     writeDataPacket(dataClient, data, socket.name);
   });
@@ -149,6 +158,14 @@ const onJoined = (sock) => {
 
   socket.on('disconnectFromSocket', (data) => {
     disconnectFromSocket(socket, data.target);
+  });
+
+  socket.on('getSubscribedRooms', () => {
+    getSubscribedRooms(socket);
+  });
+
+  socket.on('getAvailableRooms', () => {
+    getAvailableRooms(socket);
   });
 };
 

@@ -1,10 +1,18 @@
 {
-  "extends": "airbnb/base",
+  "extends": ["airbnb/base", "plugin:react/recommended"],
   "rules": {
     "no-underscore-dangle" : "off",
     "no-plusplus": "off",
     "no-console": 0,
     "linebreak-style": "off",
     "new-cap": "off"
+  },
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
   }
 }
