@@ -3,12 +3,11 @@ import * as THREE from 'three';
 import ColladaLoader from 'three-collada-loader';
 import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
+import ModelSwitcher from '../components/ModelSwitcher';
 
 OBJLoader(THREE);
 
-const deg2ra = (degree) => {
-  return degree * (Math.PI / 180);
-};
+const deg2ra = degree => degree * (Math.PI / 180);
 
 const OrientationCanvas = React.createClass({
   propTypes: {
@@ -21,6 +20,8 @@ const OrientationCanvas = React.createClass({
       roll: 0,
       pitch: 0,
       yaw: 0,
+      showAxis: false,
+      modelIndex: 0,
     };
   },
 
@@ -54,6 +55,25 @@ const OrientationCanvas = React.createClass({
   componentWillUnmount() {
     window.cancelAnimationFrame(this.requestID);
     this.requestID = undefined;
+  },
+
+  handleToggleAxis() {
+    const newAxisState = !this.state.showAxis;
+    this.setState({
+      showAxis: newAxisState,
+    });
+    this.toggleAxis(newAxisState);
+  },
+
+  handleSwitchModel() {
+    const maxIndex = this.models.length;
+    const { modelIndex } = this.state;
+    let newIndex = modelIndex + 1;
+    if (newIndex > maxIndex) newIndex = 0;
+    this.setState({
+      modelIndex: newIndex,
+    });
+    this.switchModel(newIndex);
   },
 
   setupSocket() {
@@ -247,8 +267,8 @@ const OrientationCanvas = React.createClass({
   },
 
   render() {
-    if(this.props.model != null) {
-        console.log("MODEL: "+this.props.model);
+    if (this.props.model != null) {
+        console.log(`MODEL: ${this.props.model}`);
     }
     this.switchModel(this.props.model);
     console.log(this.allGroup);

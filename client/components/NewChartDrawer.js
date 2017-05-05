@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { List, ListItem } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Chip from 'material-ui/Chip';
 import { ChartTypes } from '../utils/Charts';
 
 const NewChartDrawer = React.createClass({
@@ -14,6 +15,8 @@ const NewChartDrawer = React.createClass({
     handleOpen: PropTypes.func.isRequired,
     availableDataSources: PropTypes.array.isRequired,
     handleCreateChart: PropTypes.func.isRequired,
+    onRemoveChart: PropTypes.func.isRequired,
+    charts: PropTypes.array.isRequired,
   },
 
   getInitialState() {
@@ -26,9 +29,7 @@ const NewChartDrawer = React.createClass({
   },
 
   validateChart() {
-    const { chartType, dataSource, chartName } = this.state;
-    const { availableDataSources } = this.props;
-
+    const { chartType, dataSource } = this.state;
     if (chartType !== null && dataSource !== null) {
       this.setState({
         chartValid: true,
@@ -70,7 +71,7 @@ const NewChartDrawer = React.createClass({
   },
 
   render() {
-    const { open, handleOpen, availableDataSources } = this.props;
+    const { open, handleOpen, availableDataSources, charts, onRemoveChart } = this.props;
     const { chartValid } = this.state;
     return (
       <Drawer
@@ -119,9 +120,19 @@ const NewChartDrawer = React.createClass({
               />
           </List>
           <Divider />
-          <MenuItem >
-            Click to remove
-          </MenuItem>
+            <h2>Click to remove</h2>
+             {charts.map((chart, index) => {
+                return (
+                  <Chip
+                    key={index}
+                    onRequestDelete={() => onRemoveChart(index)}
+                    className="chart-chip"
+                    style={{ margin: '5px' }}
+                  >
+                  {chart.container}
+                  </Chip>
+                );
+              })}
         </Drawer>
     );
   },

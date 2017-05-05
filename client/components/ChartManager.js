@@ -7,6 +7,8 @@ const ChartManager = React.createClass({
   propTypes: {
     handleCreateChart: PropTypes.func.isRequired,
     availableDataSources: PropTypes.array.isRequired,
+    charts: PropTypes.array.isRequired,
+    onRemoveChart: PropTypes.func.isRequired,
   },
 
   getInitialState() {
@@ -23,7 +25,7 @@ const ChartManager = React.createClass({
 
   render() {
     const { open } = this.state;
-    const { availableDataSources, handleCreateChart } = this.props;
+    const { availableDataSources, handleCreateChart, charts, onRemoveChart } = this.props;
     return (
       <div>
         <NewChartDrawer
@@ -31,6 +33,8 @@ const ChartManager = React.createClass({
           handleOpen={this.handleOpenChartManager}
           availableDataSources={availableDataSources}
           handleCreateChart={handleCreateChart}
+          charts={charts}
+          onRemoveChart={onRemoveChart}
           />
         <FloatingActionButton
           className="add-chart"

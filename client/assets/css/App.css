@@ -34,6 +34,11 @@ body {
   width: 100%;
 }
 
+.chart-chip {
+  margin: 5px;
+  margin-bottom: 10px;
+}
+
 @media screen and (min-width : 320px) {
   .statistics-chart {
     min-width: 300px;

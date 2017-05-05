@@ -4,7 +4,7 @@ import * as Chart from '../utils/Charts';
 import DataStore from '../utils/DataStore';
 
 require('highcharts/modules/exporting')(Highcharts);
-require('highcharts-boost');
+require('highcharts-boost')(Highcharts);
 // Alternatively, this is how to load Highstock or Highmaps
 // var Highcharts = require('highcharts/highstock');
 // var Highcharts = require('highcharts/highmaps');
@@ -18,18 +18,15 @@ const HighChartsComponent = React.createClass({
   },
 
   componentDidMount() {
-    if (!window.graphIntervals) {
-      window.graphIntervals = [];
-    }
     this.dataStore = new DataStore();
     this.setupChart();
   },
 
   componentWillUnmount() {
     this.chart.destroy();
-    window.graphIntervals.map((intervalId) => {
-      window.clearInterval(intervalId);
-    });
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
   },
 
   setupChart() {
