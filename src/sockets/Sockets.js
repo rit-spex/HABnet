@@ -139,9 +139,11 @@ const onJoined = (sock) => {
 
   // Broadcast out received data
   socket.on('sensorData', (data) => {
-    sendToRoom(socket, socket.name, 'broadcastData', data);
-    sendSocketData(socket, socket.id, 'broadcastData', data);
-    writeDataPacket(dataClient, data, socket.name);
+    let receivedData = data;
+    if (typeof receivedData === 'string') receivedData = JSON.parse(data);
+    sendToRoom(socket, socket.name, 'broadcastData', receivedData);
+    sendSocketData(socket, socket.id, 'broadcastData', receivedData);
+    writeDataPacket(dataClient, receivedData, socket.name);
   });
 
   socket.on('mobileIMUData', (data) => {
