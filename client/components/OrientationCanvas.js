@@ -24,15 +24,29 @@ const OrientationCanvas = React.createClass({
     };
   },
 
+
   componentDidMount() {
     this.socket = this.props.socket;
     this.setupSocket();
     this.setupScene();
     this.setupLight();
     this.allGroup = new THREE.Group();
-    this.setupAxis();
-    this.models = this.setupModels();
 
+    this.objGroup = new THREE.Group();
+    this.objGroup.name = "obj";
+    this.daeGroup = new THREE.Group();
+    this.daeGroup.name = "dae";
+
+    this.setupAxis();
+    this.setupModels();
+    this.models = new Array();
+    this.models.push(this.objGroup);
+    this.models.push(this.daeGroup);
+    this.modelNum = this.props.model;
+
+    var opposite = (this.modeNum + 1) %2; //flip 1 & 0
+
+    this.allGroup.remove(this.models[opposite]);
     this.scene.add(this.allGroup);
     this.renderScene();
   },
@@ -114,7 +128,8 @@ const OrientationCanvas = React.createClass({
       surface: '0xff7b00',
       scale: 20,
     };
-    const added1 = this.addModel('dae', addModel1, null);
+    var added1 = this.addModel('dae', addModel1, this.allGroup);
+    console.log(added1);
     if (added1) {
       modelsAdded.push(added1);
     }
@@ -125,11 +140,13 @@ const OrientationCanvas = React.createClass({
       scale: 1,
     };
 
-    const added2 = this.addModel('obj', addModel2, this.allGroup);
+    var added2 = this.addModel('obj', addModel2, this.allGroup);
+    console.log(added2);
     if (added2) {
       modelsAdded.push(added2);
     }
-
+//    console.log("added models:");
+//    console.log(modelsAdded);
     return modelsAdded;
   },
 
@@ -138,18 +155,19 @@ const OrientationCanvas = React.createClass({
     switch (modelType.toLowerCase()) {
       case 'collada':
       case 'dae':
-        modelAdded = this.addCollada(modelInfo, group);
+        modelAdded = this.addCollada(modelInfo, group, this.daeGroup);
         break;
       case 'obj':
-        modelAdded = this.addOBJ(modelInfo, group);
+        modelAdded = this.addOBJ(modelInfo, group, this.objGroup);
         break;
       default:
         return null;
     }
+    console.log(modelAdded);
     return modelAdded;
   },
 
-  addCollada(modelInfo, addToGroup) {
+  addCollada(modelInfo, addToGroup, intermediary) {
     const colladaLoader = new ColladaLoader();
     colladaLoader.options.convertUpAxis = true;
     let colladaModel = null;
@@ -165,13 +183,14 @@ const OrientationCanvas = React.createClass({
       colladaModel.scale.set(scale, scale, scale);
       colladaModel.updateMatrix();
       if (addToGroup) {
-        addToGroup.add(colladaModel);
+        intermediary.add(colladaModel)
+        addToGroup.add(intermediary);
       }
     });
     return colladaModel;
   },
 
-  addOBJ(modelInfo, addToGroup) {
+  addOBJ(modelInfo, addToGroup, intermediary) {
     const mtlLoader = new MTLLoader();
     let objModel = null;
     mtlLoader.setPath('assets/models/');
@@ -190,8 +209,9 @@ const OrientationCanvas = React.createClass({
           let child;
           for (let i = 0; i < objModel.children.length; i++) {
             child = objModel.children[i];
-            addToGroup.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
+            intermediary.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
           }
+          addToGroup.add(intermediary);
         }
       });
     });
@@ -207,12 +227,12 @@ const OrientationCanvas = React.createClass({
   },
 
   switchModel(modelIndex) {
-    for (let i = 0; i < this.models.length; i++) {
-      if (i === modelIndex) {
-        this.allGroup.add(this.models[i]);
-      } else {
-        this.allGroup.remove(this.models[i]);
-      }
+    if(this.models != null) {
+      var opposite = (modelIndex + 1) % 2;
+      var toAdd = this.models[modelIndex];
+      var toRemove = this.models[opposite];
+      this.allGroup.add(toAdd);
+      this.allGroup.remove(toRemove);
     }
   },
 
@@ -227,9 +247,11 @@ const OrientationCanvas = React.createClass({
   },
 
   render() {
-    if(this.model != null) {
+    if(this.props.model != null) {
         console.log("MODEL: "+this.props.model);
     }
+    this.switchModel(this.props.model);
+    console.log(this.allGroup);
     return (<div ref={(node) => { this.canvasNode = node; }} />);
   },
 });
