@@ -8,7 +8,7 @@ const ProgressBarCustom = React.createClass({
 
   getInitialState() {
     return {
-      solarMeter: null,
+      solarPower: null,
     };
   },
 
@@ -27,7 +27,7 @@ const ProgressBarCustom = React.createClass({
     this.socket.on('broadcastData', (data) => {
       const payload = data.payload;
       this.setState({
-        solarMeter: payload.solarMeter,
+        solarPower: payload.solarPower,
       });
     });
   },
@@ -59,8 +59,8 @@ const ProgressBarCustom = React.createClass({
   },
 
   update() {
-    const { solarMeter } = this.state;
-    this.progressBar.set(solarMeter / 100.0);
+    const { solarPower } = this.state;
+    this.progressBar.set(solarPower / 100.0);
   },
 
   render() {
