@@ -60,10 +60,13 @@ const ProgressBarCustom = React.createClass({
 
   update() {
     const { solarPower } = this.state;
-    this.progressBar.set(solarPower / 100.0);
+    if(solarPower != null) {
+      this.progressBar.set(solarPower / 100.0);
+    }
   },
 
   render() {
+    this.update();
     return (<div ref={(node) => { this.progressNode = node; }} />);
   },
 });
