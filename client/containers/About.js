@@ -9,7 +9,15 @@ class About extends React.Component {
   render() {
     return (
       <div >
-        <h1>This is the About page</h1>
+        <h1>About</h1>
+        <p>Special thanks to Code van De Mark, the academic advisor for this project</p>
+        <h2>Contributors</h2>
+        <ul>
+          <li>T.J. Tarazevits</li>
+          <li>Alec Herbert</li>
+          <li>Austin Bodzas</li>
+          <li>Dan Mitchell</li>
+        </ul>
       </div>
     );
   }

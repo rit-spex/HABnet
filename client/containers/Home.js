@@ -9,7 +9,7 @@ class Home extends React.Component {
   render() {
     return (
       <div >
-        <h1>This is the Home page</h1>
+        <h1>Welcome to ImagineRIT. Check out the Orientation Visualizer on the sidebar!</h1>
       </div>
     );
   }
