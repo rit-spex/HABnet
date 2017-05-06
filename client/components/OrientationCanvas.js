@@ -12,7 +12,7 @@ const deg2ra = degree => degree * (Math.PI / 180);
 const OrientationCanvas = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
-    model: PropTypes.number
+    model: PropTypes.number.isRequired,
   },
 
   getInitialState() {
