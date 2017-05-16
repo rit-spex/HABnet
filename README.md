@@ -101,6 +101,7 @@ This endpoint returns a JSON file with a list of all recorded UUIDs in the datab
 ## Acknowledgements
 This project would not have been possible without the support of RIT Space Exploration.
 Special thanks to RIT IGM Faculty, Code van De Mark, the academic advisor for this project.
+Special thanks to Computer Science House for hosting and development resources.
 
 
 ## Contributors 
