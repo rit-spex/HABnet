@@ -1,6 +1,6 @@
 # HABnet
 
-HABnet is a multi-user web application designed to facilite the collection and visualization of embedded sensor data. There are two primary components included within this application.
+HABnet is a multi-user web application designed to facilitate  the collection and visualization of embedded sensor data. There are two primary components included within this application.
 
 ## Applications
 The primary use case for this project is to support embedded research projects at Rochester Institute of Technology pursured by RIT Space Exploration. The initial proof-of-concept was developed as a hackathon project to support a High Altitude Balloon (HAB) launch by SPEX. This system supports any embedded device that can transmit data via the Internet using websockets.
