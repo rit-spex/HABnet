@@ -1,2 +1,7 @@
 node_modules
+<<<<<<< HEAD
 npm-debug.log
+=======
+npm-debug.log
+
+>>>>>>> dev

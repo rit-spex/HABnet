@@ -1,2 +1,5 @@
 node_modules
 .env
+.vscode/
+debug.log
+npm-debug.log
