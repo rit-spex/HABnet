@@ -4,6 +4,7 @@ import ColladaLoader from 'three-collada-loader';
 import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
 import ModelSwitcher from '../components/ModelSwitcher';
+import Models from '../utils/Models';
 
 OBJLoader(THREE);
 
@@ -126,22 +127,13 @@ const OrientationCanvas = React.createClass({
   },
 
   setupModels() {
-    const addModel1 = {
-      file: 'cubesat.dae',
-      surface: '0xff7b00',
-      scale: 20,
-    };
-    const addModel2 = {
-      file: 'nasa_cubesat.obj',
-      surface: 'nasa_cubesat.mtl',
-      scale: 1,
-    };
-    this.addModel('dae', addModel1);
-    this.addModel('obj', addModel2);
+    Models.forEach((model) => {
+      this.addModel(model);
+    });
   },
 
-  addModel(modelType, modelInfo) {
-    switch (modelType.toLowerCase()) {
+  addModel(modelInfo) {
+    switch (modelInfo.filetype.toLowerCase()) {
       case 'collada':
       case 'dae':
         this.addCollada(modelInfo);
@@ -190,7 +182,14 @@ const OrientationCanvas = React.createClass({
         const intermediary = new THREE.Group();
         for (let i = 0; i < objModel.children.length; i++) {
           child = objModel.children[i];
-          intermediary.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
+          const geometry = child.geometry;
+          let material;
+          if (!child.material.isMultiMaterial) {
+            material = new THREE.MeshPhongMaterial({ color: child.material.color.getHex() });
+          } else {
+            material = child.material;
+          }
+          intermediary.add(new THREE.Mesh(geometry, material));
         }
         this.models.push(intermediary);
       });
