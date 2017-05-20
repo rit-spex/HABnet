@@ -12,7 +12,6 @@ const deg2ra = degree => degree * (Math.PI / 180);
 const OrientationCanvas = React.createClass({
   propTypes: {
     socket: PropTypes.object.isRequired,
-    model: PropTypes.number.isRequired,
   },
 
   getInitialState() {
@@ -25,29 +24,15 @@ const OrientationCanvas = React.createClass({
     };
   },
 
-
   componentDidMount() {
     this.socket = this.props.socket;
     this.setupSocket();
     this.setupScene();
     this.setupLight();
     this.allGroup = new THREE.Group();
-
-    this.objGroup = new THREE.Group();
-    this.objGroup.name = "obj";
-    this.daeGroup = new THREE.Group();
-    this.daeGroup.name = "dae";
-
     this.setupAxis();
+    this.models = [];
     this.setupModels();
-    this.models = new Array();
-    this.models.push(this.objGroup);
-    this.models.push(this.daeGroup);
-    this.modelNum = this.props.model;
-
-    var opposite = (this.modeNum + 1) %2; //flip 1 & 0
-
-    this.allGroup.remove(this.models[opposite]);
     this.scene.add(this.allGroup);
     this.renderScene();
   },
@@ -66,7 +51,7 @@ const OrientationCanvas = React.createClass({
   },
 
   handleSwitchModel() {
-    const maxIndex = this.models.length;
+    const maxIndex = this.models.length - 1;
     const { modelIndex } = this.state;
     let newIndex = modelIndex + 1;
     if (newIndex > maxIndex) newIndex = 0;
@@ -97,13 +82,13 @@ const OrientationCanvas = React.createClass({
   },
 
   setupScene() {
-    var width = window.innerWidth * 0.8 < 800 ? 800 : window.innerWidth * 0.7
-    var height = window.innerHeight * 0.8 < 600 ? 600 : window.innerHeight * 0.7
+    const width = window.innerWidth * 0.8 < 800 ? 800 : window.innerWidth * 0.7;
+    const height = window.innerHeight * 0.8 < 600 ? 600 : window.innerHeight * 0.7;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
       60, width / height, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize(width, height);//window.innerWidth, window.innerHeight);
+    this.renderer.setSize(width, height);
     this.canvasNode.appendChild(this.renderer.domElement);
   },
 
@@ -113,7 +98,7 @@ const OrientationCanvas = React.createClass({
     this.pointLight = new THREE.DirectionalLight();
     this.pointLight.position.set(0.75, 0.75, 1.0).normalize();
     this.scene.add(this.pointLight);
-//    this.scene.add(new THREE.DirectionalLightHelper(this.pointLight));
+    // this.scene.add(new THREE.DirectionalLightHelper(this.pointLight));
     console.log('finished scene setup, calling render');
   },
 
@@ -137,57 +122,38 @@ const OrientationCanvas = React.createClass({
     this.axisGroup.add(arrowHelperX);
     this.axisGroup.add(arrowHelperY);
     this.axisGroup.add(arrowHelperZ);
-
     this.allGroup.add(this.axisGroup);
   },
 
   setupModels() {
-    const modelsAdded = [];
     const addModel1 = {
       file: 'cubesat.dae',
       surface: '0xff7b00',
       scale: 20,
     };
-    var added1 = this.addModel('dae', addModel1, this.allGroup);
-    console.log(added1);
-    if (added1) {
-      modelsAdded.push(added1);
-    }
-
     const addModel2 = {
       file: 'nasa_cubesat.obj',
       surface: 'nasa_cubesat.mtl',
       scale: 1,
     };
-
-    var added2 = this.addModel('obj', addModel2, this.allGroup);
-    console.log(added2);
-    if (added2) {
-      modelsAdded.push(added2);
-    }
-//    console.log("added models:");
-//    console.log(modelsAdded);
-    return modelsAdded;
+    this.addModel('dae', addModel1);
+    this.addModel('obj', addModel2);
   },
 
-  addModel(modelType, modelInfo, group) {
-    let modelAdded = null;
+  addModel(modelType, modelInfo) {
     switch (modelType.toLowerCase()) {
       case 'collada':
       case 'dae':
-        modelAdded = this.addCollada(modelInfo, group, this.daeGroup);
+        this.addCollada(modelInfo);
         break;
       case 'obj':
-        modelAdded = this.addOBJ(modelInfo, group, this.objGroup);
+        this.addOBJ(modelInfo);
         break;
       default:
-        return null;
     }
-    console.log(modelAdded);
-    return modelAdded;
   },
 
-  addCollada(modelInfo, addToGroup, intermediary) {
+  addCollada(modelInfo) {
     const colladaLoader = new ColladaLoader();
     colladaLoader.options.convertUpAxis = true;
     let colladaModel = null;
@@ -202,22 +168,17 @@ const OrientationCanvas = React.createClass({
       const scale = modelInfo.scale;
       colladaModel.scale.set(scale, scale, scale);
       colladaModel.updateMatrix();
-      if (addToGroup) {
-        intermediary.add(colladaModel)
-        addToGroup.add(intermediary);
-      }
+      this.models.push(colladaModel);
     });
-    return colladaModel;
   },
 
-  addOBJ(modelInfo, addToGroup, intermediary) {
+  addOBJ(modelInfo) {
     const mtlLoader = new MTLLoader();
     let objModel = null;
     mtlLoader.setPath('assets/models/');
     const mtlUrl = modelInfo.surface;
     mtlLoader.load(mtlUrl, (materials) => {
       materials.preload();
-
       const objLoader = new THREE.OBJLoader();
       objLoader.setMaterials(materials);
       const objUrl = `/assets/models/${modelInfo.file}`;
@@ -225,17 +186,15 @@ const OrientationCanvas = React.createClass({
         objModel = obj;
         const scale = modelInfo.scale;
         objModel.scale.set(scale, scale, scale);
-        if (addToGroup) {
-          let child;
-          for (let i = 0; i < objModel.children.length; i++) {
-            child = objModel.children[i];
-            intermediary.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
-          }
-          addToGroup.add(intermediary);
+        let child;
+        const intermediary = new THREE.Group();
+        for (let i = 0; i < objModel.children.length; i++) {
+          child = objModel.children[i];
+          intermediary.add(new THREE.Mesh(child.geometry, new THREE.MeshPhongMaterial({ color: child.material.color.getHex() })));
         }
+        this.models.push(intermediary);
       });
     });
-    return objModel;
   },
 
   toggleAxis(visible) {
@@ -247,18 +206,19 @@ const OrientationCanvas = React.createClass({
   },
 
   switchModel(modelIndex) {
-    if(this.models != null) {
-      var opposite = (modelIndex + 1) % 2;
-      var toAdd = this.models[modelIndex];
-      var toRemove = this.models[opposite];
-      this.allGroup.add(toAdd);
-      this.allGroup.remove(toRemove);
+    for (let i = 0; i < this.models.length; i++) {
+      if (i === modelIndex) {
+        this.allGroup.add(this.models[i]);
+      } else {
+        this.allGroup.remove(this.models[i]);
+      }
     }
   },
 
   renderScene() {
     console.log('running render function');
     const { roll, pitch, yaw } = this.state;
+    if (this.allGroup.children.length < 2) this.allGroup.add(this.models[0]);
     this.allGroup.rotation.x = roll;
     this.allGroup.rotation.y = pitch;
     this.allGroup.rotation.z = yaw;
@@ -267,12 +227,15 @@ const OrientationCanvas = React.createClass({
   },
 
   render() {
-    if (this.props.model != null) {
-        console.log(`MODEL: ${this.props.model}`);
-    }
-    this.switchModel(this.props.model);
-    console.log(this.allGroup);
-    return (<div ref={(node) => { this.canvasNode = node; }} />);
+    return (
+      <div>
+        <ModelSwitcher
+          onSwitchModel={this.handleSwitchModel}
+          onToggleAxis={this.handleToggleAxis}
+        />
+        <div ref={(node) => { this.canvasNode = node; }} />
+      </div>
+    );
   },
 });
 
