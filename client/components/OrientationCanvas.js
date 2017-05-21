@@ -5,6 +5,7 @@ import MTLLoader from 'three-mtl-loader';
 import OBJLoader from 'three-obj-loader';
 import ModelSwitcher from '../components/ModelSwitcher';
 import Models from '../utils/Models';
+import { getQuaternion } from '../utils/RotationHelpers';
 
 OBJLoader(THREE);
 
@@ -22,6 +23,7 @@ const OrientationCanvas = React.createClass({
       yaw: 0,
       showAxis: false,
       modelIndex: 0,
+      useQuaternion: false,
     };
   },
 
@@ -68,9 +70,10 @@ const OrientationCanvas = React.createClass({
       const payload = data.payload;
       if (payload.isDeg) {
         this.setState({
-          roll: deg2ra(payload.roll),
-          pitch: -deg2ra(payload.pitch),
-          yaw: deg2ra(payload.yaw),
+          roll: payload.roll,
+          pitch: payload.pitch,
+          yaw: payload.yaw,
+          useQuaternion: true,
         });
       } else {
         this.setState({
@@ -216,11 +219,17 @@ const OrientationCanvas = React.createClass({
 
   renderScene() {
     console.log('running render function');
-    const { roll, pitch, yaw } = this.state;
+    const { roll, pitch, yaw, useQuaternion } = this.state;
     if (this.allGroup.children.length < 2) this.allGroup.add(this.models[0]);
-    this.allGroup.rotation.x = roll;
-    this.allGroup.rotation.y = pitch;
-    this.allGroup.rotation.z = yaw;
+    if (useQuaternion) {
+      const quaternionOrientation = new THREE.Quaternion(...getQuaternion(yaw, pitch, roll));
+      this.allGroup.setRotationFromQuaternion(quaternionOrientation);
+    } else {
+      // Three.js uses intrinsic (Tait-Bryan) ordering, also known as yaw, pitch and roll.
+      this.allGroup.rotation.x = yaw;
+      this.allGroup.rotation.y = pitch;
+      this.allGroup.rotation.z = roll;
+    }
     this.requestID = window.requestAnimationFrame(this.renderScene);
     this.renderer.render(this.scene, this.camera);
   },
