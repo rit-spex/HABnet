@@ -17,4 +17,10 @@ export default [
     surface: 'nasa_iss.mtl',
     scale: 1,
   },
+  {
+    file: 'nasa_jwst.obj',
+    filetype: 'obj',
+    surface: 'nasa_jwst.mtl',
+    scale: 0.25,
+  },
 ];

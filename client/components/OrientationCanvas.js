@@ -133,6 +133,7 @@ const OrientationCanvas = React.createClass({
     Models.forEach((model) => {
       this.addModel(model);
     });
+    this.allGroup.add(this.models[0]);
   },
 
   addModel(modelInfo) {
@@ -180,7 +181,7 @@ const OrientationCanvas = React.createClass({
       objLoader.load(objUrl, (obj) => {
         objModel = obj;
         const scale = modelInfo.scale;
-        objModel.scale.set(scale, scale, scale);
+        // objModel.scale.set(scale, scale, scale);
         let child;
         const intermediary = new THREE.Group();
         for (let i = 0; i < objModel.children.length; i++) {
@@ -192,6 +193,7 @@ const OrientationCanvas = React.createClass({
           } else {
             material = child.material;
           }
+          intermediary.scale.set(scale, scale, scale);
           intermediary.add(new THREE.Mesh(geometry, material));
         }
         this.models.push(intermediary);
@@ -220,7 +222,6 @@ const OrientationCanvas = React.createClass({
   renderScene() {
     console.log('running render function');
     const { roll, pitch, yaw, useQuaternion } = this.state;
-    if (this.allGroup.children.length < 2) this.allGroup.add(this.models[0]);
     if (useQuaternion) {
       const quaternionOrientation = new THREE.Quaternion(...getQuaternion(yaw, pitch, roll));
       this.allGroup.setRotationFromQuaternion(quaternionOrientation);

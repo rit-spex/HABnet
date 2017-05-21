@@ -1,0 +1,232 @@
+# Exported from 3D Builder
+
+newmtl blackpaint_lambert1
+Kd 0.200000 0.200000 0.200000
+
+newmtl JWST-bracket1-sm
+Kd 0.164706 0.164706 0.164706
+
+newmtl JWST-bracket2-sm
+Kd 0.458824 0.458824 0.458824
+
+newmtl sc_rad_smli1
+Kd 0.086275 0.078431 0.098039
+
+newmtl JWST-gold-nofoil-sm
+Kd 0.764706 0.654902 0.262745
+
+newmtl JWST-black-fl
+Kd 0.121569 0.121569 0.121569
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-bottom-box-PURPLEY
+Kd 0.458824 0.313726 0.419608
+
+newmtl JWST-bracket2-fl
+Kd 0.458824 0.458824 0.458824
+
+newmtl JWST-black-sm
+Kd 0.121569 0.121569 0.121569
+
+newmtl JWST-bronze-sm
+Kd 0.776471 0.737255 0.572549
+
+newmtl JWST-bottom-box-bot-fl-PURPLEY
+Kd 0.458824 0.313726 0.419608
+
+newmtl JWST-bottom-box-bot-PURPLEY
+Kd 0.458824 0.313726 0.423529
+
+newmtl JWST-FoilLayer5-PURPLEY
+Kd 0.458824 0.313726 0.419608
+
+newmtl JoinedMaterial_#15
+Kd 0.713726 0.713726 0.713726
+
+newmtl JWST-FoilLayer4
+Kd 0.713726 0.713726 0.713726
+
+newmtl JWST-bracket1-fl
+Kd 0.650980 0.650980 0.650980
+
+newmtl JWST-FoilLayer1
+Kd 0.713726 0.713726 0.713726
+
+newmtl JWST-silver-sm
+Kd 0.823529 0.827451 0.803922
+
+newmtl JWST-gold-fl
+Kd 0.780392 0.549020 0.152941
+
+newmtl JoinedMaterial_#33
+Kd 0.149020 0.101961 0.117647
+
+newmtl JWST-silver-fl
+Kd 0.823529 0.827451 0.803922
+
+newmtl JWST-instrument-silverfoil-2-sm
+Kd 0.278431 0.278431 0.278431
+
+newmtl JWST-instrument-silverfoil-3-sm
+Kd 0.109804 0.109804 0.109804
+
+newmtl JWST-instrument-silverfoil-sm
+Kd 0.301961 0.301961 0.301961
+
+newmtl JWST-mirror-sm
+Kd 0.549020 0.549020 0.549020
+
+newmtl JWST-SolarPanel-22
+Kd 0.176471 0.239216 0.596078
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl sa_edge_gold
+Kd 0.149020 0.137255 0.074510
+
+newmtl JWST-silver2-fl
+Kd 0.694118 0.694118 0.674510
+
+newmtl JWST-bracket1-sm
+Kd 0.164706 0.164706 0.164706
+
+newmtl JWST-bracket2-sm
+Kd 0.458824 0.458824 0.458824
+
+newmtl JWST-bracket2-fl
+Kd 0.458824 0.458824 0.458824
+
+newmtl JWST-bracket1-sm
+Kd 0.164706 0.164706 0.164706
+
+newmtl JWST-FoilBasePanel-2-PURPLEY
+Kd 0.458824 0.313726 0.423529
+
+newmtl JWST-bronze-sm
+Kd 0.776471 0.737255 0.572549
+
+newmtl JWST-bottom-box-bot-fl-PURPLEY
+Kd 0.458824 0.313726 0.419608
+
+newmtl JWST-mirror-sm
+Kd 0.549020 0.549020 0.549020
+
+newmtl JWST-bottom-box-PURPLEY
+Kd 0.458824 0.313726 0.419608
+
+newmtl JWST-black-sm
+Kd 0.121569 0.121569 0.121569
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-black-sm
+Kd 0.121569 0.121569 0.121569
+
+newmtl JWST-bottom-box-PURPLEY
+Kd 0.458824 0.313726 0.419608
+
+newmtl JWST-bracket1-sm
+Kd 0.164706 0.164706 0.164706
+
+newmtl JWST-bracket1-sm
+Kd 0.164706 0.164706 0.164706
+
+newmtl JWST-bracket1-sm
+Kd 0.164706 0.164706 0.164706
+
+newmtl sc_rad_smli1
+Kd 0.086275 0.078431 0.098039
+
+newmtl JWST-bracket2-fl
+Kd 0.458824 0.458824 0.458824
+
+newmtl sc_rad_smli1
+Kd 0.086275 0.078431 0.098039
+
+newmtl JWST-bracket2-fl
+Kd 0.458824 0.458824 0.458824
+
+newmtl whitepaint_lambert
+Kd 1.000000 1.000000 1.000000
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl JWST-TopReflector
+Kd 0.784314 0.545098 0.156863
+
+newmtl JWST-TopReflector-fl
+Kd 0.784314 0.549020 0.156863
+
+newmtl sc_rad_smli1
+Kd 0.086275 0.078431 0.098039
