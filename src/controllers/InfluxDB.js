@@ -1,7 +1,7 @@
 const {
   getConnections,
   getCSVSentBySocket,
-  getJSONSentBySocket,
+  getData,
   getMeasurementNamesJSON } = require('../influxdb/InfluxDB');
 
 // Return Influx Data
@@ -24,9 +24,8 @@ const socketDataCSV = (req, res) => {
   });
 };
 
-const socketDataJSON = (req, res) => {
-  const measurement = req.params.socketID;
-  getJSONSentBySocket(measurement).then((data) => {
+const socketData = (req, res) => {
+  getData(req.params, req.query).then((data) => {
     res.status(200).type('application/json').send(data);
   });
 };
@@ -42,6 +41,6 @@ const measurementNames = (req, res) => {
 module.exports = {
   connectionStatistics,
   socketDataCSV,
-  socketDataJSON,
+  socketData,
   measurementNames,
 };

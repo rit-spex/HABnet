@@ -5,6 +5,8 @@ dotenv.load();
 
 let sourceClient;
 let statisticsClient;
+const dataClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
+
 
 const getInfluxClient = () => {
   const influxClient = new Influx(`${process.env.INFLUXDB_URL.concat('socket_data')}`);
@@ -60,7 +62,6 @@ const getCSVSentBySocket = (measurement) => {
 
   reader.measurement = measurement;
   reader.set('format', 'csv');
-  // reader.addField('timestamp');
   return reader.then((data) => {
     return data[measurement];
   }).catch((err) => {
@@ -74,9 +75,21 @@ const getJSONSentBySocket = (measurement) => {
 
   reader.measurement = measurement;
   reader.set('format', 'json');
-  // reader.addField('timestamp');
   return reader.then((data) => {
     return data[measurement];
+  }).catch((err) => {
+    console.log(err.stack);
+  });
+};
+
+const getData = (urlParams, queryParams) => {
+  const { format } = queryParams;
+  const { socketID } = urlParams;
+  const reader = dataClient.query(socketID);
+  reader.measurement = socketID;
+  reader.set('format', format);
+  return reader.then((data) => {
+    return data[socketID];
   }).catch((err) => {
     console.log(err.stack);
   });
@@ -106,4 +119,5 @@ module.exports = {
   getCSVSentBySocket,
   getJSONSentBySocket,
   getMeasurementNamesJSON,
+  getData,
 };
