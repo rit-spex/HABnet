@@ -39,6 +39,8 @@ At minimum you need an influxDB instance running locally or on a server.
 ```
 INFLUXDB_URL=urlToInfluxDBServer
 ```
+Where urlToInfluxDBServer would look like this for example "http://localhost:8086/" or "http://0.0.0.0:8086/".
+
 Then you can start the server.  
 ```
 npm start
