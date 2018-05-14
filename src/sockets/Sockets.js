@@ -126,6 +126,7 @@ const onJoined = (sock) => {
   const statisticsClient = getStatisticsInfluxClient();
   const dataClient = getSourceInfluxClient();
   socket.on('join', (data) => {
+    if (typeof data === 'string') data = JSON.parse(data);
     console.log(`New Connection: ${data.name} at ${new Date().toISOString()}`);
     // add metadata
     const name = getUniqueName(data.name);
