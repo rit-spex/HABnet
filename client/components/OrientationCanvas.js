@@ -155,8 +155,8 @@ const OrientationCanvas = React.createClass({
     }
 
     const addModel2 = {
-      file: 'nasa_cubesat.obj',
-      surface: 'nasa_cubesat.mtl',
+      file: 'Hyperion.obj',
+      surface: 'Hyperion.mtl',
       scale: 1,
     };
 
