@@ -155,15 +155,9 @@ const OrientationCanvas = React.createClass({
     }
 
     const addModel2 = {
-<<<<<<< HEAD
       file: 'hyperion.obj',
       surface: 'hyperion.mtl',
       scale: 1,
-=======
-      file: 'hyperion2.obj',
-      surface: 'hyperion2.mtl',
-      scale: 15,
->>>>>>> 17d1bba3528c251d65ac616143a0a36968190a7c
     };
 
     var added2 = this.addModel('obj', addModel2, this.allGroup);
