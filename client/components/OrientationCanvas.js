@@ -155,8 +155,8 @@ const OrientationCanvas = React.createClass({
     }
 
     const addModel2 = {
-      file: 'Hyperion.obj',
-      surface: 'Hyperion.mtl',
+      file: 'hyperion.obj',
+      surface: 'hyperion.mtl',
       scale: 1,
     };
 
