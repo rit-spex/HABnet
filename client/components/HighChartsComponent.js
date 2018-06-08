@@ -50,6 +50,7 @@ const HighChartsComponent = React.createClass({
       legend: this.getLegendOptions(),
       exporting: this.getExportingOptions(),
       series: this.getSeries(),
+      plotOptions: { series: { connectNulls: true } },
     });
     const data = this.dataStore.data.get(this.props.source);
     this.intervalId = setInterval(this.updateGraph, 100);
